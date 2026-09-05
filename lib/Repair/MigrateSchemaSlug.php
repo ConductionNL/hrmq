@@ -79,6 +79,13 @@ class MigrateSchemaSlug implements IRepairStep {
 	 */
 	public const SLUG_MAP = [
 		'GeneratedDocument' => 'HrGeneratedDocument',
+		// `Administration` was claimed by this app and by shillinq. They are not
+		// two records: both carry `kvkNumber` and `name`, so they are the same
+		// Dutch legal entity seen from HR and from finance. shillinq owns it,
+		// with the fiscal year, VAT regime and chart of accounts; this schema is
+		// the HR view (loonheffingennummer, ABP obligation) and now carries an
+		// `administration` uuid pointing at the owner.
+		'Administration' => 'hrAdministration',
 	];
 
 	/**

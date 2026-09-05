@@ -1645,7 +1645,7 @@
             {
                 "@self": {
                     "register": "humaniq",
-                    "schema": "Administration",
+                    "schema": "hrAdministration",
                     "slug": "example-adm-001"
                 },
                 "administrationId": "ADM-001",
@@ -1659,7 +1659,7 @@
             {
                 "@self": {
                     "register": "humaniq",
-                    "schema": "Administration",
+                    "schema": "hrAdministration",
                     "slug": "example-adm-002"
                 },
                 "administrationId": "ADM-002",
@@ -1671,7 +1671,7 @@
             {
                 "@self": {
                     "register": "humaniq",
-                    "schema": "Administration",
+                    "schema": "hrAdministration",
                     "slug": "example-adm-004"
                 },
                 "administrationId": "ADM-004",
@@ -1715,7 +1715,7 @@
             {
                 "@self": {
                     "register": "humaniq",
-                    "schema": "Administration",
+                    "schema": "hrAdministration",
                     "slug": "example-adm-005"
                 },
                 "administrationId": "ADM-005",
@@ -1899,7 +1899,7 @@
             {
                 "@self": {
                     "register": "humaniq",
-                    "schema": "Administration",
+                    "schema": "hrAdministration",
                     "slug": "example-adm-003"
                 },
                 "administrationId": "ADM-003",

@@ -1213,7 +1213,7 @@ class RuleAuditServiceTest extends TestCase {
 		];
 
 		return [
-			'Administration' => $administrations,
+			'hrAdministration' => $administrations,
 			'PayrollRun' => $runs,
 			'PensionFiling' => $filings,
 		];
@@ -1284,7 +1284,7 @@ class RuleAuditServiceTest extends TestCase {
 	 */
 	public function testNonObligatedAdministratieNeverFlaggedByAbpFundRequired(): void {
 		$rows = $this->seededAbpRows();
-		$rows['Administration'][1]['abpAansluitingsplichtig'] = false;
+		$rows['hrAdministration'][1]['abpAansluitingsplichtig'] = false;
 
 		$service = $this->serviceWithRows($rows);
 		$report = $service->audit(['jurisdiction' => 'NL']);
@@ -1304,7 +1304,7 @@ class RuleAuditServiceTest extends TestCase {
 	 */
 	public function testAbpContextDegradesToEmptyWhenAdministrationSchemaAbsent(): void {
 		$rows = $this->seededAbpRows();
-		$rows['Administration'] = [];
+		$rows['hrAdministration'] = [];
 
 		$service = $this->serviceWithRows($rows);
 		$report = $service->audit(['jurisdiction' => 'NL']);
