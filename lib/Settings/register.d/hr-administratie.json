@@ -2,14 +2,15 @@
     "x-humaniq-fragment": "hr-administratie",
     "components": {
         "schemas": {
-            "Administration": {
-                "slug": "Administration",
+            "hrAdministration": {
+                "slug": "hrAdministration",
                 "icon": "Domain",
                 "version": "1.1.0",
-                "title": "Administration",
-                "description": "multi-administratie (design.md D2): the accountant multi-client tenant catalog. ONE row per client administratie. This is the switcher's source list and the topbar/Dashboard indicator's label source; child HR/payroll objects do NOT $ref this schema (ADR-062 rule 7. They carry a plain-string copy of `administrationId` instead, D1). `administrationId` is the stable business key already used fleet-wide as a plain string on the payroll aggregates (PayrollRun/PayrollMutationReport/PayrollGLPost/PayrollPaymentBatch); this schema is where that key finally becomes a real, addressable catalog entry.",
+                "title": "HR administration",
+                "description": "The HR view of an administratie: loonheffingennummer, ABP obligation, and the short code every HR record uses to say which administratie it belongs to. NOT the legal entity itself: shillinq's `Administration` owns that, with the fiscal year, VAT regime and chart of accounts, and `administration` below points at it. The two used to share the slug `Administration`, and a slug is global per organisation, so SchemaMapper::find() answered whichever row it reached first. Child HR/payroll objects still do NOT `$ref` this schema (ADR-062 rule 7); they carry a plain-string copy of `administrationId`.",
                 "required": ["administrationId", "name"],
                 "properties": {
+                    "administration": {"title": "Ledger administration", "type": "string", "nullable": true, "description": "UUID of the shillinq `Administration` this HR view belongs to. A plain uuid and not a `$ref`: shillinq's register is a different register, and ADR-062 rule 7 gives a cross-register target a plain string. Empty when shillinq is not installed, in which case `administrationId` is the only key."},
                     "administrationId": {"title": "Administration ID", "type": "string", "description": "The short code every other record uses to say it belongs to this administration, for example 'ADM-001'. It must be unique.", "x-notes": "The stable business key every other HR/payroll schema's denormalized administrationId property names (REQ-MULTI-001) -- e.g. 'ADM-001'. Unique per administratie; NOT the OpenRegister object id/UUID."},
                     "name": {"title": "Name", "type": "string", "description": "Display name of the client administratie (e.g. 'Voorbeeld Accountancy B.V.'). The switcher's option label and the topbar/Dashboard indicator's text."},
                     "kvkNumber": {"title": "KvK number", "type": "string", "nullable": true, "description": "KvK (Chamber of Commerce) number of this administratie, when known."},

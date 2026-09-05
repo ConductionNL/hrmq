@@ -21,8 +21,8 @@
       }
     },
     "schemas": {
-      "Administration": {
-        "slug": "Administration",
+      "hrAdministration": {
+        "slug": "hrAdministration",
         "icon": "Domain",
         "version": "1.1.0",
         "title": "Administration",
@@ -7649,7 +7649,7 @@
       {
         "@self": {
           "register": "humaniq",
-          "schema": "Administration",
+          "schema": "hrAdministration",
           "slug": "administration-voorbeeld-name-1-1"
         },
         "administrationId": "Voorbeeld Administrationid 1",
@@ -7663,7 +7663,7 @@
       {
         "@self": {
           "register": "humaniq",
-          "schema": "Administration",
+          "schema": "hrAdministration",
           "slug": "administration-voorbeeld-name-2-2"
         },
         "administrationId": "Voorbeeld Administrationid 2",
@@ -7677,7 +7677,7 @@
       {
         "@self": {
           "register": "humaniq",
-          "schema": "Administration",
+          "schema": "hrAdministration",
           "slug": "administration-voorbeeld-name-3-3"
         },
         "administrationId": "Voorbeeld Administrationid 3",

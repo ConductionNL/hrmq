@@ -318,7 +318,7 @@ class AdministrationService {
 	 */
 	private function administrationCatalogById(): array {
 		$catalog = [];
-		foreach ($this->loadAll('Administration') as $row) {
+		foreach ($this->loadAll('hrAdministration') as $row) {
 			$administrationId = (string)($row['administrationId'] ?? '');
 			if ($administrationId !== '') {
 				$catalog[$administrationId] = [
