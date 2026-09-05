@@ -5,32 +5,6 @@
 			"register": "humaniq",
 			"schema": "AttendanceRecord",
 			"params": {
-				"id": "MijnAanwezigheid",
-				"route": "/mijn/aanwezigheid",
-				"title": "My attendance",
-				"columns": [
-					"date",
-					"clockIn",
-					"clockOut",
-					"workedHours",
-					"status"
-				],
-				"sort": {
-					"field": "date",
-					"order": "desc"
-				},
-				"filter": {
-					"userId": "@me",
-					"administrationId": "@workspace.activeAdministrationId?"
-				},
-				"description": "Your own attendance."
-			}
-		},
-		{
-			"templateRef": "indexScaffold",
-			"register": "humaniq",
-			"schema": "AttendanceRecord",
-			"params": {
 				"id": "AttendanceRecords",
 				"route": "/attendance",
 				"title": "Attendance",

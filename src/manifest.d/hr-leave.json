@@ -147,31 +147,6 @@
 			"register": "humaniq",
 			"schema": "LeaveRequest",
 			"params": {
-				"id": "MijnVerlof",
-				"route": "/mijn/verlof",
-				"title": "My leave",
-				"columns": [
-					"leaveType",
-					"startDate",
-					"endDate",
-					"status"
-				],
-				"sort": {
-					"field": "startDate",
-					"order": "desc"
-				},
-				"filter": {
-					"userId": "@me",
-					"administrationId": "@workspace.activeAdministrationId?"
-				},
-				"description": "Your own leave requests."
-			}
-		},
-		{
-			"templateRef": "indexScaffold",
-			"register": "humaniq",
-			"schema": "LeaveRequest",
-			"params": {
 				"id": "LeaveRequests",
 				"route": "/leave-requests",
 				"title": "Leave requests",
@@ -193,73 +168,6 @@
 				],
 				"filter": {
 					"administrationId": "@workspace.activeAdministrationId?"
-				}
-			}
-		},
-		{
-			"templateRef": "indexScaffold",
-			"register": "humaniq",
-			"schema": "LeaveRequest",
-			"params": {
-				"id": "LeaveApproval",
-				"route": "/leave-requests/approval",
-				"title": "Leave approval",
-				"columns": [
-					"employeeId",
-					"leaveType",
-					"startDate",
-					"endDate",
-					"submittedAt",
-					"status"
-				],
-				"sort": {
-					"field": "submittedAt",
-					"order": "asc"
-				},
-				"filters": [
-					"status",
-					"leaveType"
-				],
-				"filter": {
-					"administrationId": "@workspace.activeAdministrationId?"
-				},
-				"description": "Submitted leave requests awaiting approval or rejection.",
-				"defaultFilters": {
-					"status": "submitted"
-				}
-			}
-		},
-		{
-			"templateRef": "indexScaffold",
-			"register": "humaniq",
-			"schema": "LeaveRequest",
-			"params": {
-				"id": "TeamVerlofgoedkeuring",
-				"route": "/leave-requests/team-approval",
-				"title": "Team leave approval",
-				"columns": [
-					"employeeId",
-					"leaveType",
-					"startDate",
-					"endDate",
-					"submittedAt",
-					"status"
-				],
-				"sort": {
-					"field": "submittedAt",
-					"order": "asc"
-				},
-				"filters": [
-					"status",
-					"leaveType"
-				],
-				"filter": {
-					"managerUserId": "@me",
-					"administrationId": "@workspace.activeAdministrationId?"
-				},
-				"description": "Leave requests from your team waiting for your decision. Your team is who reports to you according to the records HR maintains.",
-				"defaultFilters": {
-					"status": "submitted"
 				}
 			}
 		},

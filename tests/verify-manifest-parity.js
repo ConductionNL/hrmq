@@ -291,14 +291,27 @@ function main() {
 	);
 
 	// --- Check 4: static vs dynamic route collision pairs -------------------
-	const collisionPairs = [
-		["/timesheets/approval", "TimesheetApproval"],
-		["/timesheets/team-approval", "TeamUrengoedkeuring"],
-		["/expenses/approval", "ExpenseApproval"],
-		["/expenses/team-approval", "TeamDeclaratiegoedkeuring"],
-		["/leave-requests/approval", "LeaveApproval"],
-		["/leave-requests/team-approval", "TeamVerlofgoedkeuring"],
-	];
+	// DERIVED from the effective manifest, not hardcoded. The list used to name
+	// the six approval routes literally, and those pages are now `menu[].query`
+	// presets over their canonical index (ADR-097 Decision 5). A hardcoded list
+	// that outlives its routes does not fail — it silently checks nothing — so
+	// the pairs are computed: every static route whose parent segment also has
+	// a dynamic `/:id` sibling, which is exactly the shape that can be shadowed.
+	const dynamicParents = new Map();
+	for (const pg of effective.pages) {
+		if (!pg.route || !pg.route.includes(":")) continue;
+		dynamicParents.set(pg.route.slice(0, pg.route.lastIndexOf("/")), pg.id);
+	}
+	const collisionPairs = effective.pages
+		.filter(
+			(pg) =>
+				pg.route
+				&& !pg.route.includes(":")
+				&& pg.route.split("/").length > 2
+				&& dynamicParents.has(pg.route.slice(0, pg.route.lastIndexOf("/"))),
+		)
+		.map((pg) => [pg.route, pg.id]);
+
 	let resolved = 0;
 	for (const [routePath, expectedName] of collisionPairs) {
 		const name = resolveRouteName(effective, routePath);
@@ -308,9 +321,15 @@ function main() {
 				`route ${routePath} resolves to ${String(name)}, expected ${expectedName}`,
 			);
 	}
-	console.log(
-		`[parity] check 4 — static/dynamic collision routes: ${resolved}/${collisionPairs.length} resolve to the static page`,
-	);
+	if (collisionPairs.length === 0) {
+		console.log(
+			"[parity] check 4 — static/dynamic collision routes: NONE to check. No static route sits under a parent that also has a dynamic sibling, so nothing could be shadowed. This is not a pass, it is an empty set.",
+		);
+	} else {
+		console.log(
+			`[parity] check 4 — static/dynamic collision routes: ${resolved}/${collisionPairs.length} resolve to the static page`,
+		);
+	}
 
 	// --- Verdict ------------------------------------------------------------
 	if (failures.length > 0) {
