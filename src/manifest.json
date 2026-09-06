@@ -288,7 +288,7 @@
 		},
 		{
 			"id": "PlanningGroup",
-			"label": "Scheduling",
+			"label": "Time & scheduling",
 			"icon": "CalendarMonthOutline",
 			"order": 107,
 			"visibleIf": {
