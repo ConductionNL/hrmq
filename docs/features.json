@@ -126,6 +126,20 @@
     "docsUrl": "openspec/specs/humaniq-docudesk-documents/spec.md"
   },
   {
+    "slug": "humaniq-i18n-form-surface",
+    "title": "Humaniq I18n Form Surface",
+    "summary": "Finish what the manifest half started.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/humaniq-i18n-form-surface/spec.md"
+  },
+  {
+    "slug": "humaniq-timesheet-approved-typed-event",
+    "title": "Humaniq Timesheet Approved Typed Event",
+    "summary": "Give humaniq's approved-timesheet event a consumption path a sibling Conduction app can actually use.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/humaniq-timesheet-approved-typed-event/spec.md"
+  },
+  {
     "slug": "interview-scheduling",
     "title": "Interview Scheduling",
     "summary": "Close the gap recruiting-ats-basic's uitnodigen transition docblock states plainly (\"No calendar/scheduling integration in the MVP\"): today an interview invitation is a bare status flip with no artifact, so nobody on the recruiting team can see from a calendar when and with whom a gesprek is actually happening.",
