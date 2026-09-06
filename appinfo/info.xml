@@ -332,6 +332,12 @@ Vrij en open source onder de EUPL-1.2-licentie.
     </repair-steps>
 
     <commands>
+        <!-- Audit, and on request backfill, the hrAdministration to
+             shillinq Administration uuid reference. Read-only unless the
+             write option is given, and it fills in only an unambiguous
+             single match on the shared `kvkNumber`: a wrong cross-app link
+             is worse than an empty one. -->
+        <command>OCA\Humaniq\Command\ReferencesAuditCommand</command>
         <!-- Audit the register's HR/labour objects against the machine-checkable
              rule corpus (lib/Standards/RuleCatalogue + RuleEngine). Read-only. -->
         <command>OCA\Humaniq\Command\RulesAuditCommand</command>
