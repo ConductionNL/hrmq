@@ -33,7 +33,9 @@ declare(strict_types=1);
 
 namespace OCA\Humaniq\Service;
 
+use OCA\Humaniq\Support\FleetAppId;
 use Psr\Container\ContainerInterface;
+use RuntimeException;
 
 /**
  * Selects an `aanbiedingsbrief` template, renders it via docudesk, and
@@ -47,14 +49,16 @@ class OfferLetterService {
 	 *
 	 * @var string
 	 */
-	private const DOCUMENT_SERVICE_FQCN = 'OCA\DocuDesk\Service\DocumentService';
+	private const DOCUMENT_APP = 'filinq';
+
+	private const DOCUMENT_SERVICE_CLASS = 'Service\DocumentService';
 
 	/**
 	 * docudesk's template lookup service, resolved by string FQCN only.
 	 *
 	 * @var string
 	 */
-	private const TEMPLATE_SERVICE_FQCN = 'OCA\DocuDesk\Service\TemplateService';
+	private const TEMPLATE_SERVICE_CLASS = 'Service\TemplateService';
 
 	/**
 	 * OpenRegister's file-storage service (read-only reuse, not docudesk).
@@ -351,14 +355,24 @@ class OfferLetterService {
 	 * @return mixed docudesk's DocumentService, resolved by string FQCN only.
 	 */
 	private function documentService(): mixed {
-		return $this->container->get(self::DOCUMENT_SERVICE_FQCN);
+		// Throws when no candidate namespace resolves, preserving the
+		// container->get() contract the *Available() probes below rely on:
+		// a null return here would read as "resolved fine" and let the
+		// caller proceed against nothing.
+		return FleetAppId::getService($this->container, self::DOCUMENT_APP, self::DOCUMENT_SERVICE_CLASS)
+			?? throw new RuntimeException('filinq service '.self::DOCUMENT_SERVICE_CLASS.' is not available under any known namespace.');
 	}//end documentService()
 
 	/**
 	 * @return mixed docudesk's TemplateService, resolved by string FQCN only.
 	 */
 	private function templateService(): mixed {
-		return $this->container->get(self::TEMPLATE_SERVICE_FQCN);
+		// Throws when no candidate namespace resolves, preserving the
+		// container->get() contract the *Available() probes below rely on:
+		// a null return here would read as "resolved fine" and let the
+		// caller proceed against nothing.
+		return FleetAppId::getService($this->container, self::DOCUMENT_APP, self::TEMPLATE_SERVICE_CLASS)
+			?? throw new RuntimeException('filinq service '.self::TEMPLATE_SERVICE_CLASS.' is not available under any known namespace.');
 	}//end templateService()
 
 	/**

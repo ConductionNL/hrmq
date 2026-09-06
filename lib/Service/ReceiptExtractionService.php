@@ -86,8 +86,10 @@ declare(strict_types=1);
 
 namespace OCA\Humaniq\Service;
 
+use OCA\Humaniq\Support\FleetAppId;
 use OCP\App\IAppManager;
 use Psr\Container\ContainerInterface;
+use RuntimeException;
 
 /**
  * Reads an Expense's attached receipt via docudesk and prefills empty fields.
@@ -99,7 +101,7 @@ class ReceiptExtractionService {
 	 *
 	 * @var string
 	 */
-	private const DOCUDESK_APP_ID = 'docudesk';
+	private const DOCUMENT_APP = 'filinq';
 
 	/**
 	 * docudesk's financial-extraction service, resolved by string FQCN only
@@ -107,7 +109,7 @@ class ReceiptExtractionService {
 	 *
 	 * @var string
 	 */
-	private const FINANCIAL_EXTRACTION_SERVICE_FQCN = 'OCA\DocuDesk\Service\FinancialExtractionService';
+	private const FINANCIAL_EXTRACTION_SERVICE_CLASS = 'Service\FinancialExtractionService';
 
 	/**
 	 * The `docType` passed to `extractFinancial()` -- an Expense's attachment
@@ -475,7 +477,7 @@ class ReceiptExtractionService {
 	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-003
 	 */
 	private function docudeskAvailable(): bool {
-		if ($this->appManager->isInstalled(self::DOCUDESK_APP_ID) === false) {
+		if (FleetAppId::isInstalled($this->appManager, self::DOCUMENT_APP) === false) {
 			return false;
 		}
 
@@ -518,7 +520,12 @@ class ReceiptExtractionService {
 	 * @return mixed docudesk's FinancialExtractionService, resolved by string FQCN only (design.md D2).
 	 */
 	private function financialExtractionService(): mixed {
-		return $this->container->get(self::FINANCIAL_EXTRACTION_SERVICE_FQCN);
+		// Throws when no candidate namespace resolves, preserving the
+		// container->get() contract the *Available() probes below rely on:
+		// a null return here would read as "resolved fine" and let the
+		// caller proceed against nothing.
+		return FleetAppId::getService($this->container, self::DOCUMENT_APP, self::FINANCIAL_EXTRACTION_SERVICE_CLASS)
+			?? throw new RuntimeException('filinq service '.self::FINANCIAL_EXTRACTION_SERVICE_CLASS.' is not available under any known namespace.');
 	}//end financialExtractionService()
 
 }//end class
