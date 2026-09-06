@@ -24,10 +24,10 @@
 
 - [x] 4.1 Cover projection, non-approved exclusion, idempotent no-write, scoping, and a missing balance.
 - [x] 4.2 Cover derivation: full week, weekend, part-time, explicit hours, no contract snapshot, New Year split, edge cases.
-- [ ] 4.3 Assert the projected balance through the LeaveBalances page in the leave e2e spec.
+- [x] 4.3 Assert the projected balance through the LeaveBalances page in the leave e2e spec.
 
 ## 5. Verification
 
-- [ ] 5.1 `composer check:strict` green.
-- [ ] 5.2 Hydra gates green.
-- [ ] 5.3 Playwright e2e green.
+- [x] 5.1 `composer check:strict` green.
+- [x] 5.2 Hydra gates green.
+- [x] 5.3 Playwright e2e green.
