@@ -73,16 +73,27 @@ test.describe("app chrome (ADR-114)", () => {
 		await expect(footer).toBeAttached({ timeout: 15_000 });
 
 		const rows = footer.locator("li");
-		const texts = (await rows.allInnerTexts())
-			.map((t) => t.trim())
-			.filter(Boolean);
 
-		const seen = texts.filter((t) => /Documentation|Store|Reports|roadmap/i.test(t));
-		expect(seen.length).toBe(4);
-		expect(seen[0]).toMatch(/Documentation/i);
-		expect(seen[1]).toMatch(/Store/i);
-		expect(seen[2]).toMatch(/Reports/i);
-		expect(seen[3]).toMatch(/roadmap/i);
+		// Assert the four by MANIFEST ID, not by label. CnAppNav emits
+		// `data-testid="cn-nav-entry-<id>"` on every entry, and an id is not
+		// translated. Filtering rows by /Documentation|Store|Reports|roadmap/
+		// matched 2 of 4 on an instance whose admin language is `nl`, where the
+		// footer reads "Documentatie", "Store", "Rapporten", "Functies en
+		// roadmap" — a false failure on a nav that was entirely correct.
+		const chromeIds = [
+			"Documentation",
+			"StoreMenu",
+			"ReportsMenu",
+			"FeaturesRoadmapMenu",
+		];
+		const footerIds = await rows.evaluateAll((els) => els
+			.map((el) => el.getAttribute("data-testid") || "")
+			.filter((t) => t.startsWith("cn-nav-entry-"))
+			.map((t) => t.replace("cn-nav-entry-", "")));
+		expect(
+			footerIds,
+			"ADR-114 Decision 4: the footer carries these four, in this order",
+		).toEqual(chromeIds);
 
 		for (const row of await rows.all()) {
 			await expect(
@@ -124,8 +135,11 @@ test.describe("app chrome (ADR-114)", () => {
 		await expect(page.locator('[data-testid="cn-nav"]')).toBeVisible({
 			timeout: 30_000,
 		});
+		// By widget id, not by its label: CnDashboardGrid labels every cell
+		// `role="group"` with the manifest widget id, which is not translated.
 		await expect(
-			page.getByText("Employee records", { exact: false }).first(),
+			page.locator('[role="group"][aria-label="hr-employees"]').first(),
+			"the workforce report must render its hr-employees widget",
 		).toBeVisible({ timeout: 30_000 });
 		await expect(page.locator("main, .app-content").first()).toContainText(
 			/\d/,
@@ -143,8 +157,11 @@ test.describe("app chrome (ADR-114)", () => {
 		await expect(page.locator('[data-testid="cn-nav"]')).toBeVisible({
 			timeout: 30_000,
 		});
+		// By widget id, not by its label: CnDashboardGrid labels every cell
+		// `role="group"` with the manifest widget id, which is not translated.
 		await expect(
-			page.getByText("Currently reported sick", { exact: false }).first(),
+			page.locator('[role="group"][aria-label="sick-open"]').first(),
+			"the absence report must render its sick-open widget",
 		).toBeVisible({ timeout: 30_000 });
 		await expect(page.locator("main, .app-content").first()).toContainText(
 			/\d/,
@@ -157,8 +174,11 @@ test.describe("app chrome (ADR-114)", () => {
 		await expect(page).toHaveURL(/\/reports\/performance(\?|$)/, {
 			timeout: 15_000,
 		});
+		// By widget id, not by its label: CnDashboardGrid labels every cell
+		// `role="group"` with the manifest widget id, which is not translated.
 		await expect(
-			page.getByText("Open review cycles", { exact: false }).first(),
+			page.locator('[role="group"][aria-label="perf-cycles-open"]').first(),
+			"the performance report must render its perf-cycles-open widget",
 		).toBeVisible({ timeout: 30_000 });
 	});
 
