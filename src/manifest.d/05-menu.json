@@ -197,13 +197,15 @@
 					"id": "TimeEntries",
 					"label": "Time entries",
 					"icon": "ClockPlusOutline",
-					"route": "TimeEntries"
+					"route": "TimeEntries",
+					"order": 10
 				},
 				{
 					"id": "Timesheets",
 					"label": "Timesheets",
 					"icon": "ClockCheckOutline",
-					"route": "Timesheets"
+					"route": "Timesheets",
+					"order": 20
 				},
 				{
 					"id": "TimesheetApproval",
@@ -214,7 +216,8 @@
 						"user.administrationMode": {
 							"eq": "standard"
 						}
-					}
+					},
+					"order": 30
 				},
 				{
 					"id": "TeamUrengoedkeuring",
@@ -225,7 +228,8 @@
 						"user.administrationMode": {
 							"eq": "standard"
 						}
-					}
+					},
+					"order": 40
 				},
 				{
 					"id": "LeaveRequests",
@@ -463,19 +467,22 @@
 					"id": "Rosters",
 					"label": "Rosters",
 					"icon": "TableClock",
-					"route": "Rosters"
+					"route": "Rosters",
+					"order": 50
 				},
 				{
 					"id": "RosterAssignments",
 					"label": "Roster assignments",
 					"icon": "TableClock",
-					"route": "RosterAssignments"
+					"route": "RosterAssignments",
+					"order": 60
 				},
 				{
 					"id": "Shifts",
 					"label": "Shifts",
 					"icon": "TimelineClockOutline",
-					"route": "Shifts"
+					"route": "Shifts",
+					"order": 70
 				}
 			]
 		},

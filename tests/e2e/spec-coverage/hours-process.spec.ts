@@ -334,10 +334,13 @@ test.describe("hours process — booking, aggregation, approval lifecycle", () =
 		await expect(page).toHaveURL(/\/mijn\/urenstaten$/, {
 			timeout: 15_000,
 		});
+		// Time entries live under the scheduling group now, not under leave and
+		// absence: a booking is neither leave nor absence, and rostering was
+		// already there.
 		await (
 			await revealNavLeaf(
 				/^(Time entries|Urenboekingen)$/,
-				"VerlofVerzuimGroup",
+				"PlanningGroup",
 			)
 		).click();
 		await expect(page).toHaveURL(/\/time-entries$/, { timeout: 15_000 });
