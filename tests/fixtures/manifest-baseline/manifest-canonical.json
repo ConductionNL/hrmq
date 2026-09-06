@@ -253,13 +253,19 @@
 					"icon": "ReceiptOutline",
 					"id": "MijnDeclaraties",
 					"label": "My expenses",
-					"route": "MijnDeclaraties"
+					"query": {
+						"userId": "@me"
+					},
+					"route": "Expenses"
 				},
 				{
 					"icon": "CalendarWeekendOutline",
 					"id": "MijnVerlof",
 					"label": "My leave",
-					"route": "MijnVerlof"
+					"query": {
+						"userId": "@me"
+					},
+					"route": "LeaveRequests"
 				},
 				{
 					"icon": "ReceiptTextOutline",
@@ -271,7 +277,10 @@
 					"icon": "ClockOutline",
 					"id": "MijnAanwezigheid",
 					"label": "My attendance",
-					"route": "MijnAanwezigheid"
+					"query": {
+						"userId": "@me"
+					},
+					"route": "AttendanceRecords"
 				},
 				{
 					"icon": "StarCheckOutline",
@@ -469,7 +478,11 @@
 					"icon": "CheckDecagramOutline",
 					"id": "LeaveApproval",
 					"label": "Leave approval",
-					"route": "LeaveApproval",
+					"query": {
+						"_order": "[{\"key\":\"submittedAt\",\"order\":\"asc\"}]",
+						"status": "submitted"
+					},
+					"route": "LeaveRequests",
 					"visibleIf": {
 						"user.administrationMode": {
 							"eq": "standard"
@@ -480,7 +493,12 @@
 					"icon": "CheckDecagramOutline",
 					"id": "TeamVerlofgoedkeuring",
 					"label": "Team leave approval",
-					"route": "TeamVerlofgoedkeuring",
+					"query": {
+						"_order": "[{\"key\":\"submittedAt\",\"order\":\"asc\"}]",
+						"managerUserId": "@me",
+						"status": "submitted"
+					},
+					"route": "LeaveRequests",
 					"visibleIf": {
 						"user.administrationMode": {
 							"eq": "standard"
@@ -503,7 +521,11 @@
 					"icon": "ClipboardPulseOutline",
 					"id": "VerzuimOverzicht",
 					"label": "Absence overview",
-					"route": "VerzuimOverzicht"
+					"query": {
+						"_order": "[{\"key\":\"uwv42WeekMeldingDue\",\"order\":\"asc\"}]",
+						"status": "gemeld"
+					},
+					"route": "SickLeaveCases"
 				},
 				{
 					"icon": "ClockOutline",
@@ -535,7 +557,11 @@
 					"icon": "CheckDecagramOutline",
 					"id": "ExpenseApproval",
 					"label": "Expense approval",
-					"route": "ExpenseApproval",
+					"query": {
+						"_order": "[{\"key\":\"submittedAt\",\"order\":\"asc\"}]",
+						"status": "submitted"
+					},
+					"route": "Expenses",
 					"visibleIf": {
 						"user.administrationMode": {
 							"eq": "standard"
@@ -546,7 +572,12 @@
 					"icon": "CheckDecagramOutline",
 					"id": "TeamDeclaratiegoedkeuring",
 					"label": "Team expense approval",
-					"route": "TeamDeclaratiegoedkeuring",
+					"query": {
+						"_order": "[{\"key\":\"submittedAt\",\"order\":\"asc\"}]",
+						"managerUserId": "@me",
+						"status": "submitted"
+					},
+					"route": "Expenses",
 					"visibleIf": {
 						"user.administrationMode": {
 							"eq": "standard"
@@ -3836,7 +3867,10 @@
 									"metric": "count",
 									"register": "humaniq",
 									"route": {
-										"name": "ExpenseApproval"
+										"name": "Expenses",
+										"query": {
+											"status": "submitted"
+										}
 									},
 									"schema": "Expense",
 									"title": "Pending expenses"
@@ -6713,7 +6747,10 @@
 							"icon": "ReceiptOutline",
 							"label": "My open expenses",
 							"route": {
-								"name": "MijnDeclaraties"
+								"name": "Expenses",
+								"query": {
+									"userId": "@me"
+								}
 							},
 							"source": {
 								"filter": {
@@ -7251,32 +7288,6 @@
 			"route": "/interviews/:id",
 			"title": "Interview",
 			"type": "detail"
-		},
-		{
-			"config": {
-				"columns": [
-					"date",
-					"clockIn",
-					"clockOut",
-					"workedHours",
-					"status"
-				],
-				"description": "Your own attendance.",
-				"filter": {
-					"administrationId": "@workspace.activeAdministrationId?",
-					"userId": "@me"
-				},
-				"register": "humaniq",
-				"schema": "AttendanceRecord",
-				"sort": {
-					"field": "date",
-					"order": "desc"
-				}
-			},
-			"id": "MijnAanwezigheid",
-			"route": "/mijn/aanwezigheid",
-			"title": "My attendance",
-			"type": "index"
 		},
 		{
 			"config": {
@@ -8082,32 +8093,6 @@
 		{
 			"config": {
 				"columns": [
-					"title",
-					"amount",
-					"category",
-					"expenseDate",
-					"status"
-				],
-				"description": "Your own expense claims.",
-				"filter": {
-					"administrationId": "@workspace.activeAdministrationId?",
-					"userId": "@me"
-				},
-				"register": "humaniq",
-				"schema": "Expense",
-				"sort": {
-					"field": "expenseDate",
-					"order": "desc"
-				}
-			},
-			"id": "MijnDeclaraties",
-			"route": "/mijn/declaraties",
-			"title": "My expenses",
-			"type": "index"
-		},
-		{
-			"config": {
-				"columns": [
 					"employeeId",
 					"title",
 					"amount",
@@ -8132,73 +8117,6 @@
 			"id": "Expenses",
 			"route": "/expenses",
 			"title": "Expenses",
-			"type": "index"
-		},
-		{
-			"config": {
-				"columns": [
-					"employeeId",
-					"title",
-					"amount",
-					"category",
-					"submittedAt",
-					"status"
-				],
-				"defaultFilters": {
-					"status": "submitted"
-				},
-				"description": "Submitted expense claims awaiting approval or rejection.",
-				"filter": {
-					"administrationId": "@workspace.activeAdministrationId?"
-				},
-				"filters": [
-					"status",
-					"category"
-				],
-				"register": "humaniq",
-				"schema": "Expense",
-				"sort": {
-					"field": "submittedAt",
-					"order": "asc"
-				}
-			},
-			"id": "ExpenseApproval",
-			"route": "/expenses/approval",
-			"title": "Expense approval",
-			"type": "index"
-		},
-		{
-			"config": {
-				"columns": [
-					"employeeId",
-					"title",
-					"amount",
-					"category",
-					"submittedAt",
-					"status"
-				],
-				"defaultFilters": {
-					"status": "submitted"
-				},
-				"description": "Expense claims from your team waiting for your decision. Your team is who reports to you according to the records HR maintains.",
-				"filter": {
-					"administrationId": "@workspace.activeAdministrationId?",
-					"managerUserId": "@me"
-				},
-				"filters": [
-					"status",
-					"category"
-				],
-				"register": "humaniq",
-				"schema": "Expense",
-				"sort": {
-					"field": "submittedAt",
-					"order": "asc"
-				}
-			},
-			"id": "TeamDeclaratiegoedkeuring",
-			"route": "/expenses/team-approval",
-			"title": "Team expense approval",
 			"type": "index"
 		},
 		{
@@ -8475,31 +8393,6 @@
 		{
 			"config": {
 				"columns": [
-					"leaveType",
-					"startDate",
-					"endDate",
-					"status"
-				],
-				"description": "Your own leave requests.",
-				"filter": {
-					"administrationId": "@workspace.activeAdministrationId?",
-					"userId": "@me"
-				},
-				"register": "humaniq",
-				"schema": "LeaveRequest",
-				"sort": {
-					"field": "startDate",
-					"order": "desc"
-				}
-			},
-			"id": "MijnVerlof",
-			"route": "/mijn/verlof",
-			"title": "My leave",
-			"type": "index"
-		},
-		{
-			"config": {
-				"columns": [
 					"employeeId",
 					"leaveType",
 					"startDate",
@@ -8524,73 +8417,6 @@
 			"id": "LeaveRequests",
 			"route": "/leave-requests",
 			"title": "Leave requests",
-			"type": "index"
-		},
-		{
-			"config": {
-				"columns": [
-					"employeeId",
-					"leaveType",
-					"startDate",
-					"endDate",
-					"submittedAt",
-					"status"
-				],
-				"defaultFilters": {
-					"status": "submitted"
-				},
-				"description": "Submitted leave requests awaiting approval or rejection.",
-				"filter": {
-					"administrationId": "@workspace.activeAdministrationId?"
-				},
-				"filters": [
-					"status",
-					"leaveType"
-				],
-				"register": "humaniq",
-				"schema": "LeaveRequest",
-				"sort": {
-					"field": "submittedAt",
-					"order": "asc"
-				}
-			},
-			"id": "LeaveApproval",
-			"route": "/leave-requests/approval",
-			"title": "Leave approval",
-			"type": "index"
-		},
-		{
-			"config": {
-				"columns": [
-					"employeeId",
-					"leaveType",
-					"startDate",
-					"endDate",
-					"submittedAt",
-					"status"
-				],
-				"defaultFilters": {
-					"status": "submitted"
-				},
-				"description": "Leave requests from your team waiting for your decision. Your team is who reports to you according to the records HR maintains.",
-				"filter": {
-					"administrationId": "@workspace.activeAdministrationId?",
-					"managerUserId": "@me"
-				},
-				"filters": [
-					"status",
-					"leaveType"
-				],
-				"register": "humaniq",
-				"schema": "LeaveRequest",
-				"sort": {
-					"field": "submittedAt",
-					"order": "asc"
-				}
-			},
-			"id": "TeamVerlofgoedkeuring",
-			"route": "/leave-requests/team-approval",
-			"title": "Team leave approval",
 			"type": "index"
 		},
 		{
@@ -10392,34 +10218,6 @@
 			"id": "SickLeaveCases",
 			"route": "/sick-leave",
 			"title": "Sick leave cases",
-			"type": "index"
-		},
-		{
-			"config": {
-				"_note": "verzuim-analytics-widgets (2026-07-13): pre-filtered werkvoorraad, not a replacement for the unfiltered SickLeaveCases index (TimesheetApproval-vs-Timesheets precedent) -- fixed base filter (the MijnUren mechanism, not a togglable UI filter), sorted uwv42WeekMeldingDue ascending (ZW art. 38 — the most consequential open-case deadline), mirroring the LoonaangifteFilings deadline-asc queue. Rows navigate to the existing SickLeaveCaseDetail; no new detail page.",
-				"columns": [
-					"employeeId",
-					"firstSickDay",
-					"probleemanalyseDue",
-					"planVanAanpakDue",
-					"uwv42WeekMeldingDue",
-					"eerstejaarsevaluatieDue"
-				],
-				"description": "Open sick leave cases sorted by the UWV 42-week notification deadline (administrative data, no medical data).",
-				"filter": {
-					"administrationId": "@workspace.activeAdministrationId?",
-					"status": "gemeld"
-				},
-				"register": "humaniq",
-				"schema": "SickLeaveCase",
-				"sort": {
-					"field": "uwv42WeekMeldingDue",
-					"order": "asc"
-				}
-			},
-			"id": "VerzuimOverzicht",
-			"route": "/verzuim",
-			"title": "Absence overview",
 			"type": "index"
 		},
 		{

@@ -188,10 +188,6 @@
 		"route": "/interviews/:id"
 	},
 	{
-		"id": "MijnAanwezigheid",
-		"route": "/mijn/aanwezigheid"
-	},
-	{
 		"id": "AttendanceRecords",
 		"route": "/attendance"
 	},
@@ -252,20 +248,8 @@
 		"route": "/dsr-requests/:id"
 	},
 	{
-		"id": "MijnDeclaraties",
-		"route": "/mijn/declaraties"
-	},
-	{
 		"id": "Expenses",
 		"route": "/expenses"
-	},
-	{
-		"id": "ExpenseApproval",
-		"route": "/expenses/approval"
-	},
-	{
-		"id": "TeamDeclaratiegoedkeuring",
-		"route": "/expenses/team-approval"
 	},
 	{
 		"id": "PayrollGLPosts",
@@ -292,20 +276,8 @@
 		"route": "/configuratie/integraties/:id"
 	},
 	{
-		"id": "MijnVerlof",
-		"route": "/mijn/verlof"
-	},
-	{
 		"id": "LeaveRequests",
 		"route": "/leave-requests"
-	},
-	{
-		"id": "LeaveApproval",
-		"route": "/leave-requests/approval"
-	},
-	{
-		"id": "TeamVerlofgoedkeuring",
-		"route": "/leave-requests/team-approval"
 	},
 	{
 		"id": "LeaveBalances",
@@ -470,10 +442,6 @@
 	{
 		"id": "SickLeaveCases",
 		"route": "/sick-leave"
-	},
-	{
-		"id": "VerzuimOverzicht",
-		"route": "/verzuim"
 	},
 	{
 		"id": "WntDisclosures",

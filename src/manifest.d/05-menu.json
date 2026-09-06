@@ -19,13 +19,19 @@
 					"id": "MijnDeclaraties",
 					"label": "My expenses",
 					"icon": "ReceiptOutline",
-					"route": "MijnDeclaraties"
+					"route": "Expenses",
+					"query": {
+						"userId": "@me"
+					}
 				},
 				{
 					"id": "MijnVerlof",
 					"label": "My leave",
 					"icon": "CalendarWeekendOutline",
-					"route": "MijnVerlof"
+					"route": "LeaveRequests",
+					"query": {
+						"userId": "@me"
+					}
 				},
 				{
 					"id": "MijnLoonstroken",
@@ -37,7 +43,10 @@
 					"id": "MijnAanwezigheid",
 					"label": "My attendance",
 					"icon": "ClockOutline",
-					"route": "MijnAanwezigheid"
+					"route": "AttendanceRecords",
+					"query": {
+						"userId": "@me"
+					}
 				},
 				{
 					"id": "MijnBeoordelingen",
@@ -228,22 +237,31 @@
 					"id": "LeaveApproval",
 					"label": "Leave approval",
 					"icon": "CheckDecagramOutline",
-					"route": "LeaveApproval",
+					"route": "LeaveRequests",
 					"visibleIf": {
 						"user.administrationMode": {
 							"eq": "standard"
 						}
+					},
+					"query": {
+						"_order": "[{\"key\":\"submittedAt\",\"order\":\"asc\"}]",
+						"status": "submitted"
 					}
 				},
 				{
 					"id": "TeamVerlofgoedkeuring",
 					"label": "Team leave approval",
 					"icon": "CheckDecagramOutline",
-					"route": "TeamVerlofgoedkeuring",
+					"route": "LeaveRequests",
 					"visibleIf": {
 						"user.administrationMode": {
 							"eq": "standard"
 						}
+					},
+					"query": {
+						"_order": "[{\"key\":\"submittedAt\",\"order\":\"asc\"}]",
+						"managerUserId": "@me",
+						"status": "submitted"
 					}
 				},
 				{
@@ -262,7 +280,11 @@
 					"id": "VerzuimOverzicht",
 					"label": "Absence overview",
 					"icon": "ClipboardPulseOutline",
-					"route": "VerzuimOverzicht"
+					"route": "SickLeaveCases",
+					"query": {
+						"_order": "[{\"key\":\"uwv42WeekMeldingDue\",\"order\":\"asc\"}]",
+						"status": "gemeld"
+					}
 				},
 				{
 					"id": "AttendanceRecords",
@@ -291,22 +313,31 @@
 					"id": "ExpenseApproval",
 					"label": "Expense approval",
 					"icon": "CheckDecagramOutline",
-					"route": "ExpenseApproval",
+					"route": "Expenses",
 					"visibleIf": {
 						"user.administrationMode": {
 							"eq": "standard"
 						}
+					},
+					"query": {
+						"_order": "[{\"key\":\"submittedAt\",\"order\":\"asc\"}]",
+						"status": "submitted"
 					}
 				},
 				{
 					"id": "TeamDeclaratiegoedkeuring",
 					"label": "Team expense approval",
 					"icon": "CheckDecagramOutline",
-					"route": "TeamDeclaratiegoedkeuring",
+					"route": "Expenses",
 					"visibleIf": {
 						"user.administrationMode": {
 							"eq": "standard"
 						}
+					},
+					"query": {
+						"_order": "[{\"key\":\"submittedAt\",\"order\":\"asc\"}]",
+						"managerUserId": "@me",
+						"status": "submitted"
 					}
 				},
 				{

@@ -217,32 +217,6 @@
 			"register": "humaniq",
 			"schema": "Expense",
 			"params": {
-				"id": "MijnDeclaraties",
-				"route": "/mijn/declaraties",
-				"title": "My expenses",
-				"columns": [
-					"title",
-					"amount",
-					"category",
-					"expenseDate",
-					"status"
-				],
-				"sort": {
-					"field": "expenseDate",
-					"order": "desc"
-				},
-				"filter": {
-					"userId": "@me",
-					"administrationId": "@workspace.activeAdministrationId?"
-				},
-				"description": "Your own expense claims."
-			}
-		},
-		{
-			"templateRef": "indexScaffold",
-			"register": "humaniq",
-			"schema": "Expense",
-			"params": {
 				"id": "Expenses",
 				"route": "/expenses",
 				"title": "Expenses",
@@ -264,73 +238,6 @@
 				],
 				"filter": {
 					"administrationId": "@workspace.activeAdministrationId?"
-				}
-			}
-		},
-		{
-			"templateRef": "indexScaffold",
-			"register": "humaniq",
-			"schema": "Expense",
-			"params": {
-				"id": "ExpenseApproval",
-				"route": "/expenses/approval",
-				"title": "Expense approval",
-				"columns": [
-					"employeeId",
-					"title",
-					"amount",
-					"category",
-					"submittedAt",
-					"status"
-				],
-				"sort": {
-					"field": "submittedAt",
-					"order": "asc"
-				},
-				"filters": [
-					"status",
-					"category"
-				],
-				"filter": {
-					"administrationId": "@workspace.activeAdministrationId?"
-				},
-				"description": "Submitted expense claims awaiting approval or rejection.",
-				"defaultFilters": {
-					"status": "submitted"
-				}
-			}
-		},
-		{
-			"templateRef": "indexScaffold",
-			"register": "humaniq",
-			"schema": "Expense",
-			"params": {
-				"id": "TeamDeclaratiegoedkeuring",
-				"route": "/expenses/team-approval",
-				"title": "Team expense approval",
-				"columns": [
-					"employeeId",
-					"title",
-					"amount",
-					"category",
-					"submittedAt",
-					"status"
-				],
-				"sort": {
-					"field": "submittedAt",
-					"order": "asc"
-				},
-				"filters": [
-					"status",
-					"category"
-				],
-				"filter": {
-					"managerUserId": "@me",
-					"administrationId": "@workspace.activeAdministrationId?"
-				},
-				"description": "Expense claims from your team waiting for your decision. Your team is who reports to you according to the records HR maintains.",
-				"defaultFilters": {
-					"status": "submitted"
 				}
 			}
 		}

@@ -93,7 +93,8 @@
 										"status": "submitted"
 									},
 									"route": {
-										"name": "ExpenseApproval"
+										"name": "Expenses",
+										"query": { "status": "submitted" }
 									}
 								}
 							]
