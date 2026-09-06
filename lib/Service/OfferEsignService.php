@@ -97,9 +97,11 @@ namespace OCA\Humaniq\Service;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use OCA\Humaniq\Support\FleetAppId;
 use OCP\App\IAppManager;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 
 /**
  * Generates an offer letter and raises a docudesk e-signature request for a
@@ -112,7 +114,7 @@ class OfferEsignService {
 	 *
 	 * @var string
 	 */
-	private const DOCUDESK_APP_ID = 'docudesk';
+	private const DOCUMENT_APP = 'filinq';
 
 	/**
 	 * docudesk's signing-request lifecycle service, resolved by string FQCN
@@ -121,7 +123,7 @@ class OfferEsignService {
 	 *
 	 * @var string
 	 */
-	private const SIGNING_SERVICE_FQCN = 'OCA\DocuDesk\Service\SigningService';
+	private const SIGNING_SERVICE_CLASS = 'Service\SigningService';
 
 	/**
 	 * @var string
@@ -570,7 +572,7 @@ class OfferEsignService {
 	 * @return bool
 	 */
 	private function docudeskAvailable(): bool {
-		if ($this->appManager->isInstalled(self::DOCUDESK_APP_ID) === false) {
+		if (FleetAppId::isInstalled($this->appManager, self::DOCUMENT_APP) === false) {
 			return false;
 		}
 
@@ -609,7 +611,12 @@ class OfferEsignService {
 	 * @return mixed docudesk's SigningService, resolved by string FQCN only.
 	 */
 	private function signingService(): mixed {
-		return $this->container->get(self::SIGNING_SERVICE_FQCN);
+		// Throws when no candidate namespace resolves, preserving the
+		// container->get() contract the *Available() probes below rely on:
+		// a null return here would read as "resolved fine" and let the
+		// caller proceed against nothing.
+		return FleetAppId::getService($this->container, self::DOCUMENT_APP, self::SIGNING_SERVICE_CLASS)
+			?? throw new RuntimeException('filinq service '.self::SIGNING_SERVICE_CLASS.' is not available under any known namespace.');
 	}//end signingService()
 
 }//end class
