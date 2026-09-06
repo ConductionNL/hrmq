@@ -435,40 +435,6 @@
 		{
 			"children": [
 				{
-					"icon": "ClockPlusOutline",
-					"id": "TimeEntries",
-					"label": "Time entries",
-					"route": "TimeEntries"
-				},
-				{
-					"icon": "ClockCheckOutline",
-					"id": "Timesheets",
-					"label": "Timesheets",
-					"route": "Timesheets"
-				},
-				{
-					"icon": "CheckDecagramOutline",
-					"id": "TimesheetApproval",
-					"label": "Timesheet approval",
-					"route": "TimesheetApproval",
-					"visibleIf": {
-						"user.administrationMode": {
-							"eq": "standard"
-						}
-					}
-				},
-				{
-					"icon": "CheckDecagramOutline",
-					"id": "TeamUrengoedkeuring",
-					"label": "Team timesheet approval",
-					"route": "TeamUrengoedkeuring",
-					"visibleIf": {
-						"user.administrationMode": {
-							"eq": "standard"
-						}
-					}
-				},
-				{
 					"icon": "CalendarWeekendOutline",
 					"id": "LeaveRequests",
 					"label": "Leave requests",
@@ -720,24 +686,65 @@
 					"icon": "TableClock",
 					"id": "Rosters",
 					"label": "Rosters",
+					"order": 50,
 					"route": "Rosters"
 				},
 				{
 					"icon": "TableClock",
 					"id": "RosterAssignments",
 					"label": "Roster assignments",
+					"order": 60,
 					"route": "RosterAssignments"
 				},
 				{
 					"icon": "TimelineClockOutline",
 					"id": "Shifts",
 					"label": "Shifts",
+					"order": 70,
 					"route": "Shifts"
+				},
+				{
+					"icon": "CheckDecagramOutline",
+					"id": "TeamUrengoedkeuring",
+					"label": "Team timesheet approval",
+					"order": 40,
+					"route": "TeamUrengoedkeuring",
+					"visibleIf": {
+						"user.administrationMode": {
+							"eq": "standard"
+						}
+					}
+				},
+				{
+					"icon": "CheckDecagramOutline",
+					"id": "TimesheetApproval",
+					"label": "Timesheet approval",
+					"order": 30,
+					"route": "TimesheetApproval",
+					"visibleIf": {
+						"user.administrationMode": {
+							"eq": "standard"
+						}
+					}
+				},
+				{
+					"icon": "ClockCheckOutline",
+					"id": "Timesheets",
+					"label": "Timesheets",
+					"order": 20,
+					"route": "Timesheets"
+				},
+				{
+					"icon": "ClockPlusOutline",
+					"id": "TimeEntries",
+					"label": "Time entries",
+					"order": 10,
+					"route": "TimeEntries"
 				}
 			],
 			"icon": "CalendarMonthOutline",
 			"id": "PlanningGroup",
-			"label": "Scheduling",
+			"label": "Time & scheduling",
 			"order": 107,
 			"visibleIf": {
 				"user.administrationMode": {
