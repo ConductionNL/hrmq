@@ -56,7 +56,7 @@ Recorded so the next reviewer does not spend the time again.
 
 ## What is still open
 
-- **Nine of twenty open changes have zero tasks done** and have not been touched since 2026-08-22: `30-procent-regeling`, `hris-api-public`, `humaniq-employee-relations-widget`, `humaniq-manifest-boot-and-http-cost`, `humaniq-mcp-adoption`, `humaniq-rule-compliance-enforcement`, `humaniq-test-coverage-baseline`, `single-person-modes`, `uitzend-flexpool`, `wnt-disclosure`.
+- **Ten open changes have zero tasks done** and have not been touched since 2026-08-22. Triaged in [BACKLOG-TRIAGE.md](BACKLOG-TRIAGE.md): four have had their premise overtaken and can be archived, three are still true and worth scheduling, and three were partly delivered under other names and need re-scoping rather than starting. Of the 119 declared tasks, far fewer are real.
 - **Two changes are complete and unarchived**: `humaniq-i18n-form-surface` (8/8) and `humaniq-timesheet-approved-typed-event` (13/13).
-- **Time registration sits under "Leave and absence".** Time entries, timesheets and timesheet approval are neither leave nor absence, and "Scheduling" already exists next door as a better neighbour.
+- ~~Time registration sits under "Leave and absence".~~ Fixed: the four hours entries moved into the scheduling group, now "Time & scheduling".
 - **Three duplicate-index pairs remain** by design, being the five non-lens pages above. gate-68 will keep reporting them; that is the honest count.
