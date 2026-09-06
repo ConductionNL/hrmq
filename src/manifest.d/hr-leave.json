@@ -189,6 +189,9 @@
 					"remainingHours",
 					"expiryDate"
 				],
+				"extend": [
+					"calculations"
+				],
 				"sort": {
 					"field": "year",
 					"order": "desc"
