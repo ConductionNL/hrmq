@@ -32,7 +32,7 @@ missing balance stays the named follow-up `leave-balance-auto-provision`.
 A failure to resolve, read or write SHALL be logged and SHALL NOT break the save path.
 
 #### Scenario: Approving a request moves the balance
-@e2e exclude Backend projection with no dedicated UI surface. The balance it writes is asserted through the LeaveBalances index page in the leave e2e spec, and the projection arithmetic is verified directly by PHPUnit.
+@e2e tests/e2e/spec-coverage/leave-balance-projection.spec.ts
 - **GIVEN** a LeaveBalance `{employeeId: e1, year: 2026, leaveType: holiday, entitledHours: 160, bovenwettelijkHours: 0, usedHours: 0}`
 - **AND** a LeaveRequest `{employeeId: e1, leaveType: holiday, startDate: 2026-03-02, endDate: 2026-03-06, hours: 40, status: submitted}`
 - **WHEN** the request's status becomes `approved`
@@ -53,7 +53,7 @@ A failure to resolve, read or write SHALL be logged and SHALL NOT break the save
 - **AND** the balance is unchanged, because no save happened for the listener to react to
 
 #### Scenario: A second identical projection writes nothing
-@e2e exclude Backend idempotency, not observable from the browser.
+@e2e tests/e2e/spec-coverage/leave-balance-projection.spec.ts
 - **GIVEN** a balance whose `usedHours` already equals the sum of its approved requests
 - **WHEN** the projection runs again
 - **THEN** no write is issued against the balance
