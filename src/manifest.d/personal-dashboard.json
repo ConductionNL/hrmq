@@ -60,7 +60,10 @@
 								}
 							},
 							"route": {
-								"name": "MijnDeclaraties"
+								"name": "Expenses",
+								"query": {
+									"userId": "@me"
+								}
 							}
 						}
 					},

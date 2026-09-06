@@ -88,10 +88,14 @@ async function gotoRoute(page: Page, route: string): Promise<void> {
 	await expect(
 		page.locator("#app-content, .app-content").first(),
 	).toBeVisible({ timeout: 15_000 });
+	// A route may carry a query preset now that the Mijn and approval lenses
+	// are `menu[].query` presets over one page rather than pages of their own
+	// (ADR-097 Decision 5). Compare the PATH; the query is not part of it.
+	const path = route.split("?")[0];
 	expect(
 		new URL(page.url()).pathname,
-		`router must stay on ${route}`,
-	).toContain(route);
+		`router must stay on ${path}`,
+	).toContain(path);
 }
 
 const NC_URL = resolveBaseURL();
