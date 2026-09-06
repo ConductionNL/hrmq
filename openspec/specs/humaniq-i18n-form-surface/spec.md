@@ -13,7 +13,13 @@ built_by: openspec/changes/archive/2026-09-06-humaniq-i18n-form-surface
 
 ## Purpose
 
-See the change proposal for the reasoning; the requirements below are the contract.
+Finish what the manifest half started. Menu labels, page titles and action labels are
+already English source keys with real catalogues, but every string INSIDE a form comes
+from the OpenRegister schema, not the manifest. A Dutch session reads a Dutch menu, opens
+a page with a Dutch title, and then meets an untranslated schema title and untranslated
+field labels. This makes every schema title, property title and `x-enum-labels` value a
+catalogue key in both locales, renders enum values translated while leaving the stored
+value alone, and generates the browser catalogue from the server one.
 
 ## Requirements
 
