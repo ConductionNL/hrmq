@@ -199,12 +199,19 @@ test.describe.serial("leave approval posts to the balance", () => {
 			row,
 			"the balance this run created must be listed",
 		).toBeVisible({ timeout: 30_000 });
-		// Entitled 160, bovenwettelijk 0, used 40, in column order. Pinning all
-		// three keeps the assertion from passing on a stray 40 elsewhere.
+		// Entitled 160, bovenwettelijk 0, used 40, remaining 120, in column
+		// order. Pinning all four keeps the assertion from passing on a stray
+		// 40 elsewhere, and pins the calculated column too.
+		//
+		// remainingHours is a VIRTUAL calculation (`materialise: false`):
+		// RenderObject evaluates it only when the fetch carries
+		// `_extend=calculations`, which this page now asks for through
+		// `config.extend`. Before that it rendered an em dash on every row,
+		// which is the whole reason this assertion names the number.
 		await expect(
 			row,
-			"the page must show the 40 hours the projection posted",
-		).toHaveAccessibleName(/160\s+0\s+40/);
+			"the page must show used 40 and the calculated remaining 120",
+		).toHaveAccessibleName(/160\s+0\s+40\s+120/);
 	});
 
 	test("a second identical projection writes nothing new", async () => {
