@@ -16,9 +16,14 @@ The recomputation SHALL be idempotent: running it twice over an unchanged set of
 the same value and SHALL NOT write a second time. The system SHALL skip the write entirely when the
 recomputed value equals the stored value.
 
-The recomputation SHALL run on every status, not only on entry into `approved`. Moving a request out of
-`approved` therefore returns the hours to the balance, and correcting the dates or hours of an already
-approved request restates it.
+The recomputation SHALL run on every status, not only on entry into `approved`, so correcting the dates
+or hours of an already approved request restates the balance.
+
+Note on what that does NOT buy: the `LeaveRequest` lifecycle has no transition OUT of `approved`
+(`submit` goes draft/rejected to submitted, `approve` and `reject` both go from submitted), so an
+approved request cannot be rejected. Measured against a live instance: the write is refused with a 422
+and no save occurs. Running on every status is therefore about CORRECTIONS and about idempotency, not
+about a reversal the lifecycle does not permit.
 
 The system SHALL resolve the balance by `employeeId`, `year` and `leaveType` and SHALL NOT create one.
 When no balance matches, the system SHALL log at info level and make no write. Auto provisioning a
@@ -34,11 +39,18 @@ A failure to resolve, read or write SHALL be logged and SHALL NOT break the save
 - **THEN** the balance's `usedHours` is 40
 - **AND** its calculated `remainingHours` is 120
 
-#### Scenario: Rejecting an approved request returns the hours
+#### Scenario: Correcting an approved request restates the balance
 @e2e exclude Backend projection, same surface as the requirement above.
 - **GIVEN** the balance and request from the previous scenario, with the request approved and `usedHours` at 40
-- **WHEN** the request's status becomes `rejected`
-- **THEN** the balance's `usedHours` is 0
+- **WHEN** the request's `endDate` is corrected from Friday to Wednesday
+- **THEN** the balance's `usedHours` is 24
+
+#### Scenario: A status the lifecycle refuses never reaches the projection
+@e2e exclude Lifecycle behaviour, measured against a live instance rather than asserted here.
+- **GIVEN** an approved LeaveRequest
+- **WHEN** a write tries to move it to `rejected`
+- **THEN** OpenRegister refuses the transition with a 422
+- **AND** the balance is unchanged, because no save happened for the listener to react to
 
 #### Scenario: A second identical projection writes nothing
 @e2e exclude Backend idempotency, not observable from the browser.

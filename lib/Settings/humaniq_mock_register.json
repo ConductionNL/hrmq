@@ -2840,9 +2840,9 @@
           "x-openregister-calculations": {
             "remainingHours": {
               "type": "number",
-              "materialise": true,
+              "materialise": false,
               "title": "Remaining hours",
-              "description": "entitledHours + bovenwettelijkHours − usedHours, evaluated by OpenRegister on save. Declared only here (never as a stored property) so it can never shadow a stored field.",
+              "description": "entitledHours + bovenwettelijkHours − usedHours, worked out when the balance is read. Declared only here, never as a stored property, so it can never shadow a stored field.",
               "expression": {
                 "-": [
                   {
