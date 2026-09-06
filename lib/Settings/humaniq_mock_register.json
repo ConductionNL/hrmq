@@ -21,8 +21,8 @@
       }
     },
     "schemas": {
-      "Administration": {
-        "slug": "Administration",
+      "hrAdministration": {
+        "slug": "hrAdministration",
         "icon": "Domain",
         "version": "1.1.0",
         "title": "Administration",
@@ -2840,9 +2840,9 @@
           "x-openregister-calculations": {
             "remainingHours": {
               "type": "number",
-              "materialise": true,
+              "materialise": false,
               "title": "Remaining hours",
-              "description": "entitledHours + bovenwettelijkHours − usedHours, evaluated by OpenRegister on save. Declared only here (never as a stored property) so it can never shadow a stored field.",
+              "description": "entitledHours + bovenwettelijkHours − usedHours, worked out when the balance is read. Declared only here, never as a stored property, so it can never shadow a stored field.",
               "expression": {
                 "-": [
                   {
@@ -7649,7 +7649,7 @@
       {
         "@self": {
           "register": "humaniq",
-          "schema": "Administration",
+          "schema": "hrAdministration",
           "slug": "administration-voorbeeld-name-1-1"
         },
         "administrationId": "Voorbeeld Administrationid 1",
@@ -7663,7 +7663,7 @@
       {
         "@self": {
           "register": "humaniq",
-          "schema": "Administration",
+          "schema": "hrAdministration",
           "slug": "administration-voorbeeld-name-2-2"
         },
         "administrationId": "Voorbeeld Administrationid 2",
@@ -7677,7 +7677,7 @@
       {
         "@self": {
           "register": "humaniq",
-          "schema": "Administration",
+          "schema": "hrAdministration",
           "slug": "administration-voorbeeld-name-3-3"
         },
         "administrationId": "Voorbeeld Administrationid 3",
@@ -8552,7 +8552,7 @@
       {
         "@self": {
           "register": "humaniq",
-          "schema": "GeneratedDocument",
+          "schema": "HrGeneratedDocument",
           "slug": "generateddocument-generateddocument-1-1"
         },
         "documentType": "arbeidsovereenkomst",
@@ -8569,7 +8569,7 @@
       {
         "@self": {
           "register": "humaniq",
-          "schema": "GeneratedDocument",
+          "schema": "HrGeneratedDocument",
           "slug": "generateddocument-generateddocument-2-2"
         },
         "documentType": "aanbiedingsbrief",
@@ -8586,7 +8586,7 @@
       {
         "@self": {
           "register": "humaniq",
-          "schema": "GeneratedDocument",
+          "schema": "HrGeneratedDocument",
           "slug": "generateddocument-generateddocument-3-3"
         },
         "documentType": "werkgeversverklaring",

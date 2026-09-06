@@ -299,7 +299,7 @@ class AdministrationServiceTest extends TestCase {
 			 */
 			public function findAll(array $options): array {
 				return match ($this->schema) {
-					'Administration' => $this->administrations,
+					'hrAdministration' => $this->administrations,
 					'AdministrationAccess' => $this->access,
 					default => [],
 				};

@@ -311,7 +311,7 @@ class RuleAuditService {
 	 * (design.md D3): the `PayrollRun.byId` entries gain `administrationId`;
 	 * a new `Administration.abpPlichtigByAdministrationId` map
 	 * (`administrationId` business key -> `abpAansluitingsplichtig` bool),
-	 * loaded from `loadAll('Administration')` once; and a new
+	 * loaded from `loadAll('hrAdministration')` once; and a new
 	 * `PensionFiling.abpFiledPeriodsByAdministrationId` map
 	 * (`administrationId` -> set of periods with at least one `fund: "abp"`
 	 * filing), kept separate from the existing, unchanged, fund-blind global
@@ -390,7 +390,7 @@ class RuleAuditService {
 		// an empty map when the Administration schema does not exist yet in
 		// the register.
 		$abpPlichtigByAdministrationId = [];
-		foreach ($this->loadAll('Administration') as $administration) {
+		foreach ($this->loadAll('hrAdministration') as $administration) {
 			$administrationId = (string)($administration['administrationId'] ?? '');
 			if ($administrationId === '') {
 				continue;

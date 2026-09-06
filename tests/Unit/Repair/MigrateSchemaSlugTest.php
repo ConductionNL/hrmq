@@ -182,51 +182,58 @@ final class MigrateSchemaSlugTest extends TestCase {
 	}//end testAFailedReadDoesNothing()
 
 	/**
-	 * The map names the slug the descriptors and the services agree on.
+	 * Every mapped rename is carried by the descriptors and the register list.
 	 *
-	 * A rename lives in four places at once — two register descriptors, the
-	 * service constant and this map — and three of them agreeing is what a
-	 * silent no-op looks like.
+	 * A rename lives in four places at once — the fragment descriptor, the mock
+	 * register, the register's own schema list and this map — and three of them
+	 * agreeing is what a silent no-op looks like.
+	 *
+	 * Driven off SLUG_MAP rather than a second hardcoded list, so adding a
+	 * rename to the map without carrying it into the descriptors fails here
+	 * instead of shipping.
 	 *
 	 * @return void
 	 */
-	public function testTheMapMatchesTheDescriptorsAndTheService(): void {
+	public function testEveryMappedRenameReachesTheDescriptorsAndTheRegister(): void {
 		$root = dirname(__DIR__, 3);
 
-		self::assertSame(
-			['GeneratedDocument' => 'HrGeneratedDocument'],
-			MigrateSchemaSlug::SLUG_MAP
-		);
+		// The fragment each renamed schema is declared in. The mock register
+		// carries all of them and is checked for every entry.
+		$fragments = [
+			'HrGeneratedDocument' => '/lib/Settings/register.d/hr-documents.json',
+			'hrAdministration' => '/lib/Settings/register.d/hr-administratie.json',
+		];
 
-		foreach (
-			[
-				'/lib/Settings/humaniq_mock_register.json',
-				'/lib/Settings/register.d/hr-documents.json',
-			] as $descriptor
-		) {
-			$schemas = json_decode(
-				(string)file_get_contents($root.$descriptor),
+		self::assertNotEmpty(MigrateSchemaSlug::SLUG_MAP, 'the map must have entries at all');
+
+		foreach (MigrateSchemaSlug::SLUG_MAP as $old => $new) {
+			self::assertArrayHasKey($new, $fragments, $new.' has no fragment named in this test');
+
+			foreach (['/lib/Settings/humaniq_mock_register.json', $fragments[$new]] as $descriptor) {
+				$schemas = json_decode(
+					(string)file_get_contents($root.$descriptor),
+					true
+				)['components']['schemas'];
+
+				self::assertArrayHasKey($new, $schemas, $descriptor);
+				self::assertArrayNotHasKey($old, $schemas, $descriptor);
+				self::assertSame(
+					$new,
+					$schemas[$new]['slug'],
+					$descriptor.' must carry the slug, not only the key'
+				);
+			}
+
+			$register = json_decode(
+				(string)file_get_contents($root.'/lib/Settings/humaniq_register.json'),
 				true
-			)['components']['schemas'];
-
-			self::assertArrayHasKey('HrGeneratedDocument', $schemas, $descriptor);
-			self::assertArrayNotHasKey('GeneratedDocument', $schemas, $descriptor);
-			self::assertSame(
-				'HrGeneratedDocument',
-				$schemas['HrGeneratedDocument']['slug'],
-				$descriptor.' must carry the slug, not only the key'
 			);
+			$listed = ($register['components']['registers']['humaniq']['schemas'] ?? []);
+			self::assertNotEmpty($listed, 'the register must list its schemas at all');
+			self::assertContains($new, $listed);
+			self::assertNotContains($old, $listed);
 		}
 
-		$register = json_decode(
-			(string)file_get_contents($root.'/lib/Settings/humaniq_register.json'),
-			true
-		);
-		$listed = $register['components']['registers']['humaniq']['schemas'] ?? [];
-		self::assertNotEmpty($listed, 'the register must list its schemas at all');
-		self::assertContains('HrGeneratedDocument', $listed);
-		self::assertNotContains('GeneratedDocument', $listed);
-
-	}//end testTheMapMatchesTheDescriptorsAndTheService()
+	}//end testEveryMappedRenameReachesTheDescriptorsAndTheRegister()
 
 }//end class
