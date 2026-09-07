@@ -5,8 +5,9 @@
  * Manifest-driven page smoke test (gate-19 spec coverage).
  *
  * humaniq is the fleet's manifest-purity flagship: 113 pages come straight
- * out of `src/manifest.json` (60 index, 49 detail, 2 dashboard, 2
- * custom), rendered by @conduction/nextcloud-vue's CnAppRoot with
+ * out of the effective manifest (`src/manifest.effective.json`, the base
+ * plus its 33 fragments plus template expansion plus menu relocations),
+ * rendered by @conduction/nextcloud-vue's CnAppRoot with
  * HISTORY-mode routing (`createWebHistory`, src/main.js). This spec is
  * generated FROM the manifest at spec load time — add a page to the
  * manifest and it is automatically smoke tested; no hand-maintained
@@ -61,34 +62,31 @@ interface Manifest {
 }
 
 /**
- * Read `src/manifest.json` and merge any `src/manifest.d/*.json`
- * fragments (fragments may contribute additional `pages` / `menu`
- * entries; the directory does not currently exist, but the merge keeps
- * this spec correct the day it does).
+ * Read the SHIPPED effective manifest.
+ *
+ * This used to merge `src/manifest.json` with `src/manifest.d/*.json` by
+ * hand, and its comment still said "the directory does not currently
+ * exist". It does: 33 fragments. Worse, a concatenation is not the merge
+ * the app performs — `buildManifest()` also expands `pageInstances`
+ * against `pageTemplates` and applies `menu-layout.json` relocations. The
+ * hand-rolled version therefore produced **38** pages where the running
+ * app has **113**, so 75 pages were counted as covered and never opened.
+ *
+ * That is the precise shape of ConductionNL/hrmq#112, which this file's
+ * own header cites: 49 detail pages rendering blank underneath a green
+ * suite. A third implementation of the merge was always going to drift
+ * from the other two.
+ *
+ * `src/manifest.effective.json` is emitted by
+ * `tests/verify-manifest-parity.js` from the very `buildManifest()` that
+ * webpack bundles, and re-derived and compared on every CI run, so it
+ * cannot silently go stale the way this function did.
  */
 function loadManifest(): Manifest {
 	const srcDir = path.resolve(__dirname, "..", "..", "..", "src");
-	const manifest = JSON.parse(
-		fs.readFileSync(path.join(srcDir, "manifest.json"), "utf-8"),
+	return JSON.parse(
+		fs.readFileSync(path.join(srcDir, "manifest.effective.json"), "utf-8"),
 	) as Manifest;
-	const fragmentsDir = path.join(srcDir, "manifest.d");
-	if (fs.existsSync(fragmentsDir)) {
-		for (const file of fs
-			.readdirSync(fragmentsDir)
-			.filter((f) => f.endsWith(".json"))
-			.sort()) {
-			const fragment = JSON.parse(
-				fs.readFileSync(path.join(fragmentsDir, file), "utf-8"),
-			) as Partial<Manifest>;
-			if (Array.isArray(fragment.pages)) {
-				manifest.pages.push(...fragment.pages);
-			}
-			if (Array.isArray(fragment.menu)) {
-				manifest.menu.push(...(fragment.menu as unknown[]));
-			}
-		}
-	}
-	return manifest;
 }
 
 const MANIFEST = loadManifest();
