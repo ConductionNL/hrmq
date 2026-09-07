@@ -203,6 +203,18 @@
       "sourceUrl": "https://www.belastingdienst.nl/wps/wcm/connect/nl/personeel-en-loon/personeel-en-loon"
     },
     {
+      "id": "nl-loonbelastingverklaring-bewaarplicht-5jaar",
+      "domain": "ledger-integrity",
+      "jurisdiction": "NL",
+      "framework": "nl-loonheffingen",
+      "source": "Uitvoeringsregeling loonbelasting 2011 art. 12.1 lid 5",
+      "statement": "An employee's loonheffingenverklaring (wage-tax statement) shall be kept in the loonadministratie until at least 5 years after the end of the year in which employment ended.",
+      "severity": "recommended",
+      "machineCheckable": true,
+      "effectiveDate": null,
+      "sourceUrl": "https://wetten.overheid.nl/BWBR0028989"
+    },
+    {
       "id": "nl-anoniementarief",
       "domain": "tax",
       "jurisdiction": "NL",

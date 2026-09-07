@@ -373,4 +373,113 @@ class NlPayrollChecksTest extends TestCase {
 
 	}//end testRealRuleEngineIsSilentForACompliantRuling()
 
+	/**
+	 * The loonheffingenverklaring retention rule is vacuous when no statement is
+	 * on file.
+	 *
+	 * The retention duty attaches to a document that exists. Whether one must be
+	 * on file at all is a different obligation, and no corpus rule covers it, so
+	 * reporting its absence here would put the wrong finding on the wrong rule.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/document-dossier-avg/spec.md#REQ-DOSS-002
+	 */
+	public function testLoonbelastingverklaringRetentionIsVacuousWithoutAStatement(): void {
+		$check = $this->checks['Employee']['nl-loonbelastingverklaring-bewaarplicht-5jaar'];
+
+		self::assertTrue($check(['endDate' => '2020-06-30']), 'no statement on file: nothing to retain');
+		self::assertTrue(
+			$check(['loonheffingenVerklaringOnFile' => false, 'endDate' => '2020-06-30']),
+			'an explicit false is still vacuous'
+		);
+
+	}//end testLoonbelastingverklaringRetentionIsVacuousWithoutAStatement()
+
+	/**
+	 * Satisfied when the statement is kept past the end of the fifth year after
+	 * employment ended, and while employment is still running.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/document-dossier-avg/spec.md#REQ-DOSS-002
+	 */
+	public function testLoonbelastingverklaringRetentionIsSatisfiedAtFiveFullYears(): void {
+		$check = $this->checks['Employee']['nl-loonbelastingverklaring-bewaarplicht-5jaar'];
+
+		// Employment ended in 2020, so the clock runs to the end of 2025.
+		self::assertTrue($check([
+			'loonheffingenVerklaringOnFile' => true,
+			'endDate' => '2020-06-30',
+			'loonheffingenVerklaringRetainedUntil' => '2025-12-31',
+		]));
+
+		self::assertTrue($check([
+			'loonheffingenVerklaringOnFile' => true,
+			'loonheffingenVerklaringRetainedUntil' => '2030-01-01',
+		]), 'still employed: the retention clock has not started');
+
+	}//end testLoonbelastingverklaringRetentionIsSatisfiedAtFiveFullYears()
+
+	/**
+	 * Violated when the date is missing, or falls short of the five-year clock.
+	 *
+	 * The boundary is the END of the fifth calendar year, not the fifth
+	 * anniversary, so a date inside 2025 is short for employment ending in 2020.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/document-dossier-avg/spec.md#REQ-DOSS-002
+	 */
+	public function testLoonbelastingverklaringRetentionIsViolatedWhenShort(): void {
+		$check = $this->checks['Employee']['nl-loonbelastingverklaring-bewaarplicht-5jaar'];
+
+		self::assertFalse(
+			$check(['loonheffingenVerklaringOnFile' => true, 'endDate' => '2020-06-30']),
+			'a statement on file with no retention date recorded'
+		);
+
+		self::assertFalse(
+			$check([
+				'loonheffingenVerklaringOnFile' => true,
+				'endDate' => '2020-06-30',
+				'loonheffingenVerklaringRetainedUntil' => '2025-06-30',
+			]),
+			'five years to the day is short: the clock runs to the end of the year'
+		);
+
+	}//end testLoonbelastingverklaringRetentionIsViolatedWhenShort()
+
+	/**
+	 * The rule is registered on Employee and carries a corpus entry citing its
+	 * legal source.
+	 *
+	 * A predicate with no corpus entry is not enforceable, and a retention period
+	 * without a citation is a number somebody guessed.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/document-dossier-avg/spec.md#REQ-DOSS-002
+	 */
+	public function testLoonbelastingverklaringRuleIsCataloguedWithItsSource(): void {
+		self::assertArrayHasKey('nl-loonbelastingverklaring-bewaarplicht-5jaar', $this->checks['Employee']);
+
+		$corpus = json_decode(
+			(string)file_get_contents(dirname(__DIR__, 4) . '/lib/Standards/rules/payroll.json'),
+			true
+		);
+		$entry = null;
+		foreach (($corpus['rules'] ?? []) as $rule) {
+			if (($rule['id'] ?? '') === 'nl-loonbelastingverklaring-bewaarplicht-5jaar') {
+				$entry = $rule;
+			}
+		}
+
+		self::assertIsArray($entry, 'the predicate exists but the corpus does not catalogue it');
+		self::assertSame('recommended', $entry['severity']);
+		self::assertTrue($entry['machineCheckable']);
+		self::assertStringContainsString('Uitvoeringsregeling loonbelasting 2011', (string)$entry['source']);
+
+	}//end testLoonbelastingverklaringRuleIsCataloguedWithItsSource()
+
 }//end class

@@ -5,7 +5,7 @@
             "Asset": {
                 "slug": "Asset",
                 "icon": "DesktopTowerMonitor",
-                "version": "0.4.0",
+                "version": "0.4.1",
                 "title": "Asset",
                 "description": "A company-owned item issued to employees (laptop, phone, vehicle, tool, accessPass, clothing, other): identity fields (serialNumber, licencePlate for vehicles), acquisition fields, and a guarded custody state machine (asset-management-mvp). A vehicle Asset additionally carries the fiscal facts (listPrice, fuelType, companyCarTaxCategory) the monthly bijtelling privegebruik auto calculation needs (hrmq-asset-fleet-merge, absorbed from the retired Vehicle schema): required exactly when category is vehicle, enforced by the corpus rule nl-asset-voertuig-fiscale-velden-compleet (a schema-level conditional cannot express this: Schema::getSchemaObject() never emits allOf/if/then to the validator, design.md D2). No AssetHistoryEntry: OpenRegister's object audit trail already records every mutation.",
                 "type": "object",
@@ -16,6 +16,30 @@
                     "status"
                 ],
                 "configuration": {
+                    "x-openregister-mcp": {
+                        "enabled": true,
+                        "tools": {
+                            "search": {
+                                "description": "Search company-owned equipment (laptops, phones, vehicles, tools, access passes) by category, by status, or by whether the asset is still in service. Use this for inventory questions: what hardware exists, what is available to issue, what has been written off.",
+                                "scope": "read",
+                                "filters": [
+                                    "category",
+                                    "status",
+                                    "active"
+                                ],
+                                "readOnlyHint": true,
+                                "destructiveHint": false,
+                                "idempotentHint": true
+                            },
+                            "get": {
+                                "description": "Get one asset: name, category, serial number or licence plate, purchase date and value, and current status. Use it to identify a specific item before asking who holds it.",
+                                "scope": "read",
+                                "readOnlyHint": true,
+                                "destructiveHint": false,
+                                "idempotentHint": true
+                            }
+                        }
+                    },
                     "x-openregister-lifecycle": {
                         "field": "status",
                         "initial": "available",
@@ -163,7 +187,32 @@
             "AssetAssignment": {
                 "slug": "AssetAssignment",
                 "icon": "HandshakeOutline",
-                "version": "0.3.0",
+                "version": "0.3.1",
+                "configuration": {
+                    "x-openregister-mcp": {
+                        "enabled": true,
+                        "tools": {
+                            "search": {
+                                "description": "Search asset custody records by asset, to see who has held one item over time, or by employee, to list what one person currently holds. An assignment with no return date is still out. This links an asset to an employee id, so treat the result as personal data even though it carries no name.",
+                                "scope": "read",
+                                "filters": [
+                                    "assetId",
+                                    "employeeId"
+                                ],
+                                "readOnlyHint": true,
+                                "destructiveHint": false,
+                                "idempotentHint": true
+                            },
+                            "get": {
+                                "description": "Get one asset assignment: which asset went to which employee, when it was issued, when it came back, and whether the issue receipt was signed.",
+                                "scope": "read",
+                                "readOnlyHint": true,
+                                "destructiveHint": false,
+                                "idempotentHint": true
+                            }
+                        }
+                    }
+                },
                 "title": "Asset assignment",
                 "description": "An effective-dated custody assignment of one Asset to one Employee (the OrgAssignment pattern, hr-org.json): issuedOn required, returnedOn nullable = the asset is still out. For a vehicle Asset this is also the private-use holding period the bijtelling calculation resolves (hrmq-asset-fleet-merge, absorbed from the retired CarAssignment schema): employeeContribution is the employee's own monthly contribution for private use, meaningless (and harmlessly defaulted to 0) on a non-vehicle assignment. No x-openregister-lifecycle: a plain effective-dated record, no workflow. Consistency (coherent dates, the asset in status issued while the assignment is open) is enforced by nl-asset-assignment-consistency (lib/Standards/rules/labour.json / lib/Standards/Checks/NlAssetChecks.php), not by a write-time guard.",
                 "type": "object",

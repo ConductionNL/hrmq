@@ -88,6 +88,15 @@ final class NlDossierRetentionChecks implements CheckProvider {
 			];
 		}
 
+		// Employee is scoped differently from the payroll family above. It carries no
+		// OpenRegister `@self.retention` ceiling of its own; its two document-retention
+		// dates ARE the ceiling, and each is the far end of a bewaarplicht rather than
+		// an archive action date. Passing an Employee through notPastCeiling() would
+		// therefore read every one of them as vacuous.
+		$checks['Employee'] = [
+			'nl-bewaartermijn-verstreken' => static fn (array $object): bool => self::employeeDocumentsNotPastCeiling($object),
+		];
+
 		return $checks;
 	}//end checks()
 
@@ -132,5 +141,62 @@ final class NlDossierRetentionChecks implements CheckProvider {
 
 		return $ceiling >= (new DateTimeImmutable('today'))->getTimestamp();
 	}//end notPastCeiling()
+
+	/**
+	 * The `Employee` ceiling: a retention period that has EXPIRED while the
+	 * document is still on file.
+	 *
+	 * This is the opposite end of the same clock as
+	 * `nl-id-bewaarplicht-5jaar` and
+	 * `nl-loonbelastingverklaring-bewaarplicht-5jaar`, which fail when a
+	 * document is kept for too SHORT a time. AVG storage limitation
+	 * (art. 5(1)(e)) says a bewaarplicht is also a bewaartermijn: once it
+	 * lapses, continuing to hold the copy needs its own justification.
+	 *
+	 * @param array<string, mixed> $object The Employee.
+	 *
+	 * @return bool True when neither document is past its recorded ceiling.
+	 *
+	 * @spec openspec/specs/avg-dsr/spec.md#REQ-DSR-005
+	 */
+	private static function employeeDocumentsNotPastCeiling(array $object): bool {
+		return self::heldPastCeiling($object, 'identityDocumentVerified', 'identityDocumentRetainedUntil') === false
+			&& self::heldPastCeiling($object, 'loonheffingenVerklaringOnFile', 'loonheffingenVerklaringRetainedUntil') === false;
+	}//end employeeDocumentsNotPastCeiling()
+
+	/**
+	 * True when one document is still held AND its recorded retention date has
+	 * passed.
+	 *
+	 * Vacuous in both directions: a document not on file has nothing to destroy,
+	 * and one with no recorded retention date has no ceiling to breach. Only a
+	 * document that is BOTH held and past its date is a finding, which keeps an
+	 * unpopulated field from reading as a violation.
+	 *
+	 * @param array<string, mixed> $object The Employee.
+	 * @param string $heldKey Boolean field saying the document is on file.
+	 * @param string $untilKey Date field carrying its retention ceiling.
+	 *
+	 * @return bool
+	 *
+	 * @spec openspec/specs/avg-dsr/spec.md#REQ-DSR-005
+	 */
+	private static function heldPastCeiling(array $object, string $heldKey, string $untilKey): bool {
+		if ((bool)($object[$heldKey] ?? false) !== true) {
+			return false;
+		}
+
+		$until = trim((string)($object[$untilKey] ?? ''));
+		if ($until === '') {
+			return false;
+		}
+
+		$ceiling = strtotime($until);
+		if ($ceiling === false) {
+			return false;
+		}
+
+		return $ceiling < (new DateTimeImmutable('today'))->getTimestamp();
+	}//end heldPastCeiling()
 
 }//end class

@@ -34,7 +34,7 @@ Both of humaniq's most-wanted assistant reads are therefore blocked — not by p
 but by the shape of the model plus the shape of the dialect. Both are recorded as
 DEFERRED_QUESTIONS rather than forced through.
 
-## Curation table — 6 ON of 23
+## Curation table: 6 ON of 57
 
 All six are **read-only** (`search` + `get`, `scope: read`, `readOnlyHint: true`). No write
 verb anywhere in humaniq.
@@ -48,7 +48,7 @@ verb anywhere in humaniq.
 | 5 | `Timesheet` | `hr-timesheet.json` | search, get | `employeeId`, `period`, `status`, `projectId` | "Is my timesheet for June approved?" — hours, project, cost centre, approval status. No salary (hourly wage lives on the excluded `EmploymentContract`), no health, no location. A self-service approval workflow the employee themselves drives. |
 | 6 | `Expense` | `hr-expense.json` | search, get | `employeeId`, `status`, `category` | "Is my declaratie approved / reimbursed yet?" — the employee's own claim: amount, category, status. Financial but not remunerative; it is a reimbursement, not pay. |
 
-## Exclusions — 17 OFF of 23
+## Exclusions: 51 OFF of 57
 
 ### Remuneration and identity (8 schemas) — OFF for read as well as write
 
@@ -146,7 +146,7 @@ controller/subject relationship the AVG contemplates. Four grounds shape the all
    weakest part of the surface and the first thing to revisit if the exposure proves broader
    than intended.
 
-**Net result: 6 of 23 schemas, 12 tools, zero writes, zero special-category data, zero
+**Net result: 6 of 57 schemas, 12 tools, zero writes, zero special-category data, zero
 salary, zero BSN, zero IBAN.** A thin, defensible surface.
 
 ## Verification

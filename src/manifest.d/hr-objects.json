@@ -501,6 +501,40 @@
 						}
 					},
 					{
+						"id": "object-list-10",
+						"type": "object-list",
+						"title": "Generated documents",
+						"icon": "FileDocumentMultipleOutline",
+						"content": {
+							"register": "humaniq",
+							"schema": "HrGeneratedDocument",
+							"filter": {
+								"employeeId": "@objectId"
+							},
+							"sort": {
+								"field": "generatedAt",
+								"dir": "desc"
+							},
+							"columns": [
+								{
+									"key": "documentType",
+									"label": "Type"
+								},
+								{
+									"key": "generatedAt",
+									"label": "Generated"
+								},
+								{
+									"key": "status",
+									"label": "Status"
+								}
+							],
+							"limit": 25,
+							"rowRoute": "GeneratedDocumentDetail",
+							"emptyText": "No documents generated for this employee yet"
+						}
+					},
+					{
 						"id": "files",
 						"type": "files",
 						"title": "Personnel file",
@@ -629,10 +663,18 @@
 						"gridHeight": 4
 					},
 					{
+						"id": 17,
+						"widgetId": "object-list-10",
+						"gridX": 0,
+						"gridY": 43,
+						"gridWidth": 12,
+						"gridHeight": 4
+					},
+					{
 						"id": 16,
 						"widgetId": "files",
 						"gridX": 0,
-						"gridY": 43,
+						"gridY": 47,
 						"gridWidth": 12,
 						"gridHeight": 4
 					}
