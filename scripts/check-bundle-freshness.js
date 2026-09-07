@@ -84,6 +84,29 @@ function checkSidecar() {
 	console.log(`[check-bundle-freshness] built at ${recorded.builtAt} for appVersion ${recorded.appVersion}`);
 
 	if (recorded.sourceHash === sourceHash) {
+		console.log(
+			`[check-bundle-freshness] built against @conduction/nextcloud-vue ${recorded.libVersion ?? "unknown"} (${recorded.libSource ?? "unrecorded"})`,
+		);
+
+		// A bundle built from a sibling ../nextcloud-vue checkout must never
+		// ship: on 2026-08-19 that alias was opt-OUT, so dev boxes and CI were
+		// compiling different code by default and nothing said so. Locally the
+		// flag is a deliberate choice and this is information; in CI it is a
+		// defect, so only CI fails on it.
+		if (recorded.libSource === "local") {
+			if (process.env.CI) {
+				console.error(
+					"[check-bundle-freshness] FAIL -- this bundle was built from a sibling ../nextcloud-vue checkout, not the declared dependency.",
+				);
+				console.error("  That artefact is not shippable. Rebuild without USE_LOCAL_LIB=true.");
+				process.exit(1);
+			}
+
+			console.warn(
+				"[check-bundle-freshness] NOTE -- built from ../nextcloud-vue, not the declared dependency. Fine locally, never shippable.",
+			);
+		}
+
 		console.log("[check-bundle-freshness] PASS -- the bundle was built from this exact src/.");
 		process.exit(0);
 	}
