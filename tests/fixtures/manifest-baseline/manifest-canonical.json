@@ -3795,6 +3795,14 @@
 						"gridWidth": 12,
 						"gridX": 0,
 						"gridY": 43,
+						"id": 17,
+						"widgetId": "object-list-10"
+					},
+					{
+						"gridHeight": 4,
+						"gridWidth": 12,
+						"gridX": 0,
+						"gridY": 47,
 						"id": 16,
 						"widgetId": "files"
 					}

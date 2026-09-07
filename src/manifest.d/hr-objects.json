@@ -663,10 +663,18 @@
 						"gridHeight": 4
 					},
 					{
+						"id": 17,
+						"widgetId": "object-list-10",
+						"gridX": 0,
+						"gridY": 43,
+						"gridWidth": 12,
+						"gridHeight": 4
+					},
+					{
 						"id": 16,
 						"widgetId": "files",
 						"gridX": 0,
-						"gridY": 43,
+						"gridY": 47,
 						"gridWidth": 12,
 						"gridHeight": 4
 					}
