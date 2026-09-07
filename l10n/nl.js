@@ -1922,7 +1922,10 @@ OC.L10N.register(
         "HR administration": "HR-administratie",
         "Ledger administration": "Grootboekadministratie",
         "UUID of the shillinq `Administration` this HR view belongs to. A plain uuid and not a `$ref`: shillinq's register is a different register, and ADR-062 rule 7 gives a cross-register target a plain string. Empty when shillinq is not installed, in which case `administrationId` is the only key.": "UUID van de shillinq-`Administration` waar deze HR-weergave bij hoort. Een gewone uuid en geen `$ref`: shillinq's register is een ander register, en ADR-062 regel 7 geeft een doel in een ander register een gewone string. Leeg wanneer shillinq niet is geïnstalleerd; dan is `administrationId` de enige sleutel.",
-        "Time & scheduling": "Tijd en roostering"
+        "Time & scheduling": "Tijd en roostering",
+        "Load example data?": "Voorbeeldgegevens laden?",
+        "Load the example data": "Laad de voorbeeldgegevens",
+        "You're ready": "Je bent klaar"
     },
     "nplurals=2; plural=(n != 1);"
 )

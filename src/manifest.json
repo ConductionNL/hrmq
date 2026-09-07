@@ -4,6 +4,44 @@
 	"dependencies": [
 		"openregister"
 	],
+	"setup": {
+		"enabled": true,
+		"version": 1,
+		"completionConfigKey": "setup_completed_version",
+		"steps": [
+			{
+				"id": "welcome",
+				"type": "info",
+				"title": "Welcome to Humaniq",
+				"body": "Manage your people, contracts, leave and payroll in one place. This takes a minute: pick whether to load example data, and you're ready."
+			},
+			{
+				"id": "demo-data",
+				"type": "choice",
+				"display": "cards",
+				"optionsSource": "datasets",
+				"configKey": "demo_dataset",
+				"required": false,
+				"title": "Load example data?",
+				"body": "Example data fills the employee lists, contracts and dashboards so you can see the app working straight away. Pick \"None\" on a production install."
+			},
+			{
+				"id": "load-demo-data",
+				"type": "run-action",
+				"action": "load-demo-data",
+				"required": false,
+				"title": "Load the example data",
+				"body": "Loads what you picked. The data is obviously sample data, it is safe to run more than once, and you can delete it afterwards."
+			},
+			{
+				"id": "done",
+				"type": "summary",
+				"healthCheck": true,
+				"title": "You're ready",
+				"body": "That's it. Open Employees to see your people, or reopen this setup anytime from the app's \u2026 menu."
+			}
+		]
+	},
 	"deepLinks": [
 		{
 			"registerSlug": "humaniq",
