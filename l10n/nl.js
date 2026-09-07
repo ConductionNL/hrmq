@@ -1922,7 +1922,14 @@ OC.L10N.register(
         "HR administration": "HR-administratie",
         "Ledger administration": "Grootboekadministratie",
         "UUID of the shillinq `Administration` this HR view belongs to. A plain uuid and not a `$ref`: shillinq's register is a different register, and ADR-062 rule 7 gives a cross-register target a plain string. Empty when shillinq is not installed, in which case `administrationId` is the only key.": "UUID van de shillinq-`Administration` waar deze HR-weergave bij hoort. Een gewone uuid en geen `$ref`: shillinq's register is een ander register, en ADR-062 regel 7 geeft een doel in een ander register een gewone string. Leeg wanneer shillinq niet is geïnstalleerd; dan is `administrationId` de enige sleutel.",
-        "Time & scheduling": "Tijd en roostering"
+        "Time & scheduling": "Tijd en roostering",
+        "Load example data?": "Voorbeeldgegevens laden?",
+        "Load the example data": "Laad de voorbeeldgegevens",
+        "You're ready": "Je bent klaar",
+        "Manage your people, contracts, leave and payroll in one place. This takes a minute: pick whether to load example data, and you're ready.": "Beheer je mensen, contracten, verlof en salaris op een plek. Dit kost een minuut: kies of je voorbeeldgegevens laadt, en je kunt beginnen.",
+        "Example data fills the employee lists, contracts and dashboards so you can see the app working straight away. Pick \"None\" on a production install.": "Voorbeeldgegevens vullen de medewerkerslijsten, contracten en dashboards, zodat je de app meteen ziet werken. Kies \"Geen\" op een productie-installatie.",
+        "Loads what you picked. The data is obviously sample data, it is safe to run more than once, and you can delete it afterwards.": "Laadt wat je koos. De gegevens zijn herkenbaar voorbeeldgegevens, je kunt dit meer dan een keer uitvoeren en je kunt ze daarna verwijderen.",
+        "That's it. Open Employees to see your people, or reopen this setup anytime from the app's … menu.": "Dat is alles. Open Medewerkers om je mensen te zien, of open deze instelwizard opnieuw via het … menu van de app."
     },
     "nplurals=2; plural=(n != 1);"
 )

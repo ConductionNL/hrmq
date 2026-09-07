@@ -56,6 +56,81 @@ class DemoDataServiceTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Declining must ALWAYS be offered, descriptor or not.
+	 *
+	 * `CnAppRoot` reopens the wizard while any step is outstanding, so an
+	 * operator with no way to answer "no" is shown it over every page forever.
+	 * That makes the None card the one entry this list can never omit.
+	 */
+	public function testDecliningIsAlwaysOffered(): void {
+		$choices = $this->service()->listChoices();
+
+		$this->assertSame([DemoDataService::NONE_DATASET], array_column($choices, 'id'));
+		$this->assertSame(0, $choices[0]['objectCount']);
+	}
+
+	/**
+	 * With a descriptor, the shipped set joins it — and the count comes from
+	 * the FILE, so the card promises the number that will actually import.
+	 */
+	public function testTheShippedSetIsOfferedWithTheCountFromTheDescriptor(): void {
+		file_put_contents(
+			$this->descriptor(),
+			json_encode(['components' => ['objects' => ['a' => 1, 'b' => 2, 'c' => 3]]])
+		);
+
+		$choices = $this->service()->listChoices();
+
+		$this->assertSame(
+			[DemoDataService::NONE_DATASET, DemoDataService::DEMO_DATASET],
+			array_column($choices, 'id')
+		);
+		$this->assertSame(3, $choices[1]['objectCount']);
+	}
+
+	/**
+	 * A descriptor that carries no objects is still a usable answer — it counts
+	 * zero rather than disappearing, because the file IS there.
+	 */
+	public function testADescriptorWithNoObjectsCountsZeroRatherThanVanishing(): void {
+		file_put_contents($this->descriptor(), json_encode(['components' => []]));
+
+		$choices = $this->service()->listChoices();
+
+		$this->assertCount(2, $choices);
+		$this->assertSame(0, $choices[1]['objectCount']);
+	}
+
+	/**
+	 * A malformed descriptor offers ONLY "None". Honest: the alternative is a
+	 * card promising an import that cannot run.
+	 */
+	public function testAMalformedDescriptorOffersOnlyDeclining(): void {
+		file_put_contents($this->descriptor(), 'not json at all');
+
+		$this->assertSame(
+			[DemoDataService::NONE_DATASET],
+			array_column($this->service()->listChoices(), 'id')
+		);
+	}
+
+	/**
+	 * No card's description may carry the count. The wizard runs it through a
+	 * literal translation lookup, so an interpolated number would make the
+	 * string untranslatable and leave a Dutch operator reading English.
+	 */
+	public function testNoDescriptionInterpolatesTheCount(): void {
+		file_put_contents(
+			$this->descriptor(),
+			json_encode(['components' => ['objects' => array_fill(0, 42, 1)]])
+		);
+
+		foreach ($this->service()->listChoices() as $choice) {
+			$this->assertStringNotContainsString('42', $choice['description']);
+		}
+	}
+
 	public function testIsAvailableIsFalseWithoutADescriptor(): void {
 		$this->assertFalse($this->service()->isAvailable());
 	}
