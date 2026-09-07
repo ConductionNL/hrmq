@@ -63,7 +63,9 @@ rather than mutating, and a computed does not deep-convert its value either.
 
 ## 4. Follow-up found while verifying (tracked, built separately)
 
-- [ ] 4.1 `manifest-pages.spec.ts` merges the manifest by hand and opens **38 of 113** pages,
+- [x] 4.1 Shipped as humaniq#372. The sweep now reads `src/manifest.effective.json`: 84 tests run
+      (64 smoke pages plus 20 distinct detail render signatures), where it opened 38 before.
+      Original finding: `manifest-pages.spec.ts` merges the manifest by hand and opens **38 of 113** pages,
       counting the other 75 as covered. It concatenates `manifest.d` fragments without the
       `pageTemplates` expansion or the menu relocations, and its comment still claims the fragment
       directory "does not currently exist". Pointing it at `src/manifest.effective.json` is a
