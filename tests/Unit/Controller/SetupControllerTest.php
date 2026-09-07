@@ -156,6 +156,64 @@ class SetupControllerTest extends TestCase {
 		$this->assertSame(400, $res->getStatus());
 	}
 
+	/**
+	 * THE VALIDATION EXISTS SO THE ERROR ARRIVES HERE. An unknown dataset stored
+	 * as-is would surface a step later as a failed import with no clue why, so
+	 * the write is refused at the point the operator can still act on it.
+	 */
+	public function testAnUnknownDatasetIsRefusedRatherThanStored(): void {
+		$request = $this->createMock(IRequest::class);
+		$request->method('getParam')->willReturn('no-such-set');
+		$this->demoData->method('listChoices')->willReturn([['id' => 'none'], ['id' => 'humaniq-demo']]);
+
+		$controller = new SetupController($request, $this->appConfig, $this->logger, $this->demoData);
+		$this->appConfig->expects($this->never())->method('setValueString');
+
+		$res = $controller->saveConfig();
+
+		$this->assertFalse($res->getData()['success']);
+		$this->assertSame(400, $res->getStatus());
+	}
+
+	/**
+	 * A known dataset is written, and `_route` is not: it is Nextcloud's own
+	 * routing parameter, not something the wizard asked to store.
+	 */
+	public function testAKnownDatasetIsStoredAndTheRouteParamIsNot(): void {
+		$request = $this->createMock(IRequest::class);
+		$request->method('getParam')->willReturn('humaniq-demo');
+		$request->method('getParams')->willReturn(['demo_dataset' => 'humaniq-demo', '_route' => 'humaniq.setup.saveConfig']);
+		$this->demoData->method('listChoices')->willReturn([['id' => 'none'], ['id' => 'humaniq-demo']]);
+
+		$written = [];
+        $this->appConfig->method('setValueString')
+            ->willReturnCallback(static function (string $app, string $key, string $value) use (&$written): bool {
+                $written[$key] = $value;
+                return true;
+            });
+
+		$controller = new SetupController($request, $this->appConfig, $this->logger, $this->demoData);
+		$res = $controller->saveConfig();
+
+		$this->assertTrue($res->getData()['success']);
+		$this->assertSame(['demo_dataset' => 'humaniq-demo'], $written);
+	}
+
+	/**
+	 * A step that posts no dataset at all is not a dataset decision, so the
+	 * validation must not run and must not refuse it.
+	 */
+	public function testAPostWithoutADatasetIsWrittenUnvalidated(): void {
+		$request = $this->createMock(IRequest::class);
+		$request->method('getParam')->willReturn(null);
+		$request->method('getParams')->willReturn(['some_other_key' => 'value']);
+		$this->demoData->expects($this->never())->method('listChoices');
+
+		$controller = new SetupController($request, $this->appConfig, $this->logger, $this->demoData);
+
+		$this->assertTrue($controller->saveConfig()->getData()['success']);
+	}
+
 	public function testUnknownActionIs404(): void {
 		$response = $this->controller->runAction('not-an-action');
 

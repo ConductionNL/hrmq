@@ -1925,7 +1925,11 @@ OC.L10N.register(
         "Time & scheduling": "Time & scheduling",
         "Load example data?": "Load example data?",
         "Load the example data": "Load the example data",
-        "You're ready": "You're ready"
+        "You're ready": "You're ready",
+        "Manage your people, contracts, leave and payroll in one place. This takes a minute: pick whether to load example data, and you're ready.": "Manage your people, contracts, leave and payroll in one place. This takes a minute: pick whether to load example data, and you're ready.",
+        "Example data fills the employee lists, contracts and dashboards so you can see the app working straight away. Pick \"None\" on a production install.": "Example data fills the employee lists, contracts and dashboards so you can see the app working straight away. Pick \"None\" on a production install.",
+        "Loads what you picked. The data is obviously sample data, it is safe to run more than once, and you can delete it afterwards.": "Loads what you picked. The data is obviously sample data, it is safe to run more than once, and you can delete it afterwards.",
+        "That's it. Open Employees to see your people, or reopen this setup anytime from the app's … menu.": "That's it. Open Employees to see your people, or reopen this setup anytime from the app's … menu."
     },
     "nplurals=2; plural=(n != 1);"
 )
