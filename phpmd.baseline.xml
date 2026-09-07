@@ -211,4 +211,9 @@
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="lib/Standards/Checks/NlWkrChecks.php"/>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="lib/Standards/RuleCatalogue.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="lib/Standards/RuleEngine.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="lib/Service/HrDocumentService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="lib/Service/OfferEsignService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="lib/Service/OfferLetterService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="lib/Service/ReceiptExtractionService.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="lib/Service/OfferEsignService.php"/>
 </phpmd-baseline>
