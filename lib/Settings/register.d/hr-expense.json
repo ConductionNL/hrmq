@@ -5,7 +5,7 @@
             "Expense": {
                 "slug": "Expense",
                 "icon": "ReceiptOutline",
-                "version": "0.6.0",
+                "version": "0.6.1",
                 "title": "Expense",
                 "description": "An employee expense-reimbursement claim (onkostendeclaratie / declaratie). An employee submits a claim (amount, category, date, receipt), a manager approves or rejects it, and once approved the amount is reimbursed to the employee. The submit → approve → reimburse lifecycle is owned here in humaniq, the HR/labour app: re-homing the Expenses feature that previously lived in pipelinq. The pipelinq-specific Shillinq accounts-payable sync coupling is intentionally NOT ported: reimbursement here is the HR-side claim workflow; any downstream AP/GL posting is a separate integration concern that OpenConnector/shillinq own.",
                 "type": "object",
@@ -17,6 +17,30 @@
                     "status"
                 ],
                 "configuration": {
+                    "x-openregister-mcp": {
+                        "enabled": true,
+                        "tools": {
+                            "search": {
+                                "description": "Search expense claims (onkostendeclaraties) by employee, by approval status, or by category such as travel or equipment. Use this to find claims awaiting approval, to total what one person claimed, or to break spend down by category. Claim amounts per person are personal data.",
+                                "scope": "read",
+                                "filters": [
+                                    "employeeId",
+                                    "status",
+                                    "category"
+                                ],
+                                "readOnlyHint": true,
+                                "destructiveHint": false,
+                                "idempotentHint": true
+                            },
+                            "get": {
+                                "description": "Get one expense claim: amount, VAT, currency, category, vendor, expense date, and its approval and reimbursement state. The receipt file itself is not returned. Approving, rejecting and reimbursing are not available here and are deliberately left to a person.",
+                                "scope": "read",
+                                "readOnlyHint": true,
+                                "destructiveHint": false,
+                                "idempotentHint": true
+                            }
+                        }
+                    },
                     "x-openregister-lifecycle": {
                         "field": "status",
                         "initial": "draft",

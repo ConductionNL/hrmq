@@ -5,7 +5,33 @@
             "OrgUnit": {
                 "slug": "OrgUnit",
                 "icon": "SitemapOutline",
-                "version": "0.2.0",
+                "version": "0.2.1",
+                "configuration": {
+                    "x-openregister-mcp": {
+                        "enabled": true,
+                        "tools": {
+                            "search": {
+                                "description": "Search the organisational hierarchy (afdelingen, teams, kostenplaatsen) by unit type, by parent unit to list one unit's children, or by whether the unit is still active. Use this to walk or describe the org tree, or to resolve a department name before asking about anything else.",
+                                "scope": "read",
+                                "filters": [
+                                    "type",
+                                    "parentUnitId",
+                                    "active"
+                                ],
+                                "readOnlyHint": true,
+                                "destructiveHint": false,
+                                "idempotentHint": true
+                            },
+                            "get": {
+                                "description": "Get one organisational unit: its name, type, parent unit, cost centre, and whether it is active. The manager is identified by id only, and no employee record is reachable from here.",
+                                "scope": "read",
+                                "readOnlyHint": true,
+                                "destructiveHint": false,
+                                "idempotentHint": true
+                            }
+                        }
+                    }
+                },
                 "title": "Organisational unit",
                 "description": "A node in the organisational hierarchy (afdeling / team / kostenplaats): a department, team or cost-center with an optional parent unit (self-referencing, forming the tree), an optional cost-center code, and an optional manager. Humaniq's first organisational model (org-chart-basic): manager self-service derives a team scope from the OrgAssignments placed here, and finance apps (shillinq, expense routing) resolve cost-center owners via costCenter/managerId. No x-openregister-lifecycle: a plain record toggled active/inactive, not a workflow.",
                 "type": "object",

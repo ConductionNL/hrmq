@@ -14,7 +14,7 @@ humaniq has **no MCP surface at all** today — no provider, no dialect, no
 `IMcpScannableServices` (verified at HEAD `274c5d3`, 2026-07-13). This change is humaniq's
 greenfield adoption.
 
-**humaniq is the sharpest privacy case in the fleet.** Its 23 schemas hold BSNs, IBANs, gross
+**humaniq is the sharpest privacy case in the fleet.** Its 57 schemas hold BSNs, IBANs, gross
 monthly salaries, payslips with per-employee tax withholdings, employment contracts,
 dismissal reasons, severance amounts, candidate CVs, clock-in/clock-out locations, and
 **sick-leave cases with Wet verbetering poortwachter milestones** — health data under AVG
@@ -23,7 +23,7 @@ whole object. So the design question is not "what can we expose" but "what is le
 everything special-category, remunerative, and identity-bearing is removed".
 
 The honest answer is: **not much, and that is the correct answer.** This change exposes
-**6 of 23 schemas, all read-only, zero writes**. A thin, defensible surface beats a broad
+**6 of 57 schemas, all read-only, zero writes**. A thin, defensible surface beats a broad
 one, and every one of the 17 exclusions is argued.
 
 ## What Changes

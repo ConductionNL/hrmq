@@ -154,6 +154,13 @@
     "docsUrl": "openspec/specs/humaniq-i18n-form-surface/spec.md"
   },
   {
+    "slug": "humaniq-mcp-surface",
+    "title": "Humaniq MCP Surface",
+    "summary": "Humaniq's agent-facing MCP tool surface under ADR-063: a deliberately thin, read-only allowlist and the standing refusals over remuneration, health, recruitment and worker-monitoring data.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/humaniq-mcp-surface/spec.md"
+  },
+  {
     "slug": "humaniq-timesheet-approved-typed-event",
     "title": "Humaniq Timesheet Approved Typed Event",
     "summary": "Give humaniq's approved-timesheet event a consumption path a sibling Conduction app can actually use.",
