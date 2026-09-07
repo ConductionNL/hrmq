@@ -221,6 +221,26 @@ class SetupControllerTest extends TestCase {
 		$this->assertFalse($response->getData()['success']);
 	}
 
+	/**
+	 * THE HAPPY PATH OF THE WHOLE STEP, and it was the one route through
+	 * loadDataset() nothing exercised: the operator picked the shipped set in
+	 * the choice step, and the load step then runs it. The two neighbouring
+	 * routes — declining, and running with nothing recorded — were covered from
+	 * the start, which is exactly how a gap like this hides.
+	 */
+	public function testLoadingAPickedDatasetImportsIt(): void {
+		$this->appConfig->method('getValueString')
+			->willReturnCallback(static fn (string $app, string $key): string => ($key === 'demo_dataset' ? 'humaniq-demo' : ''));
+		$this->demoData->expects($this->once())
+			->method('install')
+			->willReturn(['objects' => 12, 'registers' => 1, 'schemas' => 3]);
+
+		$data = $this->controller->runAction('load-demo-data')->getData();
+
+		$this->assertTrue($data['success']);
+		$this->assertStringContainsString('12', $data['message']);
+	}
+
 	public function testInstallReportsHowMuchLanded(): void {
 		$this->demoData->method('install')
 			->willReturn(['objects' => 30, 'registers' => 1, 'schemas' => 4]);
