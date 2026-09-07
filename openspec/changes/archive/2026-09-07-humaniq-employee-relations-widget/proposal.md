@@ -2,6 +2,18 @@
 kind: config
 ---
 
+> **Delivered elsewhere, archived 2026-09-07.** Every requirement in this change's spec was
+> verified against the code on 2026-09-07 and holds. The work landed under other changes;
+> this proposal's tasks were never ticked, which is why it sat at 0 done. The tasks are left
+> unticked on purpose: they were not executed as written, and ticking them would claim an
+> execution that did not happen. What was checked:
+>
+> - `Timesheet.employeeId` and `Expense.employeeId` both declare `$ref: Employee`
+> - seeded Employee objects exist and the Timesheet/Expense seeds reference them as `@ref:employee-jansen`, so the relation resolves
+> - `TimesheetDetail` and `ExpenseDetail` both declare a `related` widget in the effective manifest
+>
+> See `BACKLOG-TRIAGE.md` for how this was measured.
+
 ## Why
 
 Both detail pages humaniq ships declare a `related` widget whose own `_note` says it exists to show

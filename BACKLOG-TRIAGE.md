@@ -1,50 +1,47 @@
-# Stale change triage, 2026-09-06
+# Stale change triage, corrected 2026-09-07
 
-Ten changes in `openspec/changes/` sit at zero tasks done and have not been touched since
-2026-08-22, carrying 119 declared tasks between them. Most were written against HEAD on
-2026-07-17 and open by stating a fact about the code. Those facts were re-checked today.
+Ten changes sat at zero tasks done and untouched since 2026-08-22, carrying 119 declared tasks.
 
-**Four have had their premise overtaken.** Three of the four say so in their own proposal:
-they were written to argue against an earlier design, and the argument has since been won by
-other work. Archiving those is not dropping scope, it is closing a question already answered.
+**The first pass of this document, on 2026-09-06, was wrong.** It sorted them by reading their
+proposals: what each one *said* about the code when it was written on 2026-07-17. Re-measured
+against the code itself, the picture is almost inverted.
 
-**Three are still true and still worth doing.**
+**Seven of the ten were already built**, by other changes, under other names. Nobody ticked their
+boxes, so they read as untouched. All 30 of their spec requirements were verified against the code
+on 2026-09-07 and hold; their specs are now synced into `openspec/specs/` and the changes archived.
 
-**Three have been partly delivered** by changes that landed under different names, so what is
-left is smaller than the task count suggests and needs re-scoping rather than starting.
+**Three are genuinely unstarted.** That is the real backlog, and it is 31 tasks, not 119.
 
-## Archive: the premise is gone
+## Archived as delivered (2026-09-07)
 
-| Change | Tasks | What it asserts | What is true today |
-|---|---|---|---|
-| `humaniq-test-coverage-baseline` | 12 | "Humaniq ships zero automated tests of any kind... no `tests/` directory at all... no `phpunit.xml` anywhere" | `tests/` exists with **142 test files**, `phpunit.xml` is present, and the suite runs **1407 tests**. Every sentence of the premise is now false. |
-| `hris-api-public` | 8 | The 2026-05-23 draft designed a parallel REST plus GraphQL plus webhooks plus SCIM stack; the proposal itself argues humaniq **already has** a general-purpose RBAC-enforced API through OpenRegister | `openregister/appinfo/routes.php` carries **168** `api/objects` route references. The proposal's own conclusion is "do not build the parallel stack". It is a decision record, not pending work. |
-| `uitzend-flexpool` | 10 | The draft designed humaniq as the **inlener's** tool; the proposal argues at length that this is "the wrong side for humaniq" | Same shape: the change exists to reject its own original scope. Nothing in it is waiting to be built. |
-| `humaniq-employee-relations-widget` | 9 | "neither the `Timesheet` nor the `Expense` schema declares `employeeId` as an OpenRegister relation... `grep -n "relation"` returns nothing" | Both now declare `"$ref": "Employee"` on `employeeId`. The `related` widgets it was written about are also gone: `grep -c '"related"' src/manifest.json` returns **0**. |
-
-## Keep: still true, still worth doing
-
-| Change | Tasks | Verified today |
+| Change | Tasks | What was verified |
 |---|---|---|
-| `humaniq-mcp-adoption` | 12 | Still exact. Zero `x-openregister-mcp` blocks and zero `#[McpTool]` attributes in the app. Its own argument, that humaniq is the sharpest privacy case in the fleet because its schemas hold BSNs, IBANs, salaries and payslips, is the reason to do this deliberately rather than by default. |
-| `humaniq-rule-compliance-enforcement` | 10 | Still exact, and worse than it reads. `RuleComplianceGuard` does not exist. `RuleEngine::hasMandatory()`, whose entire purpose is "true when a lifecycle guard must block", has **no production caller at all**: its only two call sites are assertions in `NlRetroChecksTest` and `NlRosterChecksTest`. The method is tested and unused. |
-| `humaniq-manifest-boot-and-http-cost` | 9 | Still true. `PageController` still reads the manifest with `file_get_contents` per request, and still sets no `Cache-Control`, `ETag` or `Last-Modified`. |
+| `uitzend-flexpool` | 10 | `uitzendFase`, `uitzendbedingVanToepassing`, `inlenersbeloningReferentie` on EmploymentContract; both labour rules; `cao-abu.json`; no `InhuurOpdracht`/`Bureau`, which REQ-UITZ-001 requires stay absent |
+| `hris-api-public` | 8 | `IntegrationAccount` schema, both pages, README naming the six recommended schemas; no parallel REST/GraphQL/webhook/SCIM stack, which REQ-HRIS-001 requires stay absent |
+| `30-procent-regeling` | 17 | `dertigProcentRegeling` table group; `CalculationInput::$thirtyPercentRulingRate` driving `thirtyPercentExemption`/`belastbaarLoon`, so the ruling reaches the engine |
+| `wnt-disclosure` | 15 | `Employee.wntTopfunctionaris` + `.wntUitzonderingReden`; `WntDisclosure` schema; `nl-wnt-norm-overschrijding`; pages under PayrollGroup; seeds |
+| `single-person-modes` | 17 | `hrAdministration.mode` enum; `runtime.user.administrationMode`; 4 mode-gated `visibleIf`; `NlSinglePersonChecks`; `GET /api/payroll/dga-status` |
+| `humaniq-test-coverage-baseline` | 12 | `tests/` + `phpunit.xml`, 144 test files, 1420 tests, 10 e2e specs |
+| `humaniq-employee-relations-widget` | 9 | `$ref: Employee` on both schemas; seeds resolving via `@ref:employee-jansen`; a `related` widget on both detail pages |
 
-## Re-scope: partly delivered under another name
+Their tasks are left **unticked on purpose**. They were not executed as written, and ticking them
+would claim an execution that did not happen. Each proposal carries a note saying so, with the
+evidence above.
 
-| Change | Tasks | What already landed |
+## The real backlog
+
+| Change | Tasks | Verified still unstarted |
 |---|---|---|
-| `30-procent-regeling` | 17 | The engine gap it describes has largely closed. `dertigProcentRegeling` is in `lib/Standards/tables/nl-2026.json`, and `thirtyPercent` is referenced in `CalculationInput` (5 sites), `CalculationInputMapper` and `PackValidator`. Re-measure before starting: the remaining gap is not 17 tasks. |
-| `wnt-disclosure` | 15 | Its premise, "humaniq has no WNT concept anywhere today", is false. `WntDisclosure` is a shipped schema in the register and three files under `lib/Standards/` carry WNT checks. |
-| `single-person-modes` | 17 | Partly shipped. `Employee.isDga` is declared (6 sites), `dga-payroll-mode` and `proforma-payslip` are both archived as done, and `user.administrationMode` already drives four `visibleIf` conditions in the manifest. What is left is the eenmanszaak half, not both modes. |
+| `humaniq-rule-compliance-enforcement` | 10 | `RuleComplianceGuard` does not exist. `RuleEngine::hasMandatory()`, whose whole purpose is "true when a lifecycle guard must block", has **zero production callers**: its only `lib/` occurrences are its own declaration and its closing comment, and its only call sites are two test assertions. |
+| `humaniq-manifest-boot-and-http-cost` | 9 | `PageController` still reads the manifest with `file_get_contents` per request and sets no `Cache-Control`, `ETag` or `Last-Modified`. |
+| `humaniq-mcp-adoption` | 12 | Zero `x-openregister-mcp` blocks and zero `#[McpTool]` attributes. humaniq holds BSNs, IBANs, salaries and payslips, so the schema classification is the substance, not the wiring. |
 
-## Suggested order
+## The lesson worth keeping
 
-1. Archive the four whose premise is gone. One PR, no code.
-2. Re-measure the three partly-delivered ones and rewrite their task lists to what is actually
-   left, or archive them too if the remainder is not worth a change.
-3. Schedule the three that are still true. `humaniq-rule-compliance-enforcement` is the one I
-   would take first: a mandatory-violation check that nothing calls is a compliance guarantee the
-   app appears to make and does not.
+Every one of the seven had a proposal opening with a confident, checkable claim about the codebase.
+`humaniq-test-coverage-baseline` opens *"Humaniq ships zero automated tests of any kind"* against a
+tree with 144 test files. Those claims were true on 2026-07-17 and the proposals were never
+revisited.
 
-None of these block anything today, and no gate reports them.
+A proposal's "Verified against HEAD" line is a **timestamp, not a fact**. Re-measure before acting
+on one, and the command to re-measure is usually in the proposal itself.
