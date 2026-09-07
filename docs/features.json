@@ -1,5 +1,12 @@
 [
   {
+    "slug": "30-procent-regeling",
+    "title": "30 Procent Regeling",
+    "summary": "",
+    "status": "stable",
+    "docsUrl": "openspec/specs/30-procent-regeling/spec.md"
+  },
+  {
     "slug": "abp-aansluiting",
     "title": "Abp Aansluiting",
     "summary": "Record which client administraties are legally obligated (Wet Privatisering ABP, 1996) to affiliate with ABP, and close the one compliance gap the shipped, deliberately fund-blind and tenant-blind nl-upa-monthly-completeness check (pension-filing-upa-mvp) cannot catch: an obligated administratie whose own payroll was approved but never actually filed with ABP for that period.",
@@ -98,6 +105,13 @@
     "docsUrl": "openspec/specs/hr-signals/spec.md"
   },
   {
+    "slug": "hris-api-public",
+    "title": "Hris API Public",
+    "summary": "",
+    "status": "stable",
+    "docsUrl": "openspec/specs/hris-api-public/spec.md"
+  },
+  {
     "slug": "hrm-rule-engine",
     "title": "Hrm Rule Engine",
     "summary": "Humaniq audits its HR, labour and payroll data against a versioned corpus of machine-checkable rules drawn from EU labour directives, ILO core conventions, GDPR for employee data, occupational health & safety, national labour law (NL first, then DE/FR/BE) and payroll / wage-tax & social-security compliance.",
@@ -124,6 +138,13 @@
     "summary": "Generate the standard Dutch HR documents (arbeidsovereenkomst, aanbiedingsbrief, werkgeversverklaring, getuigschrift) from templates hosted in docudesk (namespace: hrmq), by calling docudesk's DocumentService::generateDocument() on the same instance (never HTTP), storing the returned PDF on a new GeneratedDocument record via OpenRegister's FileService, degrading gracefully to skipped-no-docudesk when docudesk is absent, and giving EmploymentContract.writtenContract machine-checked document evidence (nl-contract-schriftelijk).",
     "status": "stable",
     "docsUrl": "openspec/specs/humaniq-docudesk-documents/spec.md"
+  },
+  {
+    "slug": "humaniq-employee-relations",
+    "title": "Humaniq Employee Relations",
+    "summary": "",
+    "status": "stable",
+    "docsUrl": "openspec/specs/humaniq-employee-relations/spec.md"
   },
   {
     "slug": "humaniq-i18n-form-surface",
@@ -378,6 +399,13 @@
     "docsUrl": "openspec/specs/sick-pay-calc/spec.md"
   },
   {
+    "slug": "single-person-modes",
+    "title": "Single Person Modes",
+    "summary": "",
+    "status": "stable",
+    "docsUrl": "openspec/specs/single-person-modes/spec.md"
+  },
+  {
     "slug": "time-attendance",
     "title": "Time Attendance",
     "summary": "Give humaniq a raw clock surface with Dutch working-time-law depth no Nextcloud app has (Spectr hrmq-insight-nc-ecosystem-gap: German ArbZG time-compliance apps exist in the ecosystem, nothing covers the Arbeidstijdenwet): a per-employee/per-day AttendanceRecord (clockIn/clockOut/breakMinutes, stored writer-maintained workedHours, declarative open⇄gesloten lifecycle), three versioned machine-checkable ATW rules.",
@@ -390,6 +418,13 @@
     "summary": "Home the fleet's timesheet / hours-capture surface in humaniq (HR's domain) and emit an approved-time-entry event a finance app consumes.",
     "status": "stable",
     "docsUrl": "openspec/specs/time-entry-capture/spec.md"
+  },
+  {
+    "slug": "uitzend-flexpool",
+    "title": "Uitzend Flexpool",
+    "summary": "",
+    "status": "stable",
+    "docsUrl": "openspec/specs/uitzend-flexpool/spec.md"
   },
   {
     "slug": "verzuim-analytics-widgets",
@@ -411,5 +446,12 @@
     "summary": "WKR is administered from the employer's ledger of allowances/benefits for the WHOLE administration and fiscal year, not from one payslip in isolation: the vrije ruimte is a percentage of the entire fiscal wage bill, and \"used\" sums every payslip's designated allowances plus every stand-alone declaration.",
     "status": "stable",
     "docsUrl": "openspec/specs/wkr-administration/spec.md"
+  },
+  {
+    "slug": "wnt-disclosure",
+    "title": "Wnt Disclosure",
+    "summary": "",
+    "status": "stable",
+    "docsUrl": "openspec/specs/wnt-disclosure/spec.md"
   }
 ]

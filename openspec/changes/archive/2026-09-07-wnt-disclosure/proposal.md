@@ -3,6 +3,20 @@ kind: config+code
 depends_on: [30-procent-regeling]
 ---
 
+> **Delivered elsewhere, archived 2026-09-07.** Every requirement in this change's spec was
+> verified against the code on 2026-09-07 and holds. The work landed under other changes;
+> this proposal's tasks were never ticked, which is why it sat at 0 done. The tasks are left
+> unticked on purpose: they were not executed as written, and ticking them would claim an
+> execution that did not happen. What was checked:
+>
+> - `Employee.wntTopfunctionaris` and `.wntUitzonderingReden` declared
+> - `WntDisclosure` declared in `hr-wnt.json`
+> - `nl-wnt-norm-overschrijding` in the rule corpus
+> - `WntDisclosures` sits under PayrollGroup, adding no top-level menu entry
+> - 3 `WntDisclosure` seed references
+>
+> See `BACKLOG-TRIAGE.md` for how this was measured.
+
 # WNT disclosure — a topfunctionaris marker, an annual verantwoording, and a norm-overschrijding check
 
 ## Why

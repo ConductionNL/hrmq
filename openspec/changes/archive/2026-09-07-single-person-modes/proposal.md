@@ -2,6 +2,20 @@
 kind: code+config
 ---
 
+> **Delivered elsewhere, archived 2026-09-07.** Every requirement in this change's spec was
+> verified against the code on 2026-09-07 and holds. The work landed under other changes;
+> this proposal's tasks were never ticked, which is why it sat at 0 done. The tasks are left
+> unticked on purpose: they were not executed as written, and ticking them would claim an
+> execution that did not happen. What was checked:
+>
+> - `hrAdministration.mode` enum = standard / dga_single_person / eenmanszaak_no_payroll
+> - `runtime.user.administrationMode` seeded by `PageController` and refreshed by `AdministrationController`
+> - 4 `administrationMode` visibleIf predicates in the manifest
+> - `NlSinglePersonChecks` present
+> - `GET /api/payroll/dga-status` self-service endpoint
+>
+> See `BACKLOG-TRIAGE.md` for how this was measured.
+
 # single-person-modes — an Administration.mode toggle, not a new app, for the ~400k NL single-person BV/eenmanszaak entrepreneur
 
 ## Why

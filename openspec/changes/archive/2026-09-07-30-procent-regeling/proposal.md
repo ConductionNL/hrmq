@@ -2,6 +2,18 @@
 kind: code
 ---
 
+> **Delivered elsewhere, archived 2026-09-07.** Every requirement in this change's spec was
+> verified against the code on 2026-09-07 and holds. The work landed under other changes;
+> this proposal's tasks were never ticked, which is why it sat at 0 done. The tasks are left
+> unticked on purpose: they were not executed as written, and ticking them would claim an
+> execution that did not happen. What was checked:
+>
+> - `dertigProcentRegeling` parameter group in `lib/Standards/tables/nl-2026.json`
+> - `CalculationInput::$thirtyPercentRulingRate` drives the pack's `thirtyPercentExemption`/`belastbaarLoon` bindings, reducing the taxable base
+> - 6 `dertigProcent`/`thirtyPercent` references in `nl-2026.pack.json`
+>
+> See `BACKLOG-TRIAGE.md` for how this was measured.
+
 # 30%-regeling — tax-free expat allowance reducing the taxable wage
 
 ## Why
