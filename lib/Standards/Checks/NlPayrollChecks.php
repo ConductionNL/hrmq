@@ -132,6 +132,17 @@ final class NlPayrollChecks implements CheckProvider, SeedsObjects {
 				'nl-id-bewaarplicht-5jaar' => static fn (array $o): bool => (($o['identityDocumentVerified'] ?? false) === true)
 					&& self::present($o, 'identityDocumentRetainedUntil')
 					&& self::retainedAtLeastYearsAfterEnd($o, 'identityDocumentRetainedUntil', 5),
+				// Uitvoeringsregeling loonbelasting 2011 art. 12.1 lid 5 - the
+				// loonheffingenverklaring is kept until at least 5 years after the year
+				// employment ends, the same clock as the ID copy above.
+				//
+				// Gated on the statement actually being on file. The retention duty
+				// attaches to a document that exists, so an employee with no statement
+				// is VACUOUS here rather than in violation; whether one must be on file
+				// at all is a different obligation and no corpus rule covers it yet.
+				'nl-loonbelastingverklaring-bewaarplicht-5jaar' => static fn (array $o): bool => (($o['loonheffingenVerklaringOnFile'] ?? false) !== true)
+					|| (self::present($o, 'loonheffingenVerklaringRetainedUntil')
+					&& self::retainedAtLeastYearsAfterEnd($o, 'loonheffingenVerklaringRetainedUntil', 5)),
 				// Wet LB 1964 art. 31a (30%-regeling) — when granted, the applied tax-free
 				// percentage must not exceed 30 for 2025-2026.
 				'nl-30-percent-regeling' => static fn (array $o): bool => (($o['thirtyPercentRulingGranted'] ?? false) !== true)

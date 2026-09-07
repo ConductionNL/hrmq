@@ -3795,6 +3795,14 @@
 						"gridWidth": 12,
 						"gridX": 0,
 						"gridY": 43,
+						"id": 17,
+						"widgetId": "object-list-10"
+					},
+					{
+						"gridHeight": 4,
+						"gridWidth": 12,
+						"gridX": 0,
+						"gridY": 47,
 						"id": 16,
 						"widgetId": "files"
 					}
@@ -4292,6 +4300,40 @@
 						"icon": "SwapHorizontal",
 						"id": "object-list-9",
 						"title": "Buy/sell leave",
+						"type": "object-list"
+					},
+					{
+						"content": {
+							"columns": [
+								{
+									"key": "documentType",
+									"label": "Type"
+								},
+								{
+									"key": "generatedAt",
+									"label": "Generated"
+								},
+								{
+									"key": "status",
+									"label": "Status"
+								}
+							],
+							"emptyText": "No documents generated for this employee yet",
+							"filter": {
+								"employeeId": "@objectId"
+							},
+							"limit": 25,
+							"register": "humaniq",
+							"rowRoute": "GeneratedDocumentDetail",
+							"schema": "HrGeneratedDocument",
+							"sort": {
+								"dir": "desc",
+								"field": "generatedAt"
+							}
+						},
+						"icon": "FileDocumentMultipleOutline",
+						"id": "object-list-10",
+						"title": "Generated documents",
 						"type": "object-list"
 					},
 					{

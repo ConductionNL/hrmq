@@ -18,6 +18,7 @@
                 "taxTableColor": "wit",
                 "identityDocumentVerified": true,
                 "loonheffingenVerklaringOnFile": true,
+                "loonheffingenVerklaringRetainedUntil": "2031-12-31",
                 "nextcloudUserId": "admin",
                 "iban": "NL00BANK0123456789",
                 "tenaamstelling": "S. Jansen",
@@ -1015,7 +1016,45 @@
                 "identityDocumentVerified": true,
                 "identityDocumentRetainedUntil": "2031-12-31",
                 "loonheffingenVerklaringOnFile": true,
+                "loonheffingenVerklaringRetainedUntil": "2031-12-31",
                 "administrationId": "ADM-001"
+            },
+            {
+                "@self": {
+                    "register": "humaniq",
+                    "schema": "Employee",
+                    "slug": "employee-loonverklaring-verlopen"
+                },
+                "employeeNumber": "EMP-0090",
+                "firstName": "Ilse",
+                "lastName": "Wolters",
+                "startDate": "2018-04-01",
+                "endDate": "2021-09-30",
+                "taxTableColor": "wit",
+                "identityDocumentVerified": true,
+                "identityDocumentRetainedUntil": "2026-12-31",
+                "loonheffingenVerklaringOnFile": true,
+                "administrationId": "ADM-001",
+                "_note": "Deliberately non-compliant demo record for nl-loonbelastingverklaring-bewaarplicht-5jaar: the loonheffingenverklaring is on file, employment ended in 2021, and loonheffingenVerklaringRetainedUntil is left UNPOPULATED, so the retention duty running to 2026-12-31 is unrecorded. Because the field is empty this record is simultaneously VACUOUS for nl-bewaartermijn-verstreken -- the two checks report distinct facts and must never both fire on one cause (design.md D4). Its identityDocumentRetainedUntil IS populated and still in the future, so it does not double as the ceiling case below."
+            },
+            {
+                "@self": {
+                    "register": "humaniq",
+                    "schema": "Employee",
+                    "slug": "employee-id-bewaartermijn-verstreken"
+                },
+                "employeeNumber": "EMP-0091",
+                "firstName": "Bram",
+                "lastName": "Koster",
+                "startDate": "2012-01-09",
+                "endDate": "2017-08-31",
+                "taxTableColor": "wit",
+                "identityDocumentVerified": true,
+                "identityDocumentRetainedUntil": "2022-12-31",
+                "loonheffingenVerklaringOnFile": true,
+                "loonheffingenVerklaringRetainedUntil": "2022-12-31",
+                "administrationId": "ADM-001",
+                "_note": "Deliberately non-compliant demo record for the Employee-scoped nl-bewaartermijn-verstreken entry: employment ended in 2017, both retention clocks ran out at the end of 2022, and BOTH documents are still on file. Storage limitation (AVG art. 5(1)(e)) makes a lapsed bewaarplicht a bewaartermijn: continuing to hold the copies now needs its own justification. Both bewaarplicht rules are SATISFIED here (the dates are 5 full years past the end year), which is the point -- the ceiling check is the opposite end of the same clock, not a restatement of it."
             },
             {
                 "@self": {

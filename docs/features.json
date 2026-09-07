@@ -77,6 +77,13 @@
     "docsUrl": "openspec/specs/dga-payroll-mode/spec.md"
   },
   {
+    "slug": "document-dossier-avg",
+    "title": "Document Dossier AVG",
+    "summary": "A personnel-dossier view tying an employee's generated documents together, the loonbelastingverklaring retention sibling to the shipped identity-document rule, and an Employee-scoped storage-limitation-ceiling check.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/document-dossier-avg/spec.md"
+  },
+  {
     "slug": "fleet-bijtelling",
     "title": "Fleet Bijtelling",
     "summary": "Bijtelling privégebruik auto (Wet LB 1964 art.",
