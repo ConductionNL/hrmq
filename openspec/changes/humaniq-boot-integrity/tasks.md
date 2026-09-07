@@ -118,7 +118,8 @@ app was missing (ConductionNL/nextcloud-vue#704; fixed app-side in hrmq#111).
 
 - [ ] 5.1 With install permission restored: `npm ci` to match `package-lock.json`'s
   `2.2.0-vue3.2` pin; confirm Task 1.1's check now passes
-- [ ] 5.2 `composer install` (or otherwise correct `vendor/` ownership) so
+- [x] 5.2 MEASURED 2026-09-07: resolved. `vendor/` is user-owned and both `composer phpcs` and
+      `composer phpstan` run to completion, exit 0. `composer install` (or otherwise correct `vendor/` ownership) so
   `vendor/conduction/hydra-gates` is present; confirm Task 1.4's check now passes
 - [ ] 5.3 Rebuild `js/humaniq-*.js` from the now-correctly-installed tree
 - [ ] 5.4 Confirm Task 3.1's bundle-freshness check now passes against the rebuild
@@ -137,12 +138,18 @@ app was missing (ConductionNL/nextcloud-vue#704; fixed app-side in hrmq#111).
   administratie cleared, the request carries NO `administrationId` key at all and returns
   `total: 16`. Record this as the known unscoped exposure (see the multi-administratie delta), not
   as a pass.
-- [ ] 5.6 `composer phpcs` and `composer phpstan` — confirm both now run to completion (currently
+- [x] 5.6 MEASURED 2026-09-07: both run to completion and exit 0. `composer phpcs` and `composer phpstan` — confirm both now run to completion (currently
   both error out before any check runs, per Measured Facts §7)
 
 ## 6. Known environment gaps hit while verifying (record, do not silently work around)
 
-- [ ] 6.1 `node tests/validate-widget-keys.js` currently FAILS on this checkout with two unresolved
+- [x] 6.1 MEASURED 2026-09-07, and the finding is about the INVOCATION, not the check.
+      `npm run check:widget-keys` exits **0**; `node tests/validate-widget-keys.js` exits **1**, for
+      the same command. The script builds a throwaway probe bundle and
+      `@nextcloud/webpack-vue-config` reads `npm_package_name`/`npm_package_version` from the
+      environment; run bare those are undefined, the probe build throws
+      `ERR_INVALID_ARG_TYPE`, and every layer-3 key is reported UNRESOLVED. Invoke it through
+      `npm run`. Original note: `node tests/validate-widget-keys.js` currently FAILS on this checkout with two unresolved
   widgetKeys (`object-list`, `stats-block`) used across 9 detail pages — reproduced directly, not
   assumed. Record whether this is resolved by Task 5.1's reinstall (a version-drift symptom) or is
   an independent, genuine manifest defect requiring its own fix; either way it is pre-existing and
@@ -171,7 +178,7 @@ count: `ADM-001`, 10 rows.
 - [x] 5.3 Bundle rebuilt: md5 `a699e95b…` → `349b069c…`, 11,453,618 → 9,309,048 bytes.
 - [x] 5.4 `check-bundle-freshness` now PASSES (bundle 16:35Z, src last committed 16:18Z).
 - [x] 5.5 Live-verified above. Served bundle md5 == built bundle md5.
-- [ ] 5.2 `composer install` — still blocked, `vendor/` is root-owned. phpcs/phpstan still cannot run
+- [x] 5.2 SUPERSEDED by the measurement above: no longer blocked. `composer install` — still blocked, `vendor/` is root-owned. phpcs/phpstan still cannot run
       locally; CI runs both.
 
 ### 🔴 A FINDING BIGGER THAN THE ONE THIS CHANGE WAS WRITTEN FOR
@@ -214,7 +221,9 @@ The deeper point is unchanged: the deps-drift check added here would have PASSED
 - [ ] 7.1 Flip the alias to opt-IN (`USE_LOCAL_LIB === 'true'`), so a build uses the declared
       dependency unless a developer deliberately asks otherwise. Cross-repo: the same pattern is in
       several fleet webpack configs and should move together.
-- [ ] 7.2 Make a webpack build with errors fail the npm script, rather than exiting 0 with a stale
+- [x] 7.2 MEASURED 2026-09-07: already true. A deliberate syntax error appended to `src/main.js`
+      made `npm run build` exit **1**, and because `postbuild` only runs on success the sidecar was
+      left untouched rather than stamped against a failed build. Make a webpack build with errors fail the npm script, rather than exiting 0 with a stale
       `js/` on disk.
 - [ ] 7.3 Extend `check-node-deps-drift.js` to report WHICH source the last build resolved
       `@conduction/nextcloud-vue` from — the check currently proves the tree is correct, not that
@@ -263,3 +272,22 @@ in that sentence.
       already applied to `check-manifest-sentinels`. Not done here: it is a pre-existing local-only
       script defect, CI is green on the gate that matters, and changing a validator at the end of a
       long session is how a green run stops meaning anything.
+
+
+## 8. Measured 2026-09-07, still genuinely open
+
+Three tasks in this change remain real work, and they are the only ones:
+
+- **6.2 version drift.** `package.json` says `0.1.0` and has since the app was scaffolded;
+  `appinfo/info.xml` says `0.2.6-unstable.20260905095326`. Deliberately NOT fixed here: the release
+  machinery owns `info.xml`'s version and bumps it on a treadmill, so changing `package.json` to
+  match is a release-tooling decision, not a build-integrity one. `js/build-info.json` sidesteps it
+  by reading `info.xml`, which is the version that actually ships.
+- **7.3** `check-node-deps-drift.js` reporting WHICH source the last build resolved
+  `@conduction/nextcloud-vue` from. The check proves the tree is correct, not that the bundle came
+  from it. Partly addressed by `js/build-info.json`'s `sourceHash`, which proves the bundle came
+  from this `src/`; the dependency provenance half is still open.
+- **7.5** converting `tests/validate-widget-keys.js` to `.mjs` with a dynamic import.
+
+Everything else in sections 1 to 7 is either shipped or superseded, with the evidence recorded
+inline above. The unticked boxes were the problem: see BACKLOG-TRIAGE.md's second pass.
