@@ -11,6 +11,8 @@ built_by: openspec/changes/archive/2026-08-22-hrmq-manifest-fragment-pipeline
 **OpenSpec changes**:
 - [hrmq-manifest-fragment-pipeline](../../changes/archive/2026-08-22-hrmq-manifest-fragment-pipeline/) _(archived 2026-08-22, merged as humaniq#122)_ — adopts the ADR-037/ADR-044 `manifest.d/` + `menu-layout.json` + `buildManifest()` pipeline, splits the 113-page monolith into ~29 domain fragments mirroring `lib/Settings/register.d/`, and introduces `pageTemplates`/`pageInstances` for the index-page and four detail-page shapes, with zero observable change to pages, routes, widgets, or menu structure (kind: code+config; supersedes `humaniq-ia-navigation-alignment`'s pipeline-adoption prerequisite)
 
+- [humaniq-manifest-boot-and-http-cost](../../changes/archive/2026-09-07-humaniq-manifest-boot-and-http-cost/) _(archived 2026-09-07, merged as humaniq#370/#374/#372)_ — makes `GET /api/manifest` serve the EFFECTIVE manifest instead of the 11-page base, caches it with a content ETag, and points the page-sweep e2e at the same generated artefact
+
 ## Purpose
 
 humaniq builds its effective frontend manifest — pages, menu, and templated-page expansion — from
@@ -237,3 +239,59 @@ fraction of the actual page surface.
 schema-validator's own coverage. The negative scenario is a design constraint verified by code
 review of the updated script, not an executable test on its own (the positive scenario's page-count
 assertion is the executable guard against silent regression).
+
+### Requirement: The manifest endpoint serves the EFFECTIVE manifest, cacheably (REQ-MPIPE-010)
+
+`GET /apps/humaniq/api/manifest` SHALL return the effective manifest, meaning the base plus its
+`manifest.d/` fragments plus `pageTemplates` expansion plus `menu-layout.json` relocations, and NOT
+the base manifest alone. It SHALL return caching headers appropriate for a build-time-immutable
+payload and SHALL support conditional revalidation.
+
+The served document SHALL be a generated artefact derived from the same `buildManifest()` the app
+bundles, re-derived and compared on every CI run, so that PHP never re-implements the merge. There
+SHALL be no fallback to the base manifest: falling back silently restores the wrong answer while
+reporting success.
+
+**Feature tier**: MVP
+
+#### Scenario: The endpoint returns the app's real page set
+
+- GIVEN a caller requests `/apps/humaniq/api/manifest`
+- WHEN the response is read
+- THEN it contains the effective page set, not the base manifest's
+- AND pages contributed only by a `manifest.d/` fragment are present
+
+#### Scenario: A repeat call is answered 304
+
+- GIVEN a first call returned an `ETag`
+- WHEN the caller repeats the request with that value in `If-None-Match`
+- THEN the response status is `304 Not Modified`
+
+#### Scenario: A missing generated manifest fails rather than degrading
+
+- GIVEN the generated effective manifest is absent from the build
+- WHEN the endpoint is called
+- THEN it returns a server error naming the cause
+- AND it does NOT serve the base manifest instead
+
+### Requirement: The static bundled manifest does not pay per-boot reactive-conversion cost (REQ-MPIPE-011)
+
+The client-side bundled manifest object, being static and never mutated after import, SHALL NOT be
+walked by the reactivity system on every app boot.
+
+**Satisfied by the runtime, not by app code.** This app is on Vue 3, whose
+`@vue/runtime-core` sets `instance.props = shallowReactive(props)`. The manifest reaches
+`CnAppRoot` as a prop, so its pages and their nested `config` objects are never individually
+converted. The requirement was written against Vue 2's `observe()` walk, and `markRaw` would
+therefore change nothing measurable while blocking a future legitimate reactive read. It is
+recorded here so a later reader does not re-open it as unbuilt work.
+
+**Feature tier**: MVP
+
+#### Scenario: The manifest object is not deep-observed at boot
+
+- GIVEN the app-boot sequence hands the bundled manifest to the root component as a prop
+- WHEN the component mounts
+- THEN the manifest object's nested properties are NOT individually converted to reactive
+  getters/setters
+- AND every manifest page continues to render and navigate correctly
