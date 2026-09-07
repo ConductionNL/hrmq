@@ -37,9 +37,76 @@
 const { execFileSync } = require("child_process");
 const fs = require("fs");
 const path = require("path");
+const { computeSourceHash } = require("./lib/source-hash.js");
 
 const REPO_ROOT = path.resolve(__dirname, "..");
 const BUNDLE = path.join(REPO_ROOT, "js", "humaniq-main.js");
+
+/** The sidecar `postbuild` writes: a content hash of the src/ it was built from. */
+const BUILD_INFO = path.join(REPO_ROOT, "js", "build-info.json");
+
+/**
+ * `--sidecar` mode: compare a freshly-computed source hash against the one the
+ * build recorded.
+ *
+ * This is the mode that works where the default one cannot. The mtime check
+ * reads git's last-commit time for src/, so an unpacked release tarball, which
+ * has no git, gets UNKNOWN and exit 0 -- and an unpacked release tarball is
+ * precisely what an operator runs. A content hash needs no git and no clock.
+ *
+ * A MISSING sidecar is a FAILURE here, not an UNKNOWN. The default mode is
+ * allowed to shrug because it genuinely cannot see its subject; this mode is
+ * asked for by name, and answering "cannot tell" to a direct question about a
+ * shipped artefact is how a stale bundle gets waved through.
+ *
+ * @return {never}
+ */
+function checkSidecar() {
+	if (fs.existsSync(BUILD_INFO) === false) {
+		console.error("[check-bundle-freshness] FAIL -- js/build-info.json is missing.");
+		console.error("  Nothing records what this bundle was built from, so nothing can");
+		console.error("  confirm it matches. Build with `npm run build`, whose postbuild");
+		console.error("  step writes it.");
+		process.exit(1);
+	}
+
+	let recorded;
+	try {
+		recorded = JSON.parse(fs.readFileSync(BUILD_INFO, "utf8"));
+	} catch (error) {
+		console.error(`[check-bundle-freshness] FAIL -- js/build-info.json is unreadable: ${error.message}`);
+		process.exit(1);
+	}
+
+	const { sourceHash, fileCount, listedBy } = computeSourceHash(REPO_ROOT);
+	console.log(`[check-bundle-freshness] recorded sourceHash: ${String(recorded.sourceHash).slice(0, 16)}…`);
+	console.log(`[check-bundle-freshness] current  sourceHash: ${sourceHash.slice(0, 16)}… (${fileCount} file(s) via ${listedBy})`);
+	console.log(`[check-bundle-freshness] built at ${recorded.builtAt} for appVersion ${recorded.appVersion}`);
+
+	if (recorded.sourceHash === sourceHash) {
+		console.log("[check-bundle-freshness] PASS -- the bundle was built from this exact src/.");
+		process.exit(0);
+	}
+
+	// A file set listed two different ways is a different question from a file
+	// set that changed, and saying so beats reporting a stale bundle that is
+	// current.
+	if (recorded.listedBy !== undefined && recorded.listedBy !== listedBy) {
+		console.error(
+			`[check-bundle-freshness] FAIL -- hashes differ AND the file list came from a different source (recorded ${recorded.listedBy}, now ${listedBy}).`,
+		);
+		console.error("  Re-run where the same listing is available before trusting this verdict.");
+		process.exit(1);
+	}
+
+	console.error("[check-bundle-freshness] FAIL -- src/ has changed since this bundle was built.");
+	console.error("  What ships is not what the source says. Run `npm run build`.");
+	process.exit(1);
+}
+
+if (process.argv.includes("--sidecar")) {
+	checkSidecar();
+}
 
 /**
  * A stamp written by `postbuild` on EVERY successful build.
