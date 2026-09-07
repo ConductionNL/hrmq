@@ -82,14 +82,23 @@ app was missing (ConductionNL/nextcloud-vue#704; fixed app-side in hrmq#111).
   fail naming the offending commit when the bundle is older
 - [ ] 3.2 Run it against the current checkout and record the actual output (expected: FAIL — bundle
   built 2026-07-30 16:25, `src/`'s last commit is 2026-08-19 12:29, `d5f78a5`)
-- [ ] 3.3 Extend the webpack build to emit `js/build-info.json` (`{ sourceHash, builtAt, appVersion }`,
+- [x] 3.3 Extend the webpack build to emit `js/build-info.json` (`{ sourceHash, builtAt, appVersion }`,
   `sourceHash` = sha256 over `git ls-files src/` paths + contents) for the git-less deploy fallback
   (design.md Decision 3) — implementation choice between a custom webpack plugin and a `postbuild`
   script is left to whoever applies this task
-- [ ] 3.4 Add `--sidecar` mode to `check-bundle-freshness.js` comparing a freshly-computed source
-  hash against `js/build-info.json`'s recorded value
-- [ ] 3.5 Wire the local-mode check into `package.json` scripts; wire the sidecar-mode check into CI
-  (post-build, pre-package step)
+- [x] 3.4 Add `--sidecar` mode to `check-bundle-freshness.js` comparing a freshly-computed source
+  hash against `js/build-info.json`'s recorded value. Implemented via a shared
+  `scripts/lib/source-hash.js` that BOTH the emitter and the check call, because a build-side and a
+  check-side hash that merely look equivalent will drift, and the mismatch then reports a stale
+  bundle that is perfectly current. A MISSING sidecar fails rather than reporting UNKNOWN: the
+  default mode may shrug because it genuinely cannot see its subject, but this mode was asked for
+  by name.
+- [x] 3.5 Wire the local-mode check into `package.json` scripts; wire the sidecar-mode check into CI
+  (post-build, pre-package step). The CI half is satisfied without touching the shared workflow:
+  `postbuild` now emits the sidecar AND verifies it, and `postbuild` runs only when `build` exits 0,
+  so every CI job that builds (Frontend Build, deploy's Build and validate) verifies post-build by
+  construction. A build that produces an unverifiable artefact now fails at build time rather than
+  shipping one.
 
 ## 4. Correct the record
 
