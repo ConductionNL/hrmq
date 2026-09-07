@@ -5,7 +5,7 @@
             "Vacancy": {
                 "slug": "Vacancy",
                 "icon": "AccountBoxOutline",
-                "version": "0.2.0",
+                "version": "0.2.1",
                 "title": "Vacancy",
                 "description": "A job vacancy (vacature) published by the employer. Models the ADR-001 menu-6 'Onboarding & ATS' recruiting surface (recruiting-ats-basic): a declarative concept -> gepubliceerd -> gesloten publish lifecycle, no external multiposting (werk.nl/LinkedIn is an OpenConnector follow-up) and no public career page (portaliq per ADR-046). Applications reference this Vacancy via Application.vacancyId.",
                 "type": "object",
@@ -15,6 +15,29 @@
                     "status"
                 ],
                 "configuration": {
+                    "x-openregister-mcp": {
+                        "enabled": true,
+                        "tools": {
+                            "search": {
+                                "description": "Search published job vacancies (vacatures) by status, or by the department that owns them. Use this to answer which roles are currently open, what a department is recruiting for, or which vacancies have closed. Returns the posting only: it holds no candidate or applicant data, which is deliberately not exposed here.",
+                                "scope": "read",
+                                "filters": [
+                                    "status",
+                                    "department"
+                                ],
+                                "readOnlyHint": true,
+                                "destructiveHint": false,
+                                "idempotentHint": true
+                            },
+                            "get": {
+                                "description": "Get one job vacancy in full: title, description, owning department, status, and its published and closing dates. Use it after a search to read the posting text itself. No applicant is reachable from it.",
+                                "scope": "read",
+                                "readOnlyHint": true,
+                                "destructiveHint": false,
+                                "idempotentHint": true
+                            }
+                        }
+                    },
                     "x-openregister-lifecycle": {
                         "field": "status",
                         "initial": "concept",
