@@ -45,3 +45,41 @@ revisited.
 
 A proposal's "Verified against HEAD" line is a **timestamp, not a fact**. Re-measure before acting
 on one, and the command to re-measure is usually in the proposal itself.
+
+---
+
+# Second pass, 2026-09-07 evening: the three are done, and here is what is actually left
+
+All three of "the real backlog" above are built and merged or in review:
+
+| Change | Landed as |
+|---|---|
+| `humaniq-rule-compliance-enforcement` | #364, merged. The audit exits non-zero on a mandatory violation; `RuleEngine`'s docblock and `openspec/specs/hrm-rule-engine/` REQ-RULE-004 stopped claiming a `RuleComplianceGuard` that has never existed. The write-time hook is asked of OpenRegister as ConductionNL/openregister#3493. |
+| `humaniq-manifest-boot-and-http-cost` | #370 + #374, merged. Its premise did not survive measurement: caching `/api/manifest` would have made a wrong answer faster, because the endpoint served the BASE manifest (11 pages, not 113). It now serves a generated, CI-verified effective manifest, then caches it. Section 2 was retired on evidence rather than built: it is a Vue 2 premise and this app is on Vue 3, where props are `shallowReactive`. |
+| `humaniq-mcp-adoption` | #371, merged. 6 schemas of 57, read-only, 12 derived tools, zero writes, every exclusion argued and pinned by mutation-tested unit tests. |
+
+## The nine changes that were NOT in the ten above
+
+They carried ~55 open tasks between them and none had been touched today. Measured against the code, not read:
+
+| Change | Open | What is actually true |
+|---|---|---|
+| `document-dossier-avg` | 10 | **Genuinely unbuilt. Now built** (PR #377): the loonbelastingverklaring retention rule, its corpus entry, the `Employee` storage-limitation ceiling, the dossier widget, seeds and tests. |
+| `humaniq-boot-integrity` | 31 | **Part built, and the unticked boxes hide which part.** Sections 1 and 2 ship: `check:deps-drift` and `check:manifest-sentinels` exist, are wired into `package.json` and pass. Section 3 ships only its local half: `check-bundle-freshness.js` exists and `check:boot-integrity` composes all three, but `js/build-info.json` (3.3) is never emitted and `--sidecar` (3.4) does not exist. 7.1 shipped (`USE_LOCAL_LIB` is opt-IN). 6.2 is real: `package.json` says `0.1.0` while `appinfo/info.xml` says `0.2.6-unstable.…`. |
+| `humaniq-i18n-locale-completeness` | n/a | **Empty shell, removed.** It only ever contained a `.openspec.yaml` stub dated 2026-07-07: no proposal, no tasks, no spec. The locale work it named is done anyway: `check:l10n`, `check:l10n-js` and `check:schema-l10n` all pass over 1,932 keys per catalogue. |
+| `a-time-entry-can-be-booked-to-a-day` | 3 | Cross-app, not humaniq's to close: pipelinq's and planninq's migrations onto the schema, and the uid-to-employeeId resolution both consumers need. |
+| `payroll-run-as-a-flow` | 3 | Its own section 7 "follow-ups", each waiting on another surface (a pay-date field, a schedule adoption recipe, a guard that needs adopted flows first). |
+| `rules-onto-or-decision-tables` | 3 | 6.1 needs a live OpenRegister environment to run the audit before and after; 6.2 depends on 6.1; 6.3 is an explicit "next conversion wave". |
+| `hours-leaf-for-any-object` | 2 | One is dossiq's (`case-kpis-hours` moving onto the leaf). One is ours: an e2e journey for log-hours and the timer. |
+| `beta-surface-alignment` | 2 | 3.1 is an app-owner decision the change itself calls out of scope. 4.1 cannot be edited from this repo: it ships from `docusaurus-preset`'s own package. |
+| `humaniq-namespaces-its-generated-document-slug` | 1 | Operator verification against a live install with existing rows. Not reproducible here: the e2e rig imports no humaniq register. |
+
+## Two instruments that lied, both worth remembering
+
+**`node tests/validate-widget-keys.js` exits 1; `npm run check:widget-keys` exits 0. Same command.** The script builds a throwaway probe bundle, and `@nextcloud/webpack-vue-config` reads `npm_package_name`/`npm_package_version` from the environment. Run bare, those are undefined, the probe build throws, and the script reports every layer-3 key as UNRESOLVED. Task 6.1's "currently FAILS with two unresolved" is that artifact, not a defect. **Invoke these through `npm run`.**
+
+**Local hydra gates were two versions behind and failed gate-22 and gate-53 on a file the branch never touched.** The vendored `conduction/hydra-gates` carried manifest schema 2.32.0, which predates the `display` key #366 added; nc-vue ships 2.33.0. CI resolves the gates at `@main` and was green throughout. Reinstalling took the tree to 2.33.0 and the declared gate count from 88 to 90, so two gates had been absent locally as well. `composer.lock` needed no change: only the installed tree was stale.
+
+## The lesson, restated
+
+The first pass of this document sorted changes by reading their proposals. The correction was to measure. This pass measured again and found the same shape one level down: **an unticked box means nobody ticked it, and nothing more.** `humaniq-boot-integrity` reads as 31 tasks of untouched work and is roughly half shipped; `document-dossier-avg` read the same way and was genuinely unbuilt. The only way to tell them apart is to run the thing.
