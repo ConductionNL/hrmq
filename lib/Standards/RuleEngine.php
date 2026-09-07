@@ -16,8 +16,18 @@
  * contributed by an auto-discovered per-domain CheckProvider under
  * lib/Standards/Checks/. Only rules with a registered predicate are enforced
  * today; the rest of the corpus is catalogued and grows an executable check per
- * wave. The predicates are side-effect free and unit-tested; the lifecycle wiring
- * + object loading live in OCA\Humaniq\Lifecycle\RuleComplianceGuard.
+ * wave. The predicates are side-effect free and unit-tested.
+ *
+ * The engine is ADVISORY today, not enforcing. Nothing blocks a write on a
+ * violation: its one consumer is `occ humaniq:rules:audit`, which reports and
+ * now exits non-zero when a mandatory violation is found, so CI and ops can
+ * gate on it. Write-time enforcement is a design decision recorded in
+ * openspec/changes/archive/2026-09-07-humaniq-rule-compliance-enforcement/design.md,
+ * not something this class does.
+ *
+ * This docblock used to say the lifecycle wiring lived in
+ * `OCA\Humaniq\Lifecycle\RuleComplianceGuard`. No such class has ever
+ * existed, which made the engine read as enforcing when it is not.
  *
  * @category Standards
  * @package  OCA\Humaniq\Standards

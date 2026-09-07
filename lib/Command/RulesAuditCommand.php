@@ -57,7 +57,11 @@ class RulesAuditCommand extends Command {
 	 */
 	protected function configure(): void {
 		$this->setName('humaniq:rules:audit')
-			->setDescription('Audit HR/labour data against the machine-checkable rule corpus.')
+			->setDescription(
+				'Audit HR/labour data against the machine-checkable rule corpus. '
+				. 'Exits 1 when any mandatory-severity violation is found, 0 otherwise, '
+				. 'so CI and ops can gate on it.'
+			)
 			->addOption('jurisdiction', null, InputOption::VALUE_REQUIRED, 'Jurisdiction context (ISO alpha-2)', 'NL');
 
 	}//end configure()
@@ -106,6 +110,25 @@ class RulesAuditCommand extends Command {
 			foreach ($report['topViolatedRules'] as $row) {
 				$output->writeln(sprintf('    %-34s %d', $row['ruleId'], $row['count']));
 			}
+		}
+
+		// The exit code is the point. `RuleEngine::hasMandatory()` exists to say
+		// "a guard must block here" and had no production caller at all: its only
+		// call sites were two test assertions. Without this the audit is a wall
+		// of text nobody can gate on, and a mandatory breach reads the same as a
+		// clean run to any script.
+		//
+		// Only MANDATORY counts. Conditional and recommended are advisory by
+		// definition, and failing on them would make the gate unusable and
+		// therefore ignored.
+		$mandatory = (int)($report['violationsBySeverity']['mandatory'] ?? 0);
+		if ($mandatory > 0) {
+			$output->writeln('');
+			$output->writeln(sprintf(
+				'<error>%d mandatory violation(s): exiting 1.</error>',
+				$mandatory
+			));
+			return 1;
 		}
 
 		return 0;
