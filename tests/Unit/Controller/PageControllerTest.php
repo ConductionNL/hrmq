@@ -174,6 +174,102 @@ class PageControllerTest extends TestCase {
 	}//end testCatchAllAlsoStampsInitialStateViaIndex()
 
 	/**
+	 * The endpoint serves the EFFECTIVE manifest, not the base one.
+	 *
+	 * It used to return `src/manifest.json`, which is 11 pages: the base,
+	 * before the 33 `src/manifest.d/` fragments and the menu-layout
+	 * relocations are merged. The shipping app has 113. Nothing in the SPA
+	 * noticed, because it does that merge itself from the bundle, so this
+	 * endpoint quietly described an app that does not exist.
+	 *
+	 * This test reads the real shipped blob rather than a fixture, on purpose:
+	 * a fixture would pass while the shipped file was wrong, which is exactly
+	 * the failure being fixed.
+	 *
+	 * @return void
+	 *
+	 * @spec exclude framework glue -- manifest passthrough shape
+	 */
+	public function testTheManifestEndpointServesTheEffectiveManifestNotTheBase(): void {
+		$controller = $this->buildController($this->createMock(AdministrationService::class), 'admin');
+
+		$data = $controller->manifest()->getData();
+
+		$this->assertIsArray($data['pages'], 'the manifest must carry a pages array');
+		$this->assertGreaterThan(
+			11,
+			count($data['pages']),
+			'11 pages means the BASE manifest is being served again'
+		);
+
+		$ids = array_column($data['pages'], 'id');
+		$this->assertContains(
+			'TimeEntries',
+			$ids,
+			'TimeEntries exists only in a manifest.d fragment, so its absence means the fragments were not merged'
+		);
+		$this->assertContains(
+			'AssetDetail',
+			$ids,
+			'AssetDetail exists only in a manifest.d fragment, so its absence means the fragments were not merged'
+		);
+
+	}//end testTheManifestEndpointServesTheEffectiveManifestNotTheBase()
+
+	/**
+	 * The response is conditionally cacheable, and privately so.
+	 *
+	 * The ETag is what lets `NotModifiedMiddleware` answer a repeat call with a
+	 * 304 instead of ~290KB of JSON. `private` matters because the endpoint is
+	 * behind a session check: every caller gets identical bytes, but a shared
+	 * cache still must not hold a response served to an authenticated caller.
+	 *
+	 * @return void
+	 *
+	 * @spec exclude framework glue -- manifest passthrough shape
+	 */
+	public function testTheManifestResponseIsConditionallyAndPrivatelyCacheable(): void {
+		$controller = $this->buildController($this->createMock(AdministrationService::class), 'admin');
+
+		$response = $controller->manifest();
+
+		$this->assertNotEmpty($response->getETag(), 'without an ETag no repeat call can ever be answered 304');
+
+		// `getHeaders()` resolves IRequest out of the Nextcloud container to
+		// stamp X-Request-Id, which a pure unit test has not booted. The
+		// private array is the value this method actually set.
+		$headers = (new \ReflectionProperty(\OCP\AppFramework\Http\Response::class, 'headers'));
+		$headers->setAccessible(true);
+
+		$this->assertSame(
+			'private, max-age=3600, must-revalidate',
+			$headers->getValue($response)['Cache-Control'],
+			'a public cache must not be allowed to hold a session-gated response'
+		);
+
+	}//end testTheManifestResponseIsConditionallyAndPrivatelyCacheable()
+
+	/**
+	 * The ETag tracks the CONTENT, not the app version.
+	 *
+	 * A dev rebuild moves the manifest without moving the version, so a cache
+	 * key derived from the version would serve yesterday's pages until the next
+	 * release.
+	 *
+	 * @return void
+	 *
+	 * @spec exclude framework glue -- manifest passthrough shape
+	 */
+	public function testTheManifestEtagIsTheContentHash(): void {
+		$controller = $this->buildController($this->createMock(AdministrationService::class), 'admin');
+
+		$blob = file_get_contents(__DIR__ . '/../../../src/manifest.effective.json');
+
+		$this->assertSame(md5($blob), $controller->manifest()->getETag());
+
+	}//end testTheManifestEtagIsTheContentHash()
+
+	/**
 	 * Build a `PageController` with the given (mocked) service and a session
 	 * resolving to `$userId`; the IInitialState mock records every stamped
 	 * key/value into `$this->stamped`.
