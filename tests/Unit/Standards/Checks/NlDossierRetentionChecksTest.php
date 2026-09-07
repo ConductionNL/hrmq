@@ -152,6 +152,122 @@ class NlDossierRetentionChecksTest extends TestCase {
 	}//end testSeedSpecIsEmpty()
 
 	/**
+	 * `Employee` carries the same rule, scoped to its own two retention dates.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/avg-dsr/spec.md#REQ-DSR-005
+	 */
+	public function testTheRuleIsAlsoRegisteredForEmployee(): void {
+		$checks = NlDossierRetentionChecks::checks();
+
+		$this->assertArrayHasKey('Employee', $checks);
+		$this->assertArrayHasKey(self::RULE_ID, $checks['Employee']);
+
+	}//end testTheRuleIsAlsoRegisteredForEmployee()
+
+	/**
+	 * Vacuous when neither document is on file, or when neither carries a date.
+	 *
+	 * An unpopulated retention field must not read as a breach: the employee
+	 * whose ID copy was never taken has nothing to have destroyed late.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/avg-dsr/spec.md#REQ-DSR-005
+	 */
+	public function testEmployeeIsVacuousWithoutADocumentOrADate(): void {
+		$check = $this->checkFor('Employee');
+		$past = date('Y-m-d', strtotime('-1 day'));
+
+		$this->assertTrue($check([]), 'an empty Employee has no document to hold');
+		$this->assertTrue(
+			$check(['identityDocumentRetainedUntil' => $past, 'loonheffingenVerklaringRetainedUntil' => $past]),
+			'a lapsed date on a document that is not on file is not a breach'
+		);
+		$this->assertTrue(
+			$check(['identityDocumentVerified' => true, 'loonheffingenVerklaringOnFile' => true]),
+			'a document held with no recorded ceiling has no ceiling to breach'
+		);
+
+	}//end testEmployeeIsVacuousWithoutADocumentOrADate()
+
+	/**
+	 * Violated when a held document is past its recorded retention date.
+	 *
+	 * Each document is checked independently, so one lapsed date is enough even
+	 * while the other is still in date.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/avg-dsr/spec.md#REQ-DSR-005
+	 */
+	public function testEmployeeIsViolatedWhenAHeldDocumentIsPastItsCeiling(): void {
+		$check = $this->checkFor('Employee');
+		$past = date('Y-m-d', strtotime('-1 day'));
+		$future = date('Y-m-d', strtotime('+1 year'));
+
+		$this->assertFalse(
+			$check([
+				'identityDocumentVerified' => true,
+				'identityDocumentRetainedUntil' => $past,
+			]),
+			'an ID copy still on file past its retention date is a storage-limitation breach'
+		);
+
+		$this->assertFalse(
+			$check([
+				'identityDocumentVerified' => true,
+				'identityDocumentRetainedUntil' => $future,
+				'loonheffingenVerklaringOnFile' => true,
+				'loonheffingenVerklaringRetainedUntil' => $past,
+			]),
+			'the loonheffingenverklaring is checked independently of the ID copy'
+		);
+
+	}//end testEmployeeIsViolatedWhenAHeldDocumentIsPastItsCeiling()
+
+	/**
+	 * Satisfied while both held documents are still within their retention date.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/avg-dsr/spec.md#REQ-DSR-005
+	 */
+	public function testEmployeeIsSatisfiedWhileBothDatesAreInTheFuture(): void {
+		$check = $this->checkFor('Employee');
+		$future = date('Y-m-d', strtotime('+1 year'));
+
+		$this->assertTrue($check([
+			'identityDocumentVerified' => true,
+			'identityDocumentRetainedUntil' => $future,
+			'loonheffingenVerklaringOnFile' => true,
+			'loonheffingenVerklaringRetainedUntil' => $future,
+		]));
+
+	}//end testEmployeeIsSatisfiedWhileBothDatesAreInTheFuture()
+
+	/**
+	 * An unparseable date is vacuous, not a breach.
+	 *
+	 * Reading a malformed date as "past its ceiling" would report a data-quality
+	 * problem as an AVG finding, which is the wrong finding on the wrong report.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/avg-dsr/spec.md#REQ-DSR-005
+	 */
+	public function testEmployeeIsVacuousOnAnUnparseableDate(): void {
+		$check = $this->checkFor('Employee');
+
+		$this->assertTrue($check([
+			'identityDocumentVerified' => true,
+			'identityDocumentRetainedUntil' => 'not-a-date',
+		]));
+
+	}//end testEmployeeIsVacuousOnAnUnparseableDate()
+
+	/**
 	 * Resolve the `nl-bewaartermijn-verstreken` predicate for one schema.
 	 *
 	 * @param string $schema The schema name.

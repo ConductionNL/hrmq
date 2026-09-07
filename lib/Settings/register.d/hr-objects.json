@@ -5,7 +5,7 @@
             "Employee": {
                 "slug": "Employee",
                 "icon": "AccountTieOutline",
-                "version": "0.8.0",
+                "version": "0.8.1",
                 "title": "Employee",
                 "description": "A natural person employed by the organisation. Carries the identity, payroll, and wage-tax attributes the payroll/wage-tax compliance checks read (BSN, tax table colour, ID-document retention, 30%-ruling, A1 posting, minimum-wage basis).",
                 "type": "object",
@@ -26,6 +26,7 @@
                     "taxTableColor": {"title": "Tax table color", "type": "string", "enum": ["wit", "groen"], "x-enum-labels": {"wit": "White table (employment)", "groen": "Green table (pension / benefit)"}, "description": "Which payroll-tax table applies: the white table for current employment, the green table for a pension or benefit.", "x-notes": "Loonheffing tax table colour (wit = current employment, groen = pensions/benefits). Drives the combined loonheffing/volksverzekeringen levy (nl-loonheffingen-volksverzekeringen)."},
                     "identityDocumentVerified": {"title": "Identity document verified", "type": "boolean", "description": "Tick this once you have checked the employee's ID and filed a copy with the payroll records.", "x-notes": "Whether a valid identity document was verified and copied into the loonadministratie (nl-id-bewaarplicht-5jaar)."},
                     "identityDocumentRetainedUntil": {"title": "Identity document retained until", "type": "string", "format": "date", "nullable": true, "description": "How long the copy of the ID must be kept: at least five years after the year employment ends.", "x-notes": "Date until which the ID-document copy is retained — at least 5 years after the year employment ends (nl-id-bewaarplicht-5jaar)."},
+                    "loonheffingenVerklaringRetainedUntil": {"title": "Payroll tax statement retained until", "type": "string", "format": "date", "nullable": true, "description": "How long the loonheffingenverklaring must be kept: at least five years after the year employment ends.", "x-notes": "Date until which the loonheffingenverklaring (wage-tax statement) is retained - at least 5 years after the year employment ends (nl-loonbelastingverklaring-bewaarplicht-5jaar). Mirrors identityDocumentRetainedUntil."},
                     "loonheffingenVerklaringOnFile": {"title": "Payroll tax statement on file", "type": "boolean", "description": "Whether the employee's loonheffingenverklaring (wage-tax statement) is on file."},
                     "elstamRetrieved": {"title": "Elstam retrieved", "type": "boolean", "description": "Germany: the electronic wage-tax details have been retrieved from ELStAM.", "x-notes": "DE: whether the ELStAM electronic wage-tax features were retrieved (de-elstam-abruf)."},
                     "steuerklasse": {"title": "Steuerklasse", "type": "string", "description": "Germany: the wage-tax class (I–VI) taken from ELStAM.", "x-notes": "DE: Lohnsteuer tax class (Steuerklasse I-VI) applied from ELStAM (de-elstam-abruf)."},

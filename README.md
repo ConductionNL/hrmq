@@ -422,6 +422,69 @@ re-invoked). Be aware of the following:
   admin group) is a shared fast-follow across every admin/HR-gated endpoint in
   this app, not specific to loonbeslag.
 
+## The employee dossier and its retention clocks
+
+An employee's dossier is not a schema. It is the set of records that already
+point at `Employee`, surfaced on `EmployeeDetail`: contracts, payslips,
+timesheets, expenses, leave, assets, performance and, since this change, the
+`HrGeneratedDocument` list (loonstroken, jaaropgaven and the generated letters),
+filtered on `employeeId` and newest first.
+
+That is deliberate. There is no `dossier-document`, `document-category`,
+`retention-policy`, `acl-grant`, `signature-request` or
+`destruction-certificate` schema anywhere in this app, and their absence is a
+decision rather than a backlog: a dossier assembled from the records that
+already exist cannot drift from them, and a second document index would.
+
+### Two rules, opposite ends of one clock
+
+Two retention duties are modelled on `Employee`, and they are siblings:
+
+| Rule | Field | Source | Severity |
+| --- | --- | --- | --- |
+| `nl-id-bewaarplicht-5jaar` | `identityDocumentRetainedUntil` | Handboek Loonheffingen | mandatory |
+| `nl-loonbelastingverklaring-bewaarplicht-5jaar` | `loonheffingenVerklaringRetainedUntil` | Uitvoeringsregeling loonbelasting 2011 art. 12.1 lid 5 | recommended |
+
+Both run to the END of the fifth calendar year after employment ends, not to
+the fifth anniversary, and both are vacuous while the employee is still
+employed because the clock has not started.
+
+The loonbelastingverklaring rule is additionally gated on
+`loonheffingenVerklaringOnFile`. A retention duty attaches to a document that
+exists, so an employee with no statement is vacuous here rather than in
+violation. Whether a statement must be on file at all is a different
+obligation, and no corpus rule covers it yet.
+
+`nl-bewaartermijn-verstreken` is the **other end of the same clock**. AVG
+storage limitation (art. 5(1)(e)) makes a bewaarplicht also a bewaartermijn:
+once the period lapses, continuing to hold the copy needs its own
+justification. Its `Employee` entry fires when a document is *still on file*
+and *past* its recorded date. It is scoped differently from the rule's
+payroll-family entries, which read OpenRegister's `@self.retention`
+`archiefactiedatum`: an `Employee` has no such ceiling, its two retention dates
+ARE the ceiling, so passing one through the payroll predicate would read every
+employee as vacuous.
+
+The two never fire on one cause. An unpopulated retention field is a
+bewaarplicht finding and is vacuous for the ceiling; a populated, lapsed one is
+a ceiling finding and satisfies the bewaarplicht. The seeded
+`employee-loonverklaring-verlopen` and `employee-id-bewaartermijn-verstreken`
+demo records exist to hold that line, one each.
+
+### What is NOT here
+
+- **`HrGeneratedDocument` carries no `retainedUntil` field.** Retention
+  protection for a generated PDF is a **legal hold inherited from the record it
+  was generated from** (`PayrollRetentionGuardService::inheritLegalHold()`), not
+  a date copied onto the document. A copied date drifts from its source; an
+  inherited hold cannot.
+- **The four letter-type documents carry no retention signal at all**, sourced
+  or unsourced. Inventing a period for them would put an uncited number in a
+  compliance report, and every period in the corpus cites a specific legal
+  source.
+- **No destruction job.** These rules report; nothing in humaniq deletes an
+  employee document on a timer.
+
 ## AVG data-subject rights (inzage/portabiliteit, vergetelheid, rectificatie)
 
 humaniq orchestrates the four AVG (GDPR) data-subject rights — Art 15 inzage,

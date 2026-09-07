@@ -4295,6 +4295,40 @@
 						"type": "object-list"
 					},
 					{
+						"content": {
+							"columns": [
+								{
+									"key": "documentType",
+									"label": "Type"
+								},
+								{
+									"key": "generatedAt",
+									"label": "Generated"
+								},
+								{
+									"key": "status",
+									"label": "Status"
+								}
+							],
+							"emptyText": "No documents generated for this employee yet",
+							"filter": {
+								"employeeId": "@objectId"
+							},
+							"limit": 25,
+							"register": "humaniq",
+							"rowRoute": "GeneratedDocumentDetail",
+							"schema": "HrGeneratedDocument",
+							"sort": {
+								"dir": "desc",
+								"field": "generatedAt"
+							}
+						},
+						"icon": "FileDocumentMultipleOutline",
+						"id": "object-list-10",
+						"title": "Generated documents",
+						"type": "object-list"
+					},
+					{
 						"icon": "FolderOutline",
 						"id": "files",
 						"title": "Personnel file",
