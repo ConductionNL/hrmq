@@ -225,7 +225,11 @@ The deeper point is unchanged: the deps-drift check added here would have PASSED
       made `npm run build` exit **1**, and because `postbuild` only runs on success the sidecar was
       left untouched rather than stamped against a failed build. Make a webpack build with errors fail the npm script, rather than exiting 0 with a stale
       `js/` on disk.
-- [ ] 7.3 Extend `check-node-deps-drift.js` to report WHICH source the last build resolved
+- [x] 7.3 Done, in `js/build-info.json` rather than in `check-node-deps-drift.js`: the question is
+      about the BUILD, and only the build knows the answer, so the build records it (`libSource`,
+      `libVersion`) and `--sidecar` reports it. A bundle built from a sibling `../nextcloud-vue`
+      checkout FAILS under CI and only warns locally, where the flag is a deliberate choice.
+      Original wording: Extend `check-node-deps-drift.js` to report WHICH source the last build resolved
       `@conduction/nextcloud-vue` from — the check currently proves the tree is correct, not that
       the bundle came from it.
 
@@ -276,17 +280,14 @@ in that sentence.
 
 ## 8. Measured 2026-09-07, still genuinely open
 
-Three tasks in this change remain real work, and they are the only ones:
+Two tasks in this change remain real work, and they are the only ones (7.3 was the third and is
+now done):
 
 - **6.2 version drift.** `package.json` says `0.1.0` and has since the app was scaffolded;
   `appinfo/info.xml` says `0.2.6-unstable.20260905095326`. Deliberately NOT fixed here: the release
   machinery owns `info.xml`'s version and bumps it on a treadmill, so changing `package.json` to
   match is a release-tooling decision, not a build-integrity one. `js/build-info.json` sidesteps it
   by reading `info.xml`, which is the version that actually ships.
-- **7.3** `check-node-deps-drift.js` reporting WHICH source the last build resolved
-  `@conduction/nextcloud-vue` from. The check proves the tree is correct, not that the bundle came
-  from it. Partly addressed by `js/build-info.json`'s `sourceHash`, which proves the bundle came
-  from this `src/`; the dependency provenance half is still open.
 - **7.5** converting `tests/validate-widget-keys.js` to `.mjs` with a dynamic import.
 
 Everything else in sections 1 to 7 is either shipped or superseded, with the evidence recorded
