@@ -182,20 +182,36 @@ class PageController extends Controller {
 	}//end catchAll()
 
 	/**
-	 * Return the bundled app manifest as JSON (ADR-024 §4).
+	 * Return the EFFECTIVE app manifest as JSON (ADR-024 §4).
+	 *
+	 * This used to serve `src/manifest.json`, which is the BASE manifest: 11
+	 * pages, before the 33 `src/manifest.d/` fragments and the
+	 * `src/menu-layout.json` relocations are merged in. The shipping app has
+	 * 113. The SPA never noticed, because it imports the base at build time and
+	 * runs `buildManifest()` itself at boot, so the only reader this endpoint
+	 * ever had was a warm-up curl in ci-seed.sh checking a status code. Anyone
+	 * who trusted it got a manifest describing an app that does not exist.
+	 *
+	 * It now serves `src/manifest.effective.json`, which
+	 * `tests/verify-manifest-parity.js` emits from that same `buildManifest()`
+	 * and re-verifies on every CI run, so PHP never re-implements the merge and
+	 * cannot drift from it.
+	 *
+	 * There is deliberately NO fallback to the base manifest. Falling back
+	 * silently is the exact defect this method is being fixed for: it would
+	 * restore the wrong answer and report success while doing it.
 	 *
 	 * @return JSONResponse
 	 *
-	 * @spec exclude framework glue — returns the bundled src/manifest.json blob unchanged
+	 * @spec exclude framework glue — serves the generated effective manifest blob
 	 *
-	 * @contract exclude this serves src/manifest.json back verbatim, so its
-	 * response shape IS that file and is already validated on every run by
-	 * `npm run check:manifest` against the app-manifest-v2 JSON Schema — a
-	 * far stronger check than an HTTP contract test asserting a couple of
-	 * keys. The only behaviour of this method's own is the 401 for an
-	 * unauthenticated caller, which is covered by PageControllerTest. A
-	 * contract test here would restate the schema check in a weaker form and
-	 * go stale the moment the manifest grows a page.
+	 * @contract exclude this serves src/manifest.effective.json back verbatim,
+	 * so its response shape IS that file, and that file is validated on every
+	 * run by `npm run check:manifest` against the app-manifest-v2 JSON Schema
+	 * and re-derived by `npm run check:manifest-parity` — both far stronger
+	 * than an HTTP contract test asserting a couple of keys. The behaviour
+	 * this method owns is the 401, the 500 on a missing blob, and the
+	 * ETag/Cache-Control pair, all covered by PageControllerTest.
 	 */
 	#[NoAdminRequired]
 	#[NoCSRFRequired]
@@ -204,11 +220,47 @@ class PageController extends Controller {
 			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
 		}
 
-		$manifestPath = __DIR__ . '/../../src/manifest.json';
-		$manifestJson = file_get_contents($manifestPath);
-		$manifest = json_decode($manifestJson, associative: true);
+		$manifestPath = __DIR__ . '/../../src/manifest.effective.json';
+		if (is_readable($manifestPath) === false) {
+			return new JSONResponse(
+				data: ['error' => 'Effective manifest missing from this build'],
+				statusCode: Http::STATUS_INTERNAL_SERVER_ERROR
+			);
+		}
 
-		return new JSONResponse($manifest);
+		$manifestJson = file_get_contents($manifestPath);
+		if ($manifestJson === false) {
+			return new JSONResponse(
+				data: ['error' => 'Effective manifest missing from this build'],
+				statusCode: Http::STATUS_INTERNAL_SERVER_ERROR
+			);
+		}
+
+		$manifest = json_decode($manifestJson, associative: true);
+		if (is_array($manifest) === false) {
+			return new JSONResponse(
+				data: ['error' => 'Effective manifest is not valid JSON'],
+				statusCode: Http::STATUS_INTERNAL_SERVER_ERROR
+			);
+		}
+
+		$response = new JSONResponse($manifest);
+
+		// The blob only changes when the app is rebuilt, so hash its CONTENT
+		// rather than the app version: a dev rebuild moves the manifest without
+		// moving the version, and a cache keyed on the version would then serve
+		// yesterday's pages. `Response::setETag()` takes the raw value and adds
+		// the quotes itself; NotModifiedMiddleware compares it against
+		// If-None-Match and turns a match into a 304, so no 304 is hand-rolled
+		// here.
+		$response->setETag(md5($manifestJson));
+
+		// `private`, not `public`: the endpoint is behind a session check, and a
+		// shared cache must not hold a response served to an authenticated
+		// caller even though every caller gets the same bytes.
+		$response->addHeader('Cache-Control', 'private, max-age=3600, must-revalidate');
+
+		return $response;
 	}//end manifest()
 
 }//end class

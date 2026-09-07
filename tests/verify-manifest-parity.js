@@ -54,6 +54,20 @@ const FIXTURE_DIR = path.join(
 );
 const MANIFEST_D = path.join(REPO_ROOT, "src", "manifest.d");
 
+// The effective manifest, SHIPPED. `GET /apps/humaniq/api/manifest` used to
+// serve src/manifest.json, which is the base: 11 pages, before the 33
+// manifest.d fragments and the menu-layout relocations are merged in. The SPA
+// never noticed because it does that merge itself at boot, from the bundle. Any
+// other reader got a manifest that did not describe this app.
+//
+// The merge is buildManifest()'s, and it stays buildManifest()'s: this file
+// already computes the exact effective manifest webpack would, so it emits it
+// rather than PHP re-implementing the merge and drifting from it.
+//
+// It is COMMITTED, not built, so a fresh checkout and a packaged release both
+// have it, and `check:manifest-parity` fails in CI the moment it drifts.
+const SHIPPED_EFFECTIVE = path.join(REPO_ROOT, "src", "manifest.effective.json");
+
 /**
  * Deep-sort an arbitrary JSON value's object keys so two structurally equal
  * values serialise identically (array order is preserved — it is meaningful
@@ -177,8 +191,15 @@ function writeBaseline(effective) {
 			JSON.stringify(effective.deepLinks, null, "\t") + "\n",
 		);
 	}
+	fs.writeFileSync(
+		SHIPPED_EFFECTIVE,
+		JSON.stringify(canonical(effective), null, "\t") + "\n",
+	);
 	console.log(
 		`[parity] baseline rewritten: ${pages.length} pages, ${effective.menu.length} menu roots`,
+	);
+	console.log(
+		`[parity] shipped effective manifest rewritten: src/manifest.effective.json (${effective.pages.length} pages)`,
 	);
 }
 
@@ -329,6 +350,31 @@ function main() {
 		console.log(
 			`[parity] check 4 — static/dynamic collision routes: ${resolved}/${collisionPairs.length} resolve to the static page`,
 		);
+	}
+
+	// --- Check 5: the SHIPPED effective manifest is the effective manifest ---
+	//
+	// Without this the file is a snapshot nobody re-cuts, and the endpoint goes
+	// back to serving something that is not the app. A missing file is a
+	// failure, not a reason to fall back: a silent fallback to the base
+	// manifest is the defect this check exists to prevent.
+	if (fs.existsSync(SHIPPED_EFFECTIVE) === false) {
+		failures.push(
+			"src/manifest.effective.json is missing — the manifest endpoint has nothing correct to serve. Run `node tests/verify-manifest-parity.js --update`.",
+		);
+	} else {
+		const shipped = fs.readFileSync(SHIPPED_EFFECTIVE, "utf8");
+		const expected =
+			JSON.stringify(canonical(effective), null, "\t") + "\n";
+		if (shipped !== expected) {
+			failures.push(
+				"src/manifest.effective.json is STALE — it no longer matches the manifest this build produces. Run `node tests/verify-manifest-parity.js --update`.",
+			);
+		} else {
+			console.log(
+				`[parity] check 5 — shipped effective manifest: current (${effective.pages.length} pages)`,
+			);
+		}
 	}
 
 	// --- Verdict ------------------------------------------------------------
