@@ -70,7 +70,7 @@ They carried ~55 open tasks between them and none had been touched today. Measur
 | `a-time-entry-can-be-booked-to-a-day` | 3 | Cross-app, not humaniq's to close: pipelinq's and planninq's migrations onto the schema, and the uid-to-employeeId resolution both consumers need. |
 | `payroll-run-as-a-flow` | 3 | Its own section 7 "follow-ups", each waiting on another surface (a pay-date field, a schedule adoption recipe, a guard that needs adopted flows first). |
 | `rules-onto-or-decision-tables` | 3 | 6.1 needs a live OpenRegister environment to run the audit before and after; 6.2 depends on 6.1; 6.3 is an explicit "next conversion wave". |
-| `hours-leaf-for-any-object` | 2 | One is dossiq's (`case-kpis-hours` moving onto the leaf). One is ours: an e2e journey for log-hours and the timer. |
+| `hours-leaf-for-any-object` | 2 | Both need a HOST app, and this repo's e2e rig has none. One is dossiq's (`case-kpis-hours` moving onto the leaf). The other reads as ours, an e2e journey for log-hours and the timer, but the leaf is the widget humaniq supplies to OTHER apps, and `code-quality.yml` passes `additional-apps: [openregister]` only. There is no seeded host object to log hours against without adding a second app to the shared workflow input. |
 | `beta-surface-alignment` | 2 | 3.1 is an app-owner decision the change itself calls out of scope. 4.1 cannot be edited from this repo: it ships from `docusaurus-preset`'s own package. |
 | `humaniq-namespaces-its-generated-document-slug` | 1 | Operator verification against a live install with existing rows. Not reproducible here: the e2e rig imports no humaniq register. |
 
