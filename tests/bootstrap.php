@@ -45,14 +45,78 @@ if (is_dir(__DIR__ . '/../vendor/nextcloud/ocp/OCP') === true) {
 // still wins.
 require_once __DIR__ . '/stubs/DoctrineStubs.php';
 
-// Bootstrap Nextcloud when a full server environment is available. The include
-// is wrapped in a try/catch so unit tests still run in standalone mode (e.g. a
-// bare CI container without an installed Nextcloud).
-if (file_exists(__DIR__ . '/../../../lib/base.php') === true) {
-	try {
-		require_once __DIR__ . '/../../../lib/base.php';
-	} catch (\Throwable $e) {
-		// Nextcloud not fully installed — unit tests continue with vendor stubs only.
+/**
+ * Tell whether a Nextcloud root is an INSTALLED instance, not just a source tree.
+ *
+ * lib/base.php from a tree that was never installed still declares `OC` and
+ * builds `\OC::$server` before it throws. That server cannot be undone
+ * (`OC::$server` is a typed static), so from then on every container lookup in
+ * the code under test hits a container that knows none of this app's
+ * registrations and autowires from scratch. On 2026-09-08 that recursion took
+ * 19 GB of RAM in openregister. The decision therefore has to be made BEFORE
+ * base.php is loaded, and the only cheap signal is the `installed` flag.
+ *
+ * @param string $ncRoot Candidate Nextcloud root.
+ *
+ * @return bool True when config/config.php declares `installed => true`.
+ */
+function humaniq_nc_root_is_installed(string $ncRoot): bool {
+	$configFile = $ncRoot . '/config/config.php';
+	if (is_file($configFile) === false || filesize($configFile) === 0) {
+		return false;
+	}
+
+	// The config file is a plain `$CONFIG = [...]` script; including it inside a
+	// closure keeps `$CONFIG` out of the global scope.
+	$config = (static function () use ($configFile): array {
+		$CONFIG = [];
+		try {
+			include $configFile;
+		} catch (\Throwable) {
+			return [];
+		}
+
+		if (is_array($CONFIG) === false) {
+			return [];
+		}
+
+		return $CONFIG;
+	})();
+
+	return ($config['installed'] ?? false) === true;
+}
+
+// Bootstrap Nextcloud only when the tree above us is an INSTALLED server. A bare
+// source tree is skipped, so the suite stays in pure-unit mode instead of running
+// against a half-built container. A root that passes the check and still fails to
+// boot stops the run: there is no way back to pure-unit mode once base.php has
+// declared OC.
+$humaniqNcRoot = dirname(__DIR__, 3);
+if (is_file($humaniqNcRoot . '/lib/base.php') === true) {
+	if (humaniq_nc_root_is_installed($humaniqNcRoot) === false) {
+		fwrite(
+			STDERR,
+			sprintf(
+				"[humaniq/tests/bootstrap] Nextcloud tree at %s is not installed (config/config.php lacks installed => true);"
+				. " skipping lib/base.php and running with composer autoload plus stubs only.\n",
+				$humaniqNcRoot
+			)
+		);
+	} else {
+		try {
+			require_once $humaniqNcRoot . '/lib/base.php';
+		} catch (\Throwable $e) {
+			fwrite(
+				STDERR,
+				sprintf(
+					"[humaniq/tests/bootstrap] Nextcloud at %s could not be initialised (%s).\n"
+					. "  A half-booted server cannot be undone, so the run stops here rather than pretending to be pure-unit.\n",
+					$humaniqNcRoot,
+					$e->getMessage()
+				)
+			);
+			exit(1);
+		}
 	}
 }
 
