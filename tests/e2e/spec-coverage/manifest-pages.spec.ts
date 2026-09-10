@@ -222,6 +222,28 @@ const IGNORED_CONSOLE_PATTERNS: RegExp[] = [
 	// mid-run it serves the 404 HTML page, tripping a MIME-type refusal.
 	/Refused to apply style/i,
 	/is not a supported stylesheet MIME type/i,
+	// AN UNINSTALLED OPTIONAL INTEGRATION IS NOT A DEFECT. OpenRegister
+	// answers these two deliberately, and a bare CI instance earns every one
+	// of them:
+	//
+	//   501 — an optional NEXTCLOUD APP is not installed. Thirteen link
+	//         controllers return `{code: "APP_NOT_AVAILABLE"}` with a 501:
+	//         Deck, Talk, Poll, Photo, Map, Collective, Cospend, Bookmark,
+	//         Analytics, Flow, OpenProject, TimeTracker, Emails. Each detail
+	//         page asks all of them, so nine pages produced 112 of these.
+	//   503 — an optional external SOURCE is unconfigured or down, relayed
+	//         with `details.cause`: the LLM chat provider, xWiki, the KvK
+	//         company lookup, the BRP-haalcentraal person lookup.
+	//
+	// This is the same class as the 500 and 404 above, and it is why those
+	// are here: a page cannot be blamed for an integration the instance never
+	// installed. The browser logs any failed subresource as a console error,
+	// and the console TEXT carries no URL, so these cannot be narrowed by
+	// endpoint here. The `failed` list printed with every failure names the
+	// URL and status, so a 501 from something that is NOT an optional
+	// integration is still diagnosable in one read.
+	/the server responded with a status of 501/i,
+	/the server responded with a status of 503/i,
 ];
 
 function attachConsoleSpy(page: Page): {
