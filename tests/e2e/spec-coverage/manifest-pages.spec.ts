@@ -224,8 +224,24 @@ const IGNORED_CONSOLE_PATTERNS: RegExp[] = [
 	/is not a supported stylesheet MIME type/i,
 ];
 
-function attachConsoleSpy(page: Page): { errors: string[] } {
+function attachConsoleSpy(page: Page): {
+	errors: string[];
+	failed: string[];
+} {
 	const errors: string[] = [];
+	// NAME THE REQUEST BEHIND THE ERROR. A resource console message reads
+	// "Failed to load resource: the server responded with a status of 501"
+	// and carries NO URL, so ten detail pages failing on `development` said
+	// only that something 501'd. Which endpoint, and whose, was unanswerable
+	// from the log — and the ignore list above already tolerates 500 and 404,
+	// so "platform noise or our bug" is exactly the distinction that matters
+	// and exactly the one the message could not make.
+	const failed: string[] = [];
+	page.on("response", (res) => {
+		if (res.status() >= 400) {
+			failed.push(`${res.status()} ${res.request().method()} ${res.url()}`);
+		}
+	});
 	page.on("console", (msg: ConsoleMessage) => {
 		const text = msg.text();
 		if (IGNORED_CONSOLE_PATTERNS.some((rx) => rx.test(text))) {
@@ -238,7 +254,7 @@ function attachConsoleSpy(page: Page): { errors: string[] } {
 	page.on("pageerror", (err) => {
 		errors.push(`pageerror: ${err.message}`);
 	});
-	return { errors };
+	return { errors, failed };
 }
 
 /* --------------------------------------------------------------------- *
@@ -362,7 +378,7 @@ test.describe("manifest pages — schema-driven render", () => {
 					"(nextcloud-vue#705 / hrmq#112). Auto-enables when the dependency moves.",
 			);
 
-			const { errors } = attachConsoleSpy(page);
+			const { errors, failed } = attachConsoleSpy(page);
 			const register = pg.config!.register!;
 			const schema = pg.config!.schema!;
 
@@ -420,7 +436,8 @@ test.describe("manifest pages — schema-driven render", () => {
 
 			expect(
 				errors,
-				`${pg.id} (${pg.route}) emitted console errors: ${errors.join(" | ")}`,
+				`${pg.id} (${pg.route}) emitted console errors: ${errors.join(" | ")}`
+					+ `\n  requests that failed: ${failed.join("\n    ") || "(none)"}`,
 			).toEqual([]);
 			detailOutcome.visited++;
 		});
@@ -525,7 +542,7 @@ test.describe("manifest pages — schema-driven render", () => {
 		test(`[${pg.type}] ${pg.id} mounts at ${pg.route}`, async ({
 			page,
 		}) => {
-			const { errors } = attachConsoleSpy(page);
+			const { errors, failed } = attachConsoleSpy(page);
 
 			const root = await rootUrl(page);
 			// The in-app router runs in HISTORY mode (`mode: 'history'`,
@@ -575,7 +592,8 @@ test.describe("manifest pages — schema-driven render", () => {
 			// No fatal console errors during initial mount.
 			expect(
 				errors,
-				`${pg.id} (${pg.route}) emitted console errors: ${errors.join(" | ")}`,
+				`${pg.id} (${pg.route}) emitted console errors: ${errors.join(" | ")}`
+					+ `\n  requests that failed: ${failed.join("\n    ") || "(none)"}`,
 			).toEqual([]);
 		});
 	}
