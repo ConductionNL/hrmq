@@ -105,6 +105,13 @@
     "docsUrl": "openspec/specs/goals-okr/spec.md"
   },
   {
+    "slug": "hours-leaf",
+    "title": "Hours Leaf",
+    "summary": "Answer one question about any object in the fleet: how much time has been spent on it, by everyone and by you, and let a reader add to that figure without leaving the page they are on.",
+    "status": "beta",
+    "docsUrl": "openspec/specs/hours-leaf/spec.md"
+  },
+  {
     "slug": "hr-signals",
     "title": "Hr Signals",
     "summary": "Stop temporary contracts from lapsing unnoticed (Spectr hrmq-canon-hr-signals, 3/9 competitor coverage): the rule corpus signals a temporary contract ending within 60 days that has no successor, and enforces the statutory aanzegplicht (written notice one month before the end of a ≥6-month fixed term, BW 7:668.",

@@ -33,8 +33,15 @@ not, so the skip was silent and total.
 
 The parity gate compares the two halves of the descriptor against each other. It
 cannot see that neither half is on the page, which is why both halves were green
-while the surface was absent. That is the shape ADR-113 names: the instruments
-agree and the feature is not there.
+while the surface was absent.
+
+That is NOT ADR-113, and it is worth being precise about which one it is.
+ADR-113 decides that a widget leaning on another app declares `requiredApp`,
+renders a set-up state rather than a number, and issues no request. It covers the
+tile that read `0`, which is the OTHER half of this change. It does not cover a
+check that compares two things to each other without asking whether either is
+present, which is what happened here and has no decision recorded against it
+yet.
 
 ## Endpoint shape
 
