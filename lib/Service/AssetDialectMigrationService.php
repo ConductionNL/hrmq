@@ -133,9 +133,18 @@ class AssetDialectMigrationService {
 	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	public function migrate(): array {
+		// Resolved ONCE, here, and deliberately OUTSIDE every try below.
+		// `register()` raises when this instance carries no humaniq register,
+		// and `loadAll()` plus both write paths wrap their work in
+		// `catch (\Throwable)` — so calling it inside one of those turned the
+		// raise into a logged warning and a per-row "skipped" reason, and the
+		// migration reported a completed run that had moved nothing. Caught by
+		// AbsentRegisterFailureDirectionTest before this shipped.
+		$register = $this->register();
+
 		return [
-			'Asset' => $this->migrateAssets(),
-			'AssetAssignment' => $this->migrateAssignments(),
+			'Asset' => $this->migrateAssets($register),
+			'AssetAssignment' => $this->migrateAssignments($register),
 		];
 
 	}//end migrate()
@@ -143,14 +152,16 @@ class AssetDialectMigrationService {
 	/**
 	 * Migrate every `Asset` row.
 	 *
+	 * @param string $register The resolved register slug, from migrate().
+	 *
 	 * @return array<string, mixed>
 	 *
 	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
-	private function migrateAssets(): array {
+	private function migrateAssets(string $register): array {
 		$report = $this->emptyReport();
 
-		foreach ($this->loadAll('Asset') as $row) {
+		foreach ($this->loadAll('Asset', $register) as $row) {
 			$report['inspected']++;
 			$id = $this->idOf($row);
 			if ($id === '') {
@@ -167,7 +178,7 @@ class AssetDialectMigrationService {
 				continue;
 			}
 
-			$this->writeAssetRow(id: $id, row: $row, mapped: $mapped, report: $report);
+			$this->writeAssetRow(id: $id, row: $row, mapped: $mapped, report: $report, register: $register);
 		}//end foreach
 
 		return $report;
@@ -204,7 +215,7 @@ class AssetDialectMigrationService {
 	 *
 	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
-	private function writeAssetRow(string $id, array $row, array $mapped, array &$report): void {
+	private function writeAssetRow(string $id, array $row, array $mapped, array &$report, string $register): void {
 		if ($mapped['nonStatusChanged'] === false && $mapped['statusChanged'] === false) {
 			$report['alreadyCurrent']++;
 			return;
@@ -213,7 +224,7 @@ class AssetDialectMigrationService {
 		try {
 			$this->objectService()->saveObject(
 				object: $this->stripSelf($mapped['final']),
-				register: $this->register(),
+				register: $register,
 				schema: 'Asset',
 				uuid: $id,
 				_rbac: false,
@@ -243,10 +254,10 @@ class AssetDialectMigrationService {
 	 *
 	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
-	private function migrateAssignments(): array {
+	private function migrateAssignments(string $register): array {
 		$report = $this->emptyReport();
 
-		foreach ($this->loadAll('AssetAssignment') as $row) {
+		foreach ($this->loadAll('AssetAssignment', $register) as $row) {
 			$report['inspected']++;
 			$id = $this->idOf($row);
 			if ($id === '') {
@@ -271,7 +282,7 @@ class AssetDialectMigrationService {
 			try {
 				$this->objectService()->saveObject(
 					object: $this->stripSelf($mapped['row']),
-					register: $this->register(),
+					register: $register,
 					schema: 'AssetAssignment',
 					uuid: $id,
 					_rbac: false,
@@ -339,10 +350,10 @@ class AssetDialectMigrationService {
 	 *
 	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
-	private function loadAll(string $schema): array {
+	private function loadAll(string $schema, string $register): array {
 		try {
 			$rows = $this->objectService()
-				->setRegister($this->register())
+				->setRegister($register)
 				->setSchema($schema)
 				->findAll(['limit' => self::LIMIT], false, false);
 		} catch (\Throwable $e) {
