@@ -45,8 +45,8 @@ declare(strict_types=1);
 
 namespace OCA\Humaniq\Service;
 
-use OCA\Humaniq\AppInfo\Application;
 use OCA\Humaniq\Standards\RuleEngine;
+use OCA\Humaniq\Support\RegisterSlugLookup;
 use OCP\IAppConfig;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -94,15 +94,20 @@ class RosterCheckService {
 			return $this->emptyReport();
 		}
 
+		$register = $this->registerSlug();
+		if ($register === null) {
+			return $this->unresolvedRegisterReport();
+		}
+
 		$rosters = [];
-		foreach ($this->loadAll('Roster') as $roster) {
+		foreach ($this->loadAll('Roster', $register) as $roster) {
 			if ((string)($roster['id'] ?? $roster['@self']['id'] ?? '') === $rosterId) {
 				$rosters[] = $roster;
 				break;
 			}
 		}
 
-		return $this->evaluateRosters($rosters, $context);
+		return $this->evaluateRosters($rosters, $context, $register);
 	}//end checkRoster()
 
 	/**
@@ -124,8 +129,13 @@ class RosterCheckService {
 			return $this->emptyReport();
 		}
 
+		$register = $this->registerSlug();
+		if ($register === null) {
+			return $this->unresolvedRegisterReport();
+		}
+
 		$rosters = [];
-		foreach ($this->loadAll('Roster') as $roster) {
+		foreach ($this->loadAll('Roster', $register) as $roster) {
 			if ((string)($roster['period'] ?? '') !== $period) {
 				continue;
 			}
@@ -139,7 +149,7 @@ class RosterCheckService {
 			$rosters[] = $roster;
 		}
 
-		return $this->evaluateRosters($rosters, $context);
+		return $this->evaluateRosters($rosters, $context, $register);
 	}//end checkPeriod()
 
 	/**
@@ -150,10 +160,12 @@ class RosterCheckService {
 	 *
 	 * @param array<int, array<string, mixed>> $rosters The resolved Roster row(s).
 	 * @param array<string, mixed> $context Evaluation context (e.g. jurisdiction).
+	 * @param string $register The slug this instance's humaniq register answers
+	 *                         to, already resolved by the caller.
 	 *
-	 * @return array<string, mixed> {rostersChecked, assignmentsChecked, violations, mandatoryViolations}.
+	 * @return array<string, mixed> {rostersChecked, assignmentsChecked, violations, mandatoryViolations, registerResolved}.
 	 */
-	private function evaluateRosters(array $rosters, array $context): array {
+	private function evaluateRosters(array $rosters, array $context, string $register): array {
 		if ($rosters === []) {
 			return $this->emptyReport();
 		}
@@ -167,7 +179,7 @@ class RosterCheckService {
 		}
 
 		$assignments = [];
-		foreach ($this->loadAll('RosterAssignment') as $assignment) {
+		foreach ($this->loadAll('RosterAssignment', $register) as $assignment) {
 			$rosterId = (string)($assignment['rosterId'] ?? '');
 			if ($rosterId !== '' && isset($rosterIds[$rosterId]) === true) {
 				$assignments[] = $assignment;
@@ -175,7 +187,7 @@ class RosterCheckService {
 		}
 
 		$shiftsById = [];
-		foreach ($this->loadAll('Shift') as $shift) {
+		foreach ($this->loadAll('Shift', $register) as $shift) {
 			$id = (string)($shift['id'] ?? $shift['@self']['id'] ?? '');
 			if ($id !== '') {
 				$shiftsById[$id] = $shift;
@@ -194,6 +206,7 @@ class RosterCheckService {
 			'assignmentsChecked' => count($projected),
 			'violations' => [],
 			'mandatoryViolations' => 0,
+			'registerResolved' => true,
 		];
 
 		foreach ($projected as $assignment) {
@@ -286,7 +299,15 @@ class RosterCheckService {
 	}//end buildLocalIndex()
 
 	/**
-	 * The zero-result report shape.
+	 * The zero-result report shape: the register WAS read, and it held no
+	 * matching roster.
+	 *
+	 * `registerResolved` is what tells this apart from
+	 * {@see unresolvedRegisterReport()}, whose zeros mean nothing was read at
+	 * all. Both used to be this one shape, and a caller could not tell "no
+	 * roster matched" from "this instance has no humaniq register" — which is
+	 * the defect ConductionNL/openregister#3579 describes: a panel of zeros
+	 * that reads as a clean result.
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -296,9 +317,38 @@ class RosterCheckService {
 			'assignmentsChecked' => 0,
 			'violations' => [],
 			'mandatoryViolations' => 0,
+			'registerResolved' => true,
 		];
 
 	}//end emptyReport()
+
+	/**
+	 * The report for an instance that carries no humaniq register.
+	 *
+	 * Nothing was read, so nothing can be said about compliance. This is NOT
+	 * the same answer as "checked, and clean": it carries
+	 * `registerResolved => false` and an `error` naming the cause, so a caller
+	 * (and `occ humaniq:roster:check`) reports an unanswerable check rather
+	 * than a passing one.
+	 *
+	 * @return array<string, mixed>
+	 */
+	private function unresolvedRegisterReport(): array {
+		$message = 'Het humaniq-register is niet gevonden op deze instance, dus er is niets gecontroleerd. '
+			. 'Voer de humaniq-reparatiestap uit of stel het register in bij de humaniq-instellingen.';
+
+		$this->logger->error('RosterCheckService: ' . $message);
+
+		return [
+			'rostersChecked' => 0,
+			'assignmentsChecked' => 0,
+			'violations' => [],
+			'mandatoryViolations' => 0,
+			'registerResolved' => false,
+			'error' => $message,
+		];
+
+	}//end unresolvedRegisterReport()
 
 	/**
 	 * Load all objects of a schema (capped), as plain arrays. Never throws —
@@ -306,13 +356,17 @@ class RosterCheckService {
 	 * idiom).
 	 *
 	 * @param string $schema The schema name.
+	 * @param string $register The slug this instance's humaniq register answers
+	 *                         to, already resolved by the caller — so an empty
+	 *                         result here means an empty schema, never an
+	 *                         unreachable register.
 	 *
 	 * @return array<int, array<string, mixed>>
 	 */
-	private function loadAll(string $schema): array {
+	private function loadAll(string $schema, string $register): array {
 		try {
 			$rows = $this->objectService()
-				->setRegister($this->register())
+				->setRegister($register)
 				->setSchema($schema)
 				->findAll(['limit' => self::LIMIT]);
 		} catch (\Throwable $e) {
@@ -366,16 +420,30 @@ class RosterCheckService {
 	}//end objectService()
 
 	/**
-	 * @return string The configured register slug.
+	 * The slug this instance's humaniq register answers to, or null when absent.
 	 *
-	 * The 'hrmq' fallback is FROZEN across the Humaniq rename: OpenRegister's
-	 * ImportHandler resolves the register BY SLUG. Renaming it would create a
-	 * second, empty register and orphan every employee, contract, payslip and
-	 * payroll run already stored under the 'hrmq' slug.
+	 * This used to end `return $register === '' ? 'hrmq' : $register;` under a
+	 * note saying the `hrmq` fallback was frozen across the rename — while the
+	 * `getValueString()` default beside it already said `humaniq`. So the frozen
+	 * branch was reachable only for a config value stored as the empty string,
+	 * and every ordinary instance took the canonical default instead. On an
+	 * instance that has not yet run `MigrateRegisterSlug` the register is still
+	 * `hrmq`, every load below matched nothing, and the check reported zero
+	 * rosters and zero violations — indistinguishable from a compliant roster.
+	 * See ConductionNL/openregister#3579.
+	 *
+	 * NOTE for the HTTP path: `RosterController::check()` still resolves its
+	 * RBAC probe through `SettingsService::getRegisterSlug()`, which carries the
+	 * same unresolved-canonical shape across 57 call sites and is tracked
+	 * separately on that issue. On an unmigrated instance the endpoint
+	 * therefore still answers 404 before reaching this service; `occ
+	 * humaniq:roster:check` shows the resolved answer today.
+	 *
+	 * @return string|null The slug, or null when this instance carries no
+	 *                     humaniq register under any of its known slugs.
 	 */
-	private function register(): string {
-		$register = $this->appConfig->getValueString(Application::APP_ID, 'register', 'humaniq');
-		return $register === '' ? 'hrmq' : $register;
-	}//end register()
+	private function registerSlug(): ?string {
+		return (new RegisterSlugLookup($this->container, $this->appConfig))->slugOrNull();
+	}//end registerSlug()
 
 }//end class

@@ -36,6 +36,7 @@ use OCA\Humaniq\AppInfo\Application;
 use OCA\Humaniq\Standards\CaoRegistry;
 use OCA\Humaniq\Standards\RuleCatalogue;
 use OCA\Humaniq\Standards\RuleEngine;
+use OCA\Humaniq\Support\RegisterSlugLookup;
 use OCP\IAppConfig;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -1361,9 +1362,22 @@ class RuleAuditService {
 	 * @return array<int, array<string, mixed>>
 	 */
 	private function loadAll(string $schema): array {
+		// NOT degraded to an empty list like the catch below. A missing register
+		// is not a schema this instance happens to lack; it is the whole audit
+		// being unreadable, and an empty list here would be summed into a
+		// report saying every rule passes.
+		$register = $this->registerSlug();
+		if ($register === null) {
+			$message = 'Het humaniq-register is niet gevonden op deze instance, dus er kan niets worden '
+				. 'geauditeerd. Voer de humaniq-reparatiestap uit of stel het register in bij de '
+				. 'humaniq-instellingen.';
+			$this->logger->error('RuleAuditService: ' . $message);
+			throw new RuntimeException($message);
+		}
+
 		try {
 			$rows = $this->objectService()
-				->setRegister($this->register())
+				->setRegister($register)
 				->setSchema($schema)
 				->findAll(['limit' => self::LIMIT]);
 		} catch (\Throwable $e) {
@@ -1416,16 +1430,29 @@ class RuleAuditService {
 	}//end objectService()
 
 	/**
-	 * @return string The configured register slug.
+	 * The slug this instance's humaniq register answers to, or null when absent.
 	 *
-	 * The 'hrmq' fallback is FROZEN across the Humaniq rename: OpenRegister's
-	 * ImportHandler resolves the register BY SLUG. Renaming it would create a
-	 * second, empty register and orphan every employee, contract, payslip and
-	 * payroll run already stored under the 'hrmq' slug.
+	 * This used to end `return $register === '' ? 'hrmq' : $register;` under a
+	 * note saying the `hrmq` fallback was frozen across the rename — while the
+	 * `getValueString()` default beside it already said `humaniq`. So the frozen
+	 * branch was reachable only for a config value stored as the empty string,
+	 * and every ordinary instance took the canonical default instead. On an
+	 * instance that has not yet run `MigrateRegisterSlug` the register is still
+	 * `hrmq`, and OpenRegister does not raise for a register that is not there:
+	 * the read matches nothing and returns zero rows. See
+	 * ConductionNL/openregister#3579.
+	 *
+	 * The caller here is `loadAll()`, which feeds an audit REPORT. Zeros in a
+	 * compliance report are the worst possible way to say "the register was not
+	 * reachable", so `loadAll()` raises instead of degrading: an audit that
+	 * could not read anything must not be published as an audit that found
+	 * nothing.
+	 *
+	 * @return string|null The slug, or null when this instance carries no
+	 *                     humaniq register under any of its known slugs.
 	 */
-	private function register(): string {
-		$register = $this->appConfig->getValueString(Application::APP_ID, 'register', 'humaniq');
-		return $register === '' ? 'hrmq' : $register;
-	}//end register()
+	private function registerSlug(): ?string {
+		return (new RegisterSlugLookup($this->container, $this->appConfig))->slugOrNull();
+	}//end registerSlug()
 
 }//end class

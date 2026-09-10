@@ -81,7 +81,7 @@ declare(strict_types=1);
 
 namespace OCA\Humaniq\Service;
 
-use OCA\Humaniq\AppInfo\Application;
+use OCA\Humaniq\Support\RegisterSlugLookup;
 use OCP\IAppConfig;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -384,18 +384,38 @@ class AssetDialectMigrationService {
 	}//end objectService()
 
 	/**
-	 * @return string The configured register slug.
+	 * The slug this instance's humaniq register answers to.
 	 *
-	 * The 'hrmq' fallback is FROZEN across the Humaniq rename: OpenRegister's
-	 * ImportHandler resolves the register BY SLUG. Renaming it would create a
-	 * second, empty register and orphan every employee, contract, payslip and
-	 * payroll run already stored under the 'hrmq' slug.
+	 * This used to end `return $register === '' ? 'hrmq' : $register;` under a
+	 * note saying the `hrmq` fallback was frozen across the rename — while the
+	 * `getValueString()` default beside it already said `humaniq`. So the frozen
+	 * branch was reachable only for a config value stored as the empty string,
+	 * and every ordinary instance took the canonical default instead. On an
+	 * instance that has not yet run `MigrateRegisterSlug` the register is still
+	 * `hrmq`, and OpenRegister does not raise for a register that is not there.
+	 * See ConductionNL/openregister#3579.
 	 *
+	 * This one WRITES, with `_rbac: false` and `_multitenancy: false`. A slug
+	 * nothing answers to would point a privileged migration at a register that
+	 * is not there, and a migration that reports success having moved nothing is
+	 * worse than one that stops. It raises instead.
+	 *
+	 * @return string The slug to use.
+	 *
+	 * @throws RuntimeException When this instance carries no humaniq register
+	 *                          under any of its known slugs.
 	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function register(): string {
-		$register = $this->appConfig->getValueString(Application::APP_ID, 'register', 'humaniq');
-		return $register === '' ? 'hrmq' : $register;
+		$slug = (new RegisterSlugLookup($this->container, $this->appConfig))->slugOrNull();
+		if ($slug === null) {
+			$message = 'Het humaniq-register is niet gevonden op deze instance. Voer de humaniq-reparatiestap '
+				. 'uit of stel het register in bij de humaniq-instellingen.';
+			$this->logger->error(static::class . ': ' . $message);
+			throw new RuntimeException($message);
+		}
+
+		return $slug;
 	}//end register()
 
 }//end class
