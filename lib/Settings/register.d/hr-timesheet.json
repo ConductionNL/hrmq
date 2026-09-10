@@ -118,17 +118,18 @@
                     "origin": {
                         "type": "string",
                         "order": 130,
-                        "x-enum-labels": {"manual": "Entered by hand", "migration": "Migrated", "import": "Imported"},
+                        "x-enum-labels": {"manual": "Entered by hand", "migration": "Migrated", "import": "Imported", "timer": "Timed with a timer"},
                         "enum": [
                             "manual",
                             "migration",
-                            "import"
+                            "import",
+                            "timer"
                         ],
                         "default": "manual",
                         "readOnly": true,
                         "title": "Origin",
                         "description": "How this booking was created.",
-                        "x-notes": "The one safe readOnly use in this schema pair (Decision 2 analysis): genuinely immutable after create, optional, defaulted, and stamped only on the CREATE write where OpenRegister's readOnly enforcement does not apply. 'migration' marks the synthetic entries the MigrateHoursProcess repair step fabricates for legacy timesheets — their timestamps are bookkeeping artifacts, not claims about when work happened."
+                        "x-notes": "The one safe readOnly use in this schema pair (Decision 2 analysis): genuinely immutable after create, optional, defaulted, and stamped only on the CREATE write where OpenRegister's readOnly enforcement does not apply. 'migration' marks the synthetic entries the MigrateHoursProcess repair step fabricates for legacy timesheets — their timestamps are bookkeeping artifacts, not claims about when work happened. 'timer' marks an entry started by the hours leaf's timer, and it is load-bearing rather than descriptive: while such an entry has no endedAt it is a RUNNING timer, and TimeEntryHoursDeriver reads this value to tell it apart from a finished booking that simply lost its end. Without the marker the two are the same row, and the second would be picked up as a timer nobody started and no stop will ever close."
                     }
                 }
             },

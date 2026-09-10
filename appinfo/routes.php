@@ -113,6 +113,16 @@ return [
         // parameter is ever read. BEFORE the SPA catch-all.
         ['name' => 'analytics#trends', 'url' => '/api/analytics/trends', 'verb' => 'GET'],
         ['name' => 'analytics#obligations', 'url' => '/api/analytics/obligations', 'verb' => 'GET'],
+        // hours-leaf-for-any-object — the three timer endpoints behind the hours
+        // leaf. ONE constraint, no CRUD (ADR-022): entries are read and written
+        // declaratively through OpenRegister's object API everywhere else, and
+        // the only thing that cannot be expressed that way is "one running timer
+        // per user", which spans rows the caller does not send. None of the
+        // three accepts an entry id, so every one resolves from the caller and
+        // there is no reference to tamper with. BEFORE the SPA catch-all.
+        ['name' => 'timeEntry#timer',      'url' => '/api/time-entries/timer',       'verb' => 'GET'],
+        ['name' => 'timeEntry#startTimer', 'url' => '/api/time-entries/timer/start', 'verb' => 'POST'],
+        ['name' => 'timeEntry#stopTimer',  'url' => '/api/time-entries/timer/stop',  'verb' => 'POST'],
         // SPA catch-all — Vue history mode; specific routes MUST precede this.
         ['name' => 'page#catchAll', 'url' => '/{path}', 'verb' => 'GET', 'requirements' => ['path' => '.+'], 'defaults' => ['path' => '']],
     ],
