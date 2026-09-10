@@ -228,15 +228,35 @@ test.describe("hours leaf — the bundle, and a timer that survives the page", (
 		).toBe(HOST_REF);
 
 		// And nothing was written for the object that was refused.
-		const others = await api.get(
-			`${OR_BASE}/${REGISTER}/TimeEntry?filter[domainObjectRef]=${OTHER_REF}&_limit=50`,
-			{ headers: HEADERS },
-		);
-		const rows = await others.json();
-		const list: Array<Record<string, unknown>> = Array.isArray(rows)
-			? rows
-			: rows.results || [];
-		expect(list.length, "a refused start must write nothing at all").toBe(0);
+		//
+		// ⚠️ BARE `domainObjectRef=`, never `filter[domainObjectRef]=`. A
+		// `filter[x]` key is read as a filter on a property literally named
+		// `filter[x]`, which no schema has, so EVERY such query returns the empty
+		// set. Written that way this assertion passes whether or not a row was
+		// written, which is a test that cannot fail.
+		//
+		// The POSITIVE CONTROL below is what makes the empty answer mean
+		// something: the same query shape, against the object that IS being
+		// timed, must find its entry. Without it, an empty result proves only
+		// that the query matched nothing.
+		const rowsFor = async (ref: string): Promise<Array<Record<string, unknown>>> => {
+			const res = await api.get(
+				`${OR_BASE}/${REGISTER}/TimeEntry?domainObjectRef=${ref}&_limit=50`,
+				{ headers: HEADERS },
+			);
+			const body = await res.json();
+			return Array.isArray(body) ? body : body.results || [];
+		};
+
+		expect(
+			(await rowsFor(HOST_REF)).length,
+			"positive control: this query shape must find the timer that IS running",
+		).toBeGreaterThan(0);
+
+		expect(
+			(await rowsFor(OTHER_REF)).length,
+			"a refused start must write nothing at all",
+		).toBe(0);
 	});
 
 	test("stopping the timer closes the same row and derives its hours", async () => {

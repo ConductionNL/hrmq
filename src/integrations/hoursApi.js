@@ -61,11 +61,23 @@ export const ORIGIN_TIMER = 'timer'
  * @spec openspec/specs/hours-leaf/spec.md#requirement-the-hours-surface-reads-as-a-kpi-tile
  */
 export async function fetchEntries(domainObjectType, domainObjectRef) {
+	// BARE property names, not `filter[...]`. Measured against a live instance,
+	// same register, same schema, 9 rows in total:
+	//
+	//   ?origin=migration          -> 1 row
+	//   ?filter[origin]=migration  -> 0 rows
+	//   ?origin=manual             -> 8 rows   (8 + 1 = 9, the whole set)
+	//
+	// A `filter[x]` key is read as a filter on a property literally named
+	// `filter[x]`, which no schema has, so EVERY such query returns the empty
+	// set. Nothing errors. The tile would have summed nothing and rendered `0`
+	// on every object forever, which is exactly what an object with no hours
+	// renders, and exactly the defect this whole leaf exists to remove.
 	const url = generateUrl(`/apps/openregister/api/objects/${HOURS_REGISTER}/${TIME_ENTRY_SCHEMA}`)
 	const { data } = await axios.get(url, {
 		params: {
-			'filter[domainObjectType]': domainObjectType,
-			'filter[domainObjectRef]': domainObjectRef,
+			domainObjectType,
+			domainObjectRef,
 			_limit: 100,
 		},
 	})
@@ -199,9 +211,16 @@ export async function stopTimer() {
  * @spec openspec/specs/hours-leaf/spec.md#requirement-hours-can-be-added-from-the-surface-that-shows-them
  */
 export function administrationUrl(domainObjectType, domainObjectRef) {
+	// BARE query keys, not `filter[...]`. CnIndexPage seeds its filters from the
+	// route query through `resolveQueryFilters`, which takes every key that does
+	// NOT start with an underscore and uses it verbatim as a filter name. A
+	// `filter[domainObjectType]` key therefore becomes a filter on a property
+	// literally called `filter[domainObjectType]`, which no schema has: the link
+	// opens, the page renders, and the list is not narrowed to this object at
+	// all. The deep-link shape the library documents is `/cases?caseType=X`.
 	const query = new URLSearchParams({
-		'filter[domainObjectType]': domainObjectType,
-		'filter[domainObjectRef]': domainObjectRef,
+		domainObjectType,
+		domainObjectRef,
 	})
 
 	return `${generateUrl('/apps/humaniq/time-entries')}?${query.toString()}`
