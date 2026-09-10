@@ -33,6 +33,7 @@ declare(strict_types=1);
 namespace OCA\Humaniq\Tests\Unit\Service;
 
 use OCA\Humaniq\Service\RosterCheckService;
+use OCA\Humaniq\Tests\Unit\Support\FakeSlugResolver;
 use OCA\Humaniq\Standards\RuleEngine;
 use OCP\IAppConfig;
 use PHPUnit\Framework\TestCase;
@@ -262,5 +263,75 @@ class RosterCheckServiceTest extends TestCase {
 		$this->assertSame(1, $report['assignmentsChecked']);
 
 	}//end testCheckPeriodResolvesRostersOfThePeriod()
+
+	/**
+	 * A check that could not read anything is NOT a check that found nothing.
+	 *
+	 * THE DEFECT THIS TEST EXISTS FOR. Both states used to return the same
+	 * report: `rostersChecked => 0`, `violations => []`,
+	 * `mandatoryViolations => 0`. That is what a compliant roster looks like.
+	 * On an instance that has not run MigrateRegisterSlug the register is still
+	 * `hrmq`, the service asked for the canonical `humaniq`, OpenRegister
+	 * returned zero rows without raising, and an Arbeidstijdenwet check reported
+	 * a clean estate it had never read. See ConductionNL/openregister#3579.
+	 *
+	 * `registerResolved` is what tells the two apart, so this asserts BOTH
+	 * directions: false plus an error here, true on the ordinary empty result
+	 * below.
+	 *
+	 * @return void
+	 */
+	public function testAnAbsentRegisterIsNotReportedAsACleanRoster(): void {
+		$container = $this->createMock(ContainerInterface::class);
+		$container->method('get')->willReturn(new FakeSlugResolver([]));
+
+		$appConfig = $this->createMock(IAppConfig::class);
+		$appConfig->method('getValueString')->willReturn('');
+
+		$service = new RosterCheckService($container, $appConfig, $this->createMock(LoggerInterface::class));
+		$report = $service->checkRoster('roster-1');
+
+		$this->assertFalse($report['registerResolved'], 'An unread register must not look like a read one.');
+		$this->assertArrayHasKey('error', $report, 'The report must say why nothing was checked.');
+		$this->assertStringContainsString('humaniq-register is niet gevonden', (string)$report['error']);
+		$this->assertSame(0, $report['rostersChecked']);
+	}//end testAnAbsentRegisterIsNotReportedAsACleanRoster()
+
+	/**
+	 * checkPeriod() answers the same way, so the distinction is not one
+	 * entry point deep.
+	 *
+	 * @return void
+	 */
+	public function testCheckPeriodAlsoRefusesToReportZerosAsAResult(): void {
+		$container = $this->createMock(ContainerInterface::class);
+		$container->method('get')->willReturn(new FakeSlugResolver([]));
+
+		$appConfig = $this->createMock(IAppConfig::class);
+		$appConfig->method('getValueString')->willReturn('');
+
+		$service = new RosterCheckService($container, $appConfig, $this->createMock(LoggerInterface::class));
+		$report = $service->checkPeriod('2026-W02');
+
+		$this->assertFalse($report['registerResolved']);
+		$this->assertArrayHasKey('error', $report);
+	}//end testCheckPeriodAlsoRefusesToReportZerosAsAResult()
+
+	/**
+	 * A register that WAS read and simply held no matching roster reports
+	 * registerResolved=true and carries no error.
+	 *
+	 * Without this the flag could be hard-coded false and both tests above
+	 * would still pass.
+	 *
+	 * @return void
+	 */
+	public function testAGenuinelyEmptyResultIsStillMarkedAsRead(): void {
+		$report = $this->serviceWithRows(['Roster' => []])->checkRoster('roster-1');
+
+		$this->assertTrue($report['registerResolved'], 'A register that was read must say so.');
+		$this->assertArrayNotHasKey('error', $report);
+		$this->assertSame(0, $report['rostersChecked']);
+	}//end testAGenuinelyEmptyResultIsStillMarkedAsRead()
 
 }//end class
