@@ -1,4 +1,32 @@
-## ADDED Requirements
+---
+capability: hours-leaf
+status: in-progress
+built_by: openspec/changes/hours-leaf-for-any-object
+---
+
+# hours-leaf Specification
+
+**Status**: in-progress
+**Scope**: humaniq
+**OpenSpec changes**:
+- [hours-leaf-for-any-object](../../changes/hours-leaf-for-any-object/) _(in progress, first pass merged as humaniq#287)_ - humaniq supplies the hours surface for any object as an OpenRegister integration leaf, so a consuming app places the leaf instead of querying humaniq's register. The continuation adds the leaf bundle that was never built, the KPI shape, the booking dialog and the administration link, and a timer stored as one open time entry.
+
+## Purpose
+
+Answer one question about any object in the fleet: how much time has been spent on
+it, by everyone and by you, and let a reader add to that figure without leaving the
+page they are on.
+
+Hours belong to humaniq (ADR-107 decision 6), so humaniq renders them. Before this
+capability a consuming app had to aggregate humaniq's register from its own manifest,
+which reads `0` on an install without humaniq, and `0` is exactly what an object with
+no hours reads. The failure and the success looked the same, on every object, for as
+long as it shipped.
+
+A leaf whose app is absent is never registered, so that failure mode stops existing
+rather than being handled.
+
+## Requirements
 
 ### Requirement: Humaniq supplies the hours surface for any object
 Humaniq SHALL register an OpenRegister integration leaf `humaniq-hours` that

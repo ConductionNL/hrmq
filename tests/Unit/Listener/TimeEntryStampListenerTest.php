@@ -663,4 +663,60 @@ class TimeEntryStampListenerTest extends TestCase {
 		$this->assertStringContainsString('niet worden verwerkt', (string)$event->getErrors()['message']);
 	}//end testInfrastructureFailureFailsClosed()
 
+	/**
+	 * A timer start is stamped with the timer marker, not collapsed to manual.
+	 *
+	 * THE DEFECT THIS PINS. `origin` is stamped through an allowlist, and the
+	 * allowlist did not contain `timer`. A started timer was therefore stored as
+	 * `manual`, and `RunningTimerService` looks a running timer up BY that
+	 * marker, so the entry it had just written was invisible to it. The timer
+	 * ran, no second start was ever refused, and every layer reported success.
+	 * Found by an e2e assertion on the stored row, not by any check that read
+	 * the response.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/hours-leaf/spec.md#requirement-an-entry-without-an-end-is-a-running-timer-not-a-defective-booking
+	 */
+	public function testATimerStartIsStampedWithTheTimerMarker(): void {
+		$event = new ObjectCreatingEvent($this->entryEntity([
+			'startedAt' => '2026-05-04T09:00:00Z',
+			'origin' => 'timer',
+			'domainObjectType' => 'dossiq:case',
+			'domainObjectRef' => 'case-uuid',
+		]));
+
+		$this->listener->handle($event);
+
+		$this->assertFalse($event->isPropagationStopped(), 'A running timer is a legitimate write.');
+		$modified = $event->getModifiedData();
+		$this->assertSame('timer', $modified['origin'], 'Without the marker the running timer is invisible to its own lookup.');
+		$this->assertSame(0.0, $modified['hours'], 'Work that has not finished is worth zero hours.');
+	}//end testATimerStartIsStampedWithTheTimerMarker()
+
+	/**
+	 * A FINISHED booking cannot dress itself up as a timer.
+	 *
+	 * The marker decides which rows the one-timer-per-user rule looks at, so a
+	 * closed entry carrying it would be counted as a timer that can never be
+	 * stopped.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/hours-leaf/spec.md#requirement-an-entry-without-an-end-is-a-running-timer-not-a-defective-booking
+	 */
+	public function testAFinishedBookingClaimingTheTimerMarkerIsStampedManual(): void {
+		$event = new ObjectCreatingEvent($this->entryEntity([
+			'startedAt' => '2026-05-04T09:00:00Z',
+			'endedAt' => '2026-05-04T11:00:00Z',
+			'origin' => 'timer',
+		]));
+
+		$this->listener->handle($event);
+
+		$modified = $event->getModifiedData();
+		$this->assertSame('manual', $modified['origin'], 'Provenance is a claim an employee does not get to make freely.');
+		$this->assertSame(2.0, $modified['hours']);
+	}//end testAFinishedBookingClaimingTheTimerMarkerIsStampedManual()
+
 }//end class

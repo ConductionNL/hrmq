@@ -14,6 +14,16 @@
  *   neither captures clock times, so an owner that required them could only
  *   have taken their bookings by fabricating a start and an end that nobody
  *   measured.
+ * - **Running** — `startedAt` is present, `endedAt` is not, and `origin` says
+ *   `timer`. The work has not finished, so there are no hours yet: the entry
+ *   derives `0` and takes its real figure when the timer stops and the write
+ *   becomes clocked.
+ *
+ * WHY `origin` AND NOT JUST THE MISSING END. A booking that lost its end on the
+ * way in looks exactly like a timer, and treating it as one would leave a
+ * permanently running timer nobody started and no stop will ever close. The
+ * marker makes the intent explicit, so a missing end without it is refused
+ * exactly as it was.
  *
  * WHY NOT IN THE SCHEMA. JSON Schema's `required` cannot express "either this
  * pair or that field". The schema therefore marks all three optional and the
@@ -44,7 +54,10 @@ namespace OCA\Humaniq\Service;
 use OCA\Humaniq\Listener\HoursWriteRefusedException;
 
 /**
- * Decides a booking's reference day and hours from either recorded shape.
+ * Decides a booking's reference day and hours from each recorded shape.
+ *
+ * @spec openspec/specs/time-entry-capture/spec.md#requirement-humaniq-captures-time-entries-under-a-submit-approve-lifecycle-req-tec-001
+ * @spec openspec/specs/hours-leaf/spec.md#requirement-an-entry-without-an-end-is-a-running-timer-not-a-defective-booking
  */
 class TimeEntryHoursDeriver {
 
@@ -57,6 +70,18 @@ class TimeEntryHoursDeriver {
 	 * @var float
 	 */
 	private const MAX_HOURS_PER_DAY = 24.0;
+
+	/**
+	 * The `origin` value that marks an entry as a running timer.
+	 *
+	 * Equal to `RunningTimerService::ORIGIN_TIMER` and to the enum member on
+	 * `TimeEntry` in `lib/Settings/register.d/hr-timesheet.json`. All three name
+	 * the same literal; a drift between them shows up as a timer that cannot be
+	 * written rather than as an error anyone would read.
+	 *
+	 * @var string
+	 */
+	public const ORIGIN_TIMER = 'timer';
 
 	/**
 	 * Resolve the reference timestamp and the hours for a write.
@@ -79,8 +104,69 @@ class TimeEntryHoursDeriver {
 			return $this->fromDay(incoming: $incoming, stored: $stored);
 		}
 
+		if ($this->isRunningTimerWrite(incoming: $incoming, stored: $stored) === true) {
+			return $this->fromRunningTimer(rawStart: $rawStart);
+		}
+
 		return $this->fromClock(incoming: $incoming, stored: $stored, rawStart: $rawStart, rawEnd: $rawEnd);
 	}//end derive()
+
+	/**
+	 * Whether this write is a running timer rather than a booking missing its
+	 * end.
+	 *
+	 * Public because the STAMP LISTENER needs the same answer. `origin` is
+	 * `readOnly` on the schema, and a client value for it does not survive the
+	 * ObjectService write path: an entry started with `origin: timer` came back
+	 * stored as `manual`, the schema default. The marker therefore has to be
+	 * stamped server-side like every other protected field, and the listener
+	 * must not re-derive the rule from its own copy of these conditions.
+	 *
+	 * Reads the incoming `origin` first and the stored one second, so that
+	 * stopping a timer, a write that carries an end and no origin, still sees
+	 * the marker on the row it is closing.
+	 *
+	 * @param array<string, mixed>      $incoming The incoming payload.
+	 * @param array<string, mixed>|null $stored   The stored payload (update only).
+	 *
+	 * @return bool True when the write declares itself a timer.
+	 *
+	 * @spec openspec/specs/hours-leaf/spec.md#requirement-an-entry-without-an-end-is-a-running-timer-not-a-defective-booking
+	 */
+	public function isRunningTimerWrite(array $incoming, ?array $stored): bool {
+		$rawStart = (string)($incoming['startedAt'] ?? ($stored['startedAt'] ?? ''));
+		$rawEnd = (string)($incoming['endedAt'] ?? ($stored['endedAt'] ?? ''));
+		if ($rawStart === '' || $rawEnd !== '') {
+			return false;
+		}
+
+		return (string)($incoming['origin'] ?? ($stored['origin'] ?? '')) === self::ORIGIN_TIMER;
+	}//end isRunningTimerWrite()
+
+	/**
+	 * The running shape: a start, no end, and no hours worked yet.
+	 *
+	 * Zero rather than null: `hours` feeds the parent timesheet's total, and a
+	 * total that has to special-case one row is a total that will eventually
+	 * forget to. A timer in progress contributes nothing until it stops, which
+	 * is what zero says.
+	 *
+	 * @param string $rawStart The raw `startedAt`.
+	 *
+	 * @return array{0: int, 1: float} The start timestamp and zero hours.
+	 *
+	 * @throws HoursWriteRefusedException When the start cannot be parsed.
+	 *
+	 * @spec openspec/specs/hours-leaf/spec.md#requirement-an-entry-without-an-end-is-a-running-timer-not-a-defective-booking
+	 */
+	private function fromRunningTimer(string $rawStart): array {
+		$start = strtotime($rawStart);
+		if ($start === false) {
+			throw new HoursWriteRefusedException('De starttijd van de lopende timer is ongeldig.');
+		}
+
+		return [$start, 0.0];
+	}//end fromRunningTimer()
 
 	/**
 	 * The clocked shape: a span, minus the break.
