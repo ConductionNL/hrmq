@@ -92,22 +92,55 @@ test.describe("hours leaf — the bundle, and a timer that survives the page", (
 		await api.dispose();
 	});
 
-	test("the leaf bundle is served, and it is not the whole SPA", async () => {
-		const res = await api.get(`${NC_URL}/apps/humaniq/js/humaniq-leaves.js`);
+	test("the leaf bundle is served as JavaScript, and it is not the whole SPA", async () => {
+		// ⚠️ THE OBVIOUS URL IS A TRAP. `/apps/humaniq/js/<file>` is intercepted
+		// by Nextcloud's PHP router and answered with the SPA SHELL: 200, and
+		// `text/html`. Measured on this fleet's dev instance, both paths, the
+		// same file:
+		//
+		//   /apps/humaniq/js/humaniq-main.js          200 text/html
+		//   /custom_apps/humaniq/js/humaniq-main.js   200 text/javascript
+		//
+		// So a test that asks for the first one and checks only `ok()` passes on
+		// an app that ships no bundle at all, which is precisely the defect this
+		// spec exists to catch. The webroot is therefore RESOLVED from the app
+		// rather than guessed, and the content type is asserted.
+		const candidates = [
+			`${NC_URL}/custom_apps/humaniq/js/humaniq-leaves.js`,
+			`${NC_URL}/apps-extra/humaniq/js/humaniq-leaves.js`,
+			`${NC_URL}/apps/humaniq/js/humaniq-leaves.js`,
+		];
+
+		let served: { url: string; body: string } | null = null;
+		const tried: string[] = [];
+		for (const url of candidates) {
+			const res = await api.get(url);
+			const type = String(res.headers()["content-type"] || "");
+			tried.push(`${url} -> ${res.status()} ${type}`);
+			// JavaScript, not the SPA shell wearing a 200.
+			if (res.ok() && /javascript|ecmascript/i.test(type)) {
+				served = { url, body: await res.text() };
+				break;
+			}
+		}
 
 		expect(
-			res.ok(),
-			`js/humaniq-leaves.js must be served (${res.status()}). Without it OpenRegister ` +
-				"skips humaniq and the hours leaf renders on no consuming page, silently.",
-		).toBeTruthy();
+			served,
+			"js/humaniq-leaves.js must be served AS JAVASCRIPT from some app webroot. " +
+				"Without it OpenRegister's LeafScriptListener skips humaniq and the hours " +
+				`leaf renders on no consuming page, silently. Tried:\n  ${tried.join("\n  ")}`,
+		).not.toBeNull();
 
-		const body = await res.text();
 		expect(
-			body,
+			served?.body,
 			"the bundle must register the leaf id the PHP half declares",
 		).toContain("humaniq-hours");
 		expect(
-			body.length,
+			served?.body ?? "",
+			"an HTML document here means the router answered instead of the file",
+		).not.toMatch(/^\s*<!DOCTYPE/i);
+		expect(
+			(served?.body ?? "").length,
 			"a leaf bundle carrying the whole SPA would be a performance regression on " +
 				"every page of every consuming app",
 		).toBeLessThan(4_000_000);
