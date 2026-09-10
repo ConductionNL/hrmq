@@ -170,6 +170,18 @@ if (class_exists('OCA\\OpenRegister\\Db\\SchemaMapper') === false) {
 	require __DIR__ . '/stubs/OpenRegisterSchemaMapperStub.php';
 }
 
+// Same rule, different contract: RegisterSlugLookup asks OpenRegister which
+// slug this instance's humaniq register answers to, through the published
+// `RegisterSlugResolverInterface` (ConductionNL/openregister#3579). Its
+// availability check is `interface_exists()`, so without the name present the
+// lookup answers "absent" unconditionally and NO test could reach the resolved
+// branch — the branch that decides what every guard and report does. Unlike the
+// name-only ObjectService marker this stub mirrors the REAL API, parameter names
+// included, because the lookup calls it by name.
+if (interface_exists('OCA\\OpenRegister\\Contract\\RegisterSlugResolverInterface') === false) {
+	require __DIR__ . '/stubs/OpenRegisterSlugResolverStub.php';
+}
+
 // Same rule, different classes: the hours-process listeners
 // (TimeEntryStampListener, TimesheetProcessStampListener,
 // TimesheetAggregateListener) consume OpenRegister's object lifecycle events
