@@ -54,7 +54,10 @@ namespace OCA\Humaniq\Service;
 use OCA\Humaniq\Listener\HoursWriteRefusedException;
 
 /**
- * Decides a booking's reference day and hours from either recorded shape.
+ * Decides a booking's reference day and hours from each recorded shape.
+ *
+ * @spec openspec/specs/time-entry-capture/spec.md#requirement-humaniq-captures-time-entries-under-a-submit-approve-lifecycle-req-tec-001
+ * @spec openspec/specs/hours-leaf/spec.md#requirement-an-entry-without-an-end-is-a-running-timer-not-a-defective-booking
  */
 class TimeEntryHoursDeriver {
 
@@ -121,7 +124,7 @@ class TimeEntryHoursDeriver {
 	 *
 	 * @return bool True when the write declares itself a timer.
 	 *
-	 * @spec openspec/changes/hours-leaf-for-any-object/specs/hours-leaf/spec.md#requirement-an-entry-without-an-end-is-a-running-timer-not-a-defective-booking
+	 * @spec openspec/specs/hours-leaf/spec.md#requirement-an-entry-without-an-end-is-a-running-timer-not-a-defective-booking
 	 */
 	private function isRunningTimer(array $incoming, ?array $stored): bool {
 		return (string)($incoming['origin'] ?? ($stored['origin'] ?? '')) === self::ORIGIN_TIMER;
@@ -141,7 +144,7 @@ class TimeEntryHoursDeriver {
 	 *
 	 * @throws HoursWriteRefusedException When the start cannot be parsed.
 	 *
-	 * @spec openspec/changes/hours-leaf-for-any-object/specs/hours-leaf/spec.md#requirement-an-entry-without-an-end-is-a-running-timer-not-a-defective-booking
+	 * @spec openspec/specs/hours-leaf/spec.md#requirement-an-entry-without-an-end-is-a-running-timer-not-a-defective-booking
 	 */
 	private function fromRunningTimer(string $rawStart): array {
 		$start = strtotime($rawStart);

@@ -40,6 +40,8 @@ use Throwable;
 
 /**
  * Starts, stops and resolves the calling user's single running timer.
+ *
+ * @spec openspec/specs/hours-leaf/spec.md#requirement-a-user-has-at-most-one-running-timer
  */
 class RunningTimerService {
 
@@ -119,7 +121,7 @@ class RunningTimerService {
 	 *
 	 * @return array<string, mixed>|null The running entry, or null.
 	 *
-	 * @spec openspec/changes/hours-leaf-for-any-object/specs/hours-leaf/spec.md#requirement-a-running-timer-survives-leaving-the-page
+	 * @spec openspec/specs/hours-leaf/spec.md#requirement-a-running-timer-survives-leaving-the-page
 	 */
 	public function running(string $uid): ?array {
 		$uid = trim($uid);
@@ -181,7 +183,7 @@ class RunningTimerService {
 	 *
 	 * @return array{status: string, entry?: array<string, mixed>, error?: string}
 	 *
-	 * @spec openspec/changes/hours-leaf-for-any-object/specs/hours-leaf/spec.md#requirement-a-user-has-at-most-one-running-timer
+	 * @spec openspec/specs/hours-leaf/spec.md#requirement-a-user-has-at-most-one-running-timer
 	 */
 	public function start(string $uid, string $domainObjectType, string $domainObjectRef): array {
 		$uid = trim($uid);
@@ -227,7 +229,7 @@ class RunningTimerService {
 	 *
 	 * @return array{status: string, entry?: array<string, mixed>}
 	 *
-	 * @spec openspec/changes/hours-leaf-for-any-object/specs/hours-leaf/spec.md#requirement-a-running-timer-survives-leaving-the-page
+	 * @spec openspec/specs/hours-leaf/spec.md#requirement-a-running-timer-survives-leaving-the-page
 	 */
 	public function stop(string $uid): array {
 		$running = $this->running(trim($uid));

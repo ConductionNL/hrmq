@@ -31,7 +31,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/hours-leaf-for-any-object/specs/hours-leaf/spec.md#requirement-a-user-has-at-most-one-running-timer
+ * @spec openspec/specs/hours-leaf/spec.md#requirement-a-user-has-at-most-one-running-timer
  */
 
 declare(strict_types=1);
@@ -51,6 +51,8 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Start, stop and resolve the calling user's running timer.
+ *
+ * @spec openspec/specs/hours-leaf/spec.md#requirement-a-user-has-at-most-one-running-timer
  */
 class TimeEntryController extends Controller {
 
@@ -81,7 +83,7 @@ class TimeEntryController extends Controller {
 	 *
 	 * @return JSONResponse `{status: 'running', entry: {...}}` or `{status: 'none'}`.
 	 *
-	 * @spec openspec/changes/hours-leaf-for-any-object/specs/hours-leaf/spec.md#requirement-a-running-timer-survives-leaving-the-page
+	 * @spec openspec/specs/hours-leaf/spec.md#requirement-a-running-timer-survives-leaving-the-page
 	 */
 	#[NoAdminRequired]
 	public function timer(): JSONResponse {
@@ -115,7 +117,7 @@ class TimeEntryController extends Controller {
 	 *
 	 * @return JSONResponse The started entry, 400 on a missing reference, 409 when one is already running.
 	 *
-	 * @spec openspec/changes/hours-leaf-for-any-object/specs/hours-leaf/spec.md#requirement-a-user-has-at-most-one-running-timer
+	 * @spec openspec/specs/hours-leaf/spec.md#requirement-a-user-has-at-most-one-running-timer
 	 */
 	#[NoAdminRequired]
 	public function startTimer(?string $domainObjectType = null, ?string $domainObjectRef = null): JSONResponse {
@@ -145,7 +147,7 @@ class TimeEntryController extends Controller {
 	 *
 	 * @return JSONResponse The stopped entry, or 404 when nothing was running.
 	 *
-	 * @spec openspec/changes/hours-leaf-for-any-object/specs/hours-leaf/spec.md#requirement-a-user-has-at-most-one-running-timer
+	 * @spec openspec/specs/hours-leaf/spec.md#requirement-a-user-has-at-most-one-running-timer
 	 */
 	#[NoAdminRequired]
 	public function stopTimer(): JSONResponse {

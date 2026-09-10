@@ -36,6 +36,27 @@ webpackConfig.entry = {
 		import: path.join(__dirname, 'src', 'main.js'),
 		filename: appId + '-main.js',
 	},
+	// The CLIENT half of this app's OpenRegister leaves, as its own entry.
+	//
+	// OpenRegister's LeafScriptListener enqueues `humaniq-leaves` on the pages of
+	// OTHER apps that consume OpenRegister, so a dossiq case page can render the
+	// hours booked against that case without dossiq reading humaniq's register.
+	//
+	// The entry name matters, and it is load-bearing. The listener looks for
+	// `js/humaniq-leaves.js` and SKIPS the app when it is absent, silently,
+	// because enqueuing a script that does not exist is a 404 in someone else's
+	// page. That skip is exactly why `humaniq-hours` rendered nowhere for as long
+	// as it shipped: both halves of the descriptor were registered, the parity
+	// gate compared them to each other and passed, and neither was ever on the
+	// page. Renaming this turns the leaf off everywhere with nothing reported.
+	//
+	// It must stay SMALL. `main` carries the whole SPA, and putting that on
+	// another app's page would trade a feature for a performance regression on
+	// every page of every consuming app.
+	leaves: {
+		import: path.join(__dirname, 'src', 'leaves.js'),
+		filename: appId + '-leaves.js',
+	},
 }
 
 // Build against the DECLARED dependency unless a developer deliberately asks

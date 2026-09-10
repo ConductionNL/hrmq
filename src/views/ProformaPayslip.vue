@@ -232,7 +232,7 @@ export default {
 
 	&__radio-label {
 		color: var(--color-text-maxcontrast);
-		margin-right: 4px;
+		margin-inline-end: 4px;
 	}
 
 	&__note {
@@ -256,7 +256,7 @@ export default {
 
 		dd {
 			margin: 0;
-			text-align: right;
+			text-align: end;
 			font-variant-numeric: tabular-nums;
 		}
 	}
