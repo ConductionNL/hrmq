@@ -34,19 +34,45 @@ The widget SHALL distinguish "no hours booked" from "hours could not be read".
   about the data the widget actually read.
 
 ### Requirement: Hours can be added from the surface that shows them
-The leaf SHALL offer both ways of booking time against the host object: a
-direct hour booking, and a timer that can be started and stopped.
+The leaf SHALL offer three controls over the host object's hours: booking hours
+directly, opening the hour administration for that object, and a timer.
 
-#### Scenario: Logging hours from a case
-- **WHEN** a user activates the log-hours action on a host object
-- **THEN** Humaniq's booking surface opens seeded with that object's
+Booking hours SHALL open a dialog Humaniq renders in its own bundle, on the page
+the reader is already on. Sending a reader to another app to book time against
+the case in front of them loses the case, and every field the dialog would have
+seeded has to be found again by hand.
+
+Opening the administration SHALL be a link into Humaniq's time-entry index,
+narrowed to this host object, because the tile shows a few recent bookings and
+the question "where does this total come from" needs all of them.
+
+The timer SHALL be a secondary control beside the two actions, not a third equal
+one: it is the shortcut for work happening right now, while the other two are the
+ordinary path.
+
+#### Scenario: Booking hours from a case
+- **WHEN** a user activates the book-hours action on a host object
+- **THEN** a Humaniq dialog opens over the host page, seeded with that object's
   `domainObjectType` and `domainObjectRef`, so the reference is written by the
-  integration rather than typed by an employee.
+  integration rather than typed by an employee, and neither field is offered for
+  editing.
+
+#### Scenario: Opening the hour administration for a case
+- **WHEN** a user activates the view-hours action
+- **THEN** Humaniq's time-entry index opens filtered to that object's
+  `domainObjectType` and `domainObjectRef`, showing every booking behind the
+  total rather than the recent few.
 
 #### Scenario: Running a timer against a case
 - **WHEN** a user starts the timer and later stops it
 - **THEN** a time entry carrying the host object's reference is written, and the
   widget's total reflects it without a page reload.
+
+#### Scenario: The surface while the timer runs
+- **WHEN** the timer is running
+- **THEN** the tile shows the elapsed time in place of its figures and the timer
+  control reads as a stop, so the reader can tell at a glance that the object is
+  being worked on rather than having to remember starting it.
 
 ### Requirement: Both halves of the leaf agree
 The leaf SHALL be declared on both its JS and PHP halves, and the values that
@@ -67,3 +93,101 @@ a default, because a set declared by omission cannot be compared.
 - **THEN** the parity check fails naming the field and both values, because every
   way they drift is silent: a changed `renderMode` blanks the surface, a changed
   `label` makes one leaf look like two.
+
+### Requirement: The leaf's client half ships as its own bundle
+Humaniq SHALL build a `leaves` webpack entry emitting `js/humaniq-leaves.js`,
+carrying the leaf registrations and nothing else.
+
+OpenRegister's `LeafScriptListener` enqueues `js/<app>-leaves.js` on the pages of
+apps that consume OpenRegister. An app that ships no such artifact is skipped,
+by design, so that no page can ever enqueue a 404.
+
+#### Scenario: The providing app ships no leaf bundle
+- **WHEN** Humaniq registers the `humaniq-hours` leaf on both halves but builds
+  no `leaves` entry
+- **THEN** nothing loads the client half on a consuming page, so the surface is
+  absent while the descriptor reaches OCS discovery, `getLeaves()` and the parity
+  check unchanged. Every instrument reports success and the feature is not there.
+
+#### Scenario: The bundle stays thin
+- **WHEN** the `leaves` entry is built
+- **THEN** it imports the leaf registrations only, and neither the router, the
+  Pinia stores, the app shell nor `manifest.json`, because whatever it imports
+  lands on every page of every consuming app.
+
+### Requirement: The hours surface reads as a KPI tile
+The leaf SHALL render the hours booked against the host object as its headline
+figure, and the hours the CALLER booked against it as a subordinate figure
+beneath.
+
+Both figures come from one read. A second request would let the two disagree.
+
+#### Scenario: A case with hours from several people
+- **WHEN** three people have booked against the host object and the caller is one
+  of them
+- **THEN** the headline shows the total of all three and the sub-line shows only
+  the caller's share, labelled as the caller's own.
+
+#### Scenario: The caller has booked nothing
+- **WHEN** the object carries hours but none of them are the caller's
+- **THEN** the sub-line renders `0` rather than being hidden, because an absent
+  sub-line and a zero one are not the same claim.
+
+### Requirement: A running timer survives leaving the page
+Starting the timer SHALL write a time entry carrying the host object's reference
+and NO end, and the surface SHALL resolve the caller's running entry when it
+mounts, so a timer started before navigating away is still running on return.
+
+The running entry is the timer. There is no second place the state lives, so
+there is nothing that can disagree with it.
+
+#### Scenario: Leaving and returning mid-timer
+- **WHEN** a user starts the timer on a host object, navigates away, and later
+  opens that object again
+- **THEN** the surface mounts showing the timer running, counting from the stored
+  start, with a stop control rather than a start one.
+
+#### Scenario: A timer running against a different object
+- **WHEN** a user with a timer running against object A opens object B
+- **THEN** B's surface says a timer is running elsewhere and offers no start,
+  because the constraint is per user and not per object.
+
+### Requirement: A user has at most one running timer
+The server SHALL refuse to start a timer for a caller who already has one
+running, and SHALL be the place that refusal is decided.
+
+A guard that lives only in the widget is not a guard: two tabs, two objects, or a
+reload mid-request each defeat it, and each writes a second open entry that no
+stop will ever close.
+
+#### Scenario: Starting a second timer
+- **WHEN** a caller with a running entry asks to start another
+- **THEN** the request is refused, naming the object the running timer belongs
+  to, and no second open entry is written.
+
+#### Scenario: Stopping someone else's timer
+- **WHEN** a caller asks to stop a running entry that is not theirs
+- **THEN** the request is refused, because the entry is resolved from the caller
+  rather than from an id the caller sends.
+
+### Requirement: An entry without an end is a running timer, not a defective booking
+An entry carrying `startedAt` and no `endedAt` SHALL be accepted, stamped and
+aggregated as zero hours, and SHALL NOT be refused by the span validation that
+governs a finished booking.
+
+#### Scenario: Writing the open entry
+- **WHEN** a timer start writes an entry with no end
+- **THEN** the entry is stamped with its employee, user, administration and
+  parent timesheet as any entry is, its `hours` is `0`, and the span checks that
+  refuse an end before a start are skipped rather than applied to a missing end.
+
+#### Scenario: The parent timesheet while a timer runs
+- **WHEN** a timesheet holds a running entry alongside finished ones
+- **THEN** its total counts the running entry as zero, so a timer in progress
+  never inflates a total that has not been worked yet.
+
+#### Scenario: Stopping the timer
+- **WHEN** the end is written
+- **THEN** the ordinary derivation computes `hours` from the span and the parent
+  timesheet's total takes it up, without the entry having been anything other
+  than one row throughout.

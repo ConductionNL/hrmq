@@ -1,10 +1,34 @@
 # Tasks
 
+## Shipped in the first pass
+
 - [x] Add `src/integrations/CnHoursWidget.vue` — total, recent bookings, log-hours and timer actions; a dash rather than a zero when the read fails.
 - [x] Add `src/integrations/registerHoursLeaf.js` — the `humaniq-hours` descriptor with the mount/unmount DOM hand-off, and a load-order-safe registry stub.
 - [x] Add `lib/Listener/RegisterHoursLeafListener.php` — the server half, behind a `class_exists` check so an install without OpenRegister skips it.
 - [x] Wire both halves in (`src/main.js`, `lib/AppInfo/Application.php`).
 - [x] Add `scripts/check-integration-parity.{sh,js}` — gate-24's entry point, correlating leaf ids and their bound fields across both halves. Proven to fail against planted drift.
 - [x] Add the eight l10n keys with Dutch.
-- [ ] Move dossiq's `case-kpis-hours` onto this leaf, retiring the last cross-app register query on the case detail page.
-- [ ] Add an e2e journey covering log-hours and the timer against a seeded host object.
+
+## Continuation: get it onto the page, and finish the surface
+
+- [ ] Add `src/leaves.js` and a `leaves` webpack entry so `js/humaniq-leaves.js` is built. Verified by the artifact existing AND by the surface appearing on a consuming page, never by the build's exit code alone.
+- [ ] Drop `endedAt` from `TimeEntry.required` and add `timer` to the `origin` enum in `lib/Settings/register.d/hr-timesheet.json`.
+- [ ] Teach `TimeEntryStampListener` that an entry with no end is a running timer: stamp it, set `hours: 0`, skip the span checks. Refuse a write with neither a start nor an end as before.
+- [ ] Add `lib/Controller/TimeEntryController.php` with the three timer routes, resolving the entry from the caller and refusing a second start by naming the object the running one belongs to.
+- [ ] Register the three routes in `appinfo/routes.php`, before the SPA catch-all.
+- [ ] Rebuild `CnHoursWidget.vue` as the KPI tile: total as headline, the caller's own hours beneath, and a running-timer face with elapsed time.
+- [ ] Add `src/dialogs/HoursBookingDialog.vue` — the booking dialog Humaniq renders over the host page, seeded with the object reference and offering neither reference field for editing.
+- [ ] Point the view-hours action at `/apps/humaniq/time-entries` filtered on the host object. It currently points at `/timesheets`, which is a different schema's page.
+- [ ] Restore a running timer on mount, and say so rather than offering a start when the caller's timer belongs to another object.
+- [ ] Move dossiq's `case-kpis-hours` onto this leaf, retiring the last cross-app register query on the case detail page. (dossiq repo.)
+- [ ] Add PHPUnit coverage for the controller's refusal paths and the listener's open-entry branch, each mutation-checked against a planted break.
+- [ ] Add an e2e journey covering book-hours, the view-hours link, and start / leave / return / stop against a seeded host object.
+- [ ] Add the new l10n keys with Dutch.
+
+## Acceptance criteria
+
+- `js/humaniq-leaves.js` exists after a build and registers `humaniq-hours` on a consuming app's page.
+- The tile on a dossiq case shows a total that matches the entries behind it, and a caller share that is a subset of that total.
+- A timer started on a case is still running after a reload and after navigating away and back.
+- A second start is refused by the server, not only by the widget.
+- A timesheet holding a running entry reports the same total as it did before that entry existed.
