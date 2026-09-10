@@ -31,6 +31,7 @@ declare(strict_types=1);
 namespace OCA\Humaniq\Tests\Unit\Lifecycle;
 
 use OCA\Humaniq\Lifecycle\LeaveBuySellApprovalGuard;
+use OCA\Humaniq\Tests\Unit\Support\FakeSlugResolver;
 use OCP\IAppConfig;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -256,5 +257,59 @@ class LeaveBuySellApprovalGuardTest extends TestCase {
 		$this->assertFalse($result->isAllowed());
 
 	}//end testMismatchedYearOrLeaveTypeIsNotResolved()
+
+	/**
+	 * A sell on an instance with no humaniq register DENIES, and names the
+	 * register rather than the balance.
+	 *
+	 * Before the fix this denied too — but with "er is geen verlofsaldo
+	 * gevonden", because the guard asked for the canonical `humaniq` register
+	 * and an unmigrated instance carries it as `hrmq`, so the LeaveBalance scan
+	 * matched nothing. Same verdict, wrong reason: it sends an admin hunting a
+	 * row that is there. See ConductionNL/openregister#3579.
+	 *
+	 * @return void
+	 */
+	public function testSellDeniesAndNamesTheRegisterWhenItIsAbsent(): void {
+		$container = $this->createMock(ContainerInterface::class);
+		$container->method('get')->willReturn(new FakeSlugResolver([]));
+
+		$appConfig = $this->createMock(IAppConfig::class);
+		$appConfig->method('getValueString')->willReturn('');
+
+		$guard = new LeaveBuySellApprovalGuard($container, $appConfig);
+		$result = $guard->check($this->transaction(), 'approve', 'manager-1');
+
+		$this->assertFalse($result->isAllowed(), 'An unreadable register must fail CLOSED.');
+		$this->assertStringContainsString(
+			'humaniq-register is niet gevonden',
+			$result->getMessage(),
+			'The denial must name the register, not a balance that was never read.'
+		);
+	}//end testSellDeniesAndNamesTheRegisterWhenItIsAbsent()
+
+	/**
+	 * A BUY on an instance with no register is still allowed.
+	 *
+	 * Buying hours cannot push a balance negative, so this guard returns before
+	 * it ever needs a register — and the register check must not be hoisted
+	 * above that early return, which would deny a transition that has nothing
+	 * to do with the register. Fail-closed is the right default and the wrong
+	 * blanket.
+	 *
+	 * @return void
+	 */
+	public function testBuyIsUnaffectedByAnAbsentRegister(): void {
+		$container = $this->createMock(ContainerInterface::class);
+		$container->method('get')->willReturn(new FakeSlugResolver([]));
+
+		$appConfig = $this->createMock(IAppConfig::class);
+		$appConfig->method('getValueString')->willReturn('');
+
+		$guard = new LeaveBuySellApprovalGuard($container, $appConfig);
+		$result = $guard->check($this->transaction(['transactionType' => 'buy']), 'approve', 'manager-1');
+
+		$this->assertTrue($result->isAllowed());
+	}//end testBuyIsUnaffectedByAnAbsentRegister()
 
 }//end class

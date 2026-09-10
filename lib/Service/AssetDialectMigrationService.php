@@ -74,14 +74,14 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+ * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
  */
 
 declare(strict_types=1);
 
 namespace OCA\Humaniq\Service;
 
-use OCA\Humaniq\AppInfo\Application;
+use OCA\Humaniq\Support\RegisterSlugLookup;
 use OCP\IAppConfig;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -90,6 +90,8 @@ use RuntimeException;
 /**
  * Rewrites existing Asset/AssetAssignment objects from the old Dutch dialect
  * to the renamed one (idempotent; never deletes; skips rather than guesses).
+ *
+ * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
  */
 class AssetDialectMigrationService {
 
@@ -106,7 +108,7 @@ class AssetDialectMigrationService {
 	 * @param LoggerInterface $logger Logger.
 	 * @param AssetDialectMapper $mapper Pure old->new dialect row mapping.
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	public function __construct(
 		private readonly ContainerInterface $container,
@@ -128,12 +130,21 @@ class AssetDialectMigrationService {
 	 *                                             row can have its category/fields rewritten AND have its status
 	 *                                             skipped-with-reason on the same run (Asset.status, see class docblock).
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	public function migrate(): array {
+		// Resolved ONCE, here, and deliberately OUTSIDE every try below.
+		// `register()` raises when this instance carries no humaniq register,
+		// and `loadAll()` plus both write paths wrap their work in
+		// `catch (\Throwable)` — so calling it inside one of those turned the
+		// raise into a logged warning and a per-row "skipped" reason, and the
+		// migration reported a completed run that had moved nothing. Caught by
+		// AbsentRegisterFailureDirectionTest before this shipped.
+		$register = $this->register();
+
 		return [
-			'Asset' => $this->migrateAssets(),
-			'AssetAssignment' => $this->migrateAssignments(),
+			'Asset' => $this->migrateAssets($register),
+			'AssetAssignment' => $this->migrateAssignments($register),
 		];
 
 	}//end migrate()
@@ -141,14 +152,16 @@ class AssetDialectMigrationService {
 	/**
 	 * Migrate every `Asset` row.
 	 *
+	 * @param string $register The resolved register slug, from migrate().
+	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
-	private function migrateAssets(): array {
+	private function migrateAssets(string $register): array {
 		$report = $this->emptyReport();
 
-		foreach ($this->loadAll('Asset') as $row) {
+		foreach ($this->loadAll('Asset', $register) as $row) {
 			$report['inspected']++;
 			$id = $this->idOf($row);
 			if ($id === '') {
@@ -165,7 +178,7 @@ class AssetDialectMigrationService {
 				continue;
 			}
 
-			$this->writeAssetRow(id: $id, row: $row, mapped: $mapped, report: $report);
+			$this->writeAssetRow(id: $id, row: $row, mapped: $mapped, report: $report, register: $register);
 		}//end foreach
 
 		return $report;
@@ -200,9 +213,9 @@ class AssetDialectMigrationService {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
-	private function writeAssetRow(string $id, array $row, array $mapped, array &$report): void {
+	private function writeAssetRow(string $id, array $row, array $mapped, array &$report, string $register): void {
 		if ($mapped['nonStatusChanged'] === false && $mapped['statusChanged'] === false) {
 			$report['alreadyCurrent']++;
 			return;
@@ -211,7 +224,7 @@ class AssetDialectMigrationService {
 		try {
 			$this->objectService()->saveObject(
 				object: $this->stripSelf($mapped['final']),
-				register: $this->register(),
+				register: $register,
 				schema: 'Asset',
 				uuid: $id,
 				_rbac: false,
@@ -239,12 +252,12 @@ class AssetDialectMigrationService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
-	private function migrateAssignments(): array {
+	private function migrateAssignments(string $register): array {
 		$report = $this->emptyReport();
 
-		foreach ($this->loadAll('AssetAssignment') as $row) {
+		foreach ($this->loadAll('AssetAssignment', $register) as $row) {
 			$report['inspected']++;
 			$id = $this->idOf($row);
 			if ($id === '') {
@@ -269,7 +282,7 @@ class AssetDialectMigrationService {
 			try {
 				$this->objectService()->saveObject(
 					object: $this->stripSelf($mapped['row']),
-					register: $this->register(),
+					register: $register,
 					schema: 'AssetAssignment',
 					uuid: $id,
 					_rbac: false,
@@ -288,7 +301,7 @@ class AssetDialectMigrationService {
 	/**
 	 * @return array<string, mixed> An empty per-schema report shape.
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function emptyReport(): array {
 		return [
@@ -308,7 +321,7 @@ class AssetDialectMigrationService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function stripSelf(array $row): array {
 		unset($row['@self']);
@@ -320,7 +333,7 @@ class AssetDialectMigrationService {
 	 *
 	 * @return string
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function idOf(array $row): string {
 		return (string)($row['id'] ?? $row['@self']['id'] ?? '');
@@ -335,12 +348,12 @@ class AssetDialectMigrationService {
 	 *
 	 * @return array<int, array<string, mixed>>
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
-	private function loadAll(string $schema): array {
+	private function loadAll(string $schema, string $register): array {
 		try {
 			$rows = $this->objectService()
-				->setRegister($this->register())
+				->setRegister($register)
 				->setSchema($schema)
 				->findAll(['limit' => self::LIMIT], false, false);
 		} catch (\Throwable $e) {
@@ -366,7 +379,7 @@ class AssetDialectMigrationService {
 	/**
 	 * @return mixed The OpenRegister ObjectService.
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function objectService(): mixed {
 		// ADR-083: establish availability before reaching. class_exists() rather
@@ -384,18 +397,38 @@ class AssetDialectMigrationService {
 	}//end objectService()
 
 	/**
-	 * @return string The configured register slug.
+	 * The slug this instance's humaniq register answers to.
 	 *
-	 * The 'hrmq' fallback is FROZEN across the Humaniq rename: OpenRegister's
-	 * ImportHandler resolves the register BY SLUG. Renaming it would create a
-	 * second, empty register and orphan every employee, contract, payslip and
-	 * payroll run already stored under the 'hrmq' slug.
+	 * This used to end `return $register === '' ? 'hrmq' : $register;` under a
+	 * note saying the `hrmq` fallback was frozen across the rename — while the
+	 * `getValueString()` default beside it already said `humaniq`. So the frozen
+	 * branch was reachable only for a config value stored as the empty string,
+	 * and every ordinary instance took the canonical default instead. On an
+	 * instance that has not yet run `MigrateRegisterSlug` the register is still
+	 * `hrmq`, and OpenRegister does not raise for a register that is not there.
+	 * See ConductionNL/openregister#3579.
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * This one WRITES, with `_rbac: false` and `_multitenancy: false`. A slug
+	 * nothing answers to would point a privileged migration at a register that
+	 * is not there, and a migration that reports success having moved nothing is
+	 * worse than one that stops. It raises instead.
+	 *
+	 * @return string The slug to use.
+	 *
+	 * @throws RuntimeException When this instance carries no humaniq register
+	 *                          under any of its known slugs.
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function register(): string {
-		$register = $this->appConfig->getValueString(Application::APP_ID, 'register', 'humaniq');
-		return $register === '' ? 'hrmq' : $register;
+		$slug = (new RegisterSlugLookup($this->container, $this->appConfig))->slugOrNull();
+		if ($slug === null) {
+			$message = 'Het humaniq-register is niet gevonden op deze instance. Voer de humaniq-reparatiestap '
+				. 'uit of stel het register in bij de humaniq-instellingen.';
+			$this->logger->error(static::class . ': ' . $message);
+			throw new RuntimeException($message);
+		}
+
+		return $slug;
 	}//end register()
 
 }//end class

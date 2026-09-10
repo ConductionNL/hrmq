@@ -57,7 +57,7 @@ declare(strict_types=1);
 
 namespace OCA\Humaniq\Lifecycle;
 
-use OCA\Humaniq\AppInfo\Application;
+use OCA\Humaniq\Support\RegisterSlugLookup;
 use OCA\OpenRegister\Lifecycle\GuardResult;
 use OCA\OpenRegister\Lifecycle\LifecycleGuardInterface;
 use OCP\IAppConfig;
@@ -121,7 +121,22 @@ final class LeaveBuySellApprovalGuard implements LifecycleGuardInterface {
 			return GuardResult::allow();
 		}
 
-		$balance = $this->resolveBalance($object);
+		// An absent register is not "there is no balance". It is this instance
+		// being unable to say where balances live, and a sell is denied rather
+		// than approved on a guess — fail-CLOSED, like every other branch here,
+		// but with a message naming the actual cause. Answering "no balance
+		// found" for a register that is not on the instance sends an admin
+		// hunting a row that exists.
+		$register = $this->registerSlug();
+		if ($register === null) {
+			return GuardResult::deny(
+				'Het humaniq-register is niet gevonden op deze instance, dus het verlofsaldo kan niet worden '
+				. 'gecontroleerd; goedkeuring is geweigerd. Voer de humaniq-reparatiestap uit of stel het '
+				. 'register in bij de humaniq-instellingen.'
+			);
+		}
+
+		$balance = $this->resolveBalance($object, $register);
 		if ($balance === null) {
 			return GuardResult::deny(
 				'Er is geen verlofsaldo gevonden voor deze medewerker/jaar/verloftype; goedkeuring is geweigerd.'
@@ -146,10 +161,13 @@ final class LeaveBuySellApprovalGuard implements LifecycleGuardInterface {
 	 * (employeeId, year, leaveType), or null when none resolves.
 	 *
 	 * @param array<string, mixed> $object The LeaveTransaction payload.
+	 * @param string $register The slug this instance's humaniq register answers
+	 *                         to, already resolved by the caller — so this
+	 *                         method cannot be reached with an absent register.
 	 *
 	 * @return array<string, mixed>|null
 	 */
-	private function resolveBalance(array $object): ?array {
+	private function resolveBalance(array $object, string $register): ?array {
 		$employeeId = (string)($object['employeeId'] ?? '');
 		$year = (int)($object['year'] ?? 0);
 		$leaveType = (string)($object['leaveType'] ?? '');
@@ -159,7 +177,7 @@ final class LeaveBuySellApprovalGuard implements LifecycleGuardInterface {
 		}
 
 		try {
-			$rows = $this->objectService()->setRegister($this->register())->setSchema('LeaveBalance')->findAll(['limit' => self::LIMIT]);
+			$rows = $this->objectService()->setRegister($register)->setSchema('LeaveBalance')->findAll(['limit' => self::LIMIT]);
 		} catch (\Throwable $e) {
 			return null;
 		}
@@ -216,16 +234,23 @@ final class LeaveBuySellApprovalGuard implements LifecycleGuardInterface {
 	}//end objectService()
 
 	/**
-	 * @return string The configured register slug.
+	 * The slug this instance's humaniq register answers to, or null when absent.
 	 *
-	 * The 'hrmq' fallback is FROZEN across the Humaniq rename: OpenRegister's
-	 * ImportHandler resolves the register BY SLUG. Renaming it would create a
-	 * second, empty register and orphan every employee, contract, payslip and
-	 * payroll run already stored under the 'hrmq' slug.
+	 * This used to end `return $register === '' ? 'hrmq' : $register;` under a
+	 * note saying the `hrmq` fallback was frozen across the rename — while the
+	 * `getValueString()` default beside it already said `humaniq`. So the frozen
+	 * branch was reachable only for a config value stored as the empty string,
+	 * and every ordinary instance took the canonical default instead. On an
+	 * instance that has not yet run `MigrateRegisterSlug` the register is still
+	 * `hrmq`, the LeaveBalance scan below matched nothing, and a sell was denied
+	 * for "no balance found" when the balance was there all along. See
+	 * ConductionNL/openregister#3579.
+	 *
+	 * @return string|null The slug, or null when this instance carries no
+	 *                     humaniq register under any of its known slugs.
 	 */
-	private function register(): string {
-		$register = $this->appConfig->getValueString(Application::APP_ID, 'register', 'humaniq');
-		return $register === '' ? 'hrmq' : $register;
-	}//end register()
+	private function registerSlug(): ?string {
+		return (new RegisterSlugLookup($this->container, $this->appConfig))->slugOrNull();
+	}//end registerSlug()
 
 }//end class

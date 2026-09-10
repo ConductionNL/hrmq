@@ -28,6 +28,7 @@ declare(strict_types=1);
 namespace OCA\Humaniq\Tests\Unit\Lifecycle;
 
 use OCA\Humaniq\Lifecycle\PayrollRunApprovedGuard;
+use OCA\Humaniq\Tests\Unit\Support\FakeSlugResolver;
 use OCP\IAppConfig;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -204,5 +205,96 @@ class PayrollRunApprovedGuardTest extends TestCase {
 		$this->assertFalse($result->isAllowed());
 
 	}//end testLoadFailureDenies()
+
+	/**
+	 * An instance with no humaniq register DENIES, and says why.
+	 *
+	 * The direction is the point. This guard already fails closed on every
+	 * other branch, and an unreadable register must not become the one way
+	 * through. Before the fix it failed closed for the WRONG reason: the guard
+	 * asked for the canonical `humaniq` register, an unmigrated instance
+	 * carries it as `hrmq`, the read matched nothing, and a pensioenaangifte
+	 * whose payroll run was approved was refused with "de gekoppelde loonrun
+	 * bestaat niet". Denied either way, but only one of the two tells an admin
+	 * what to fix. See ConductionNL/openregister#3579.
+	 *
+	 * @return void
+	 */
+	public function testDeniesWhenThisInstanceHasNoHumaniqRegister(): void {
+		$container = $this->createMock(ContainerInterface::class);
+		$container->method('get')->willReturn(new FakeSlugResolver([]));
+
+		$appConfig = $this->createMock(IAppConfig::class);
+		$appConfig->method('getValueString')->willReturn('');
+
+		$guard = new PayrollRunApprovedGuard($container, $appConfig);
+		$result = $guard->check(['payrollRunId' => 'run-1'], 'controleren', 'user-1');
+
+		$this->assertFalse($result->isAllowed(), 'An unreadable register must fail CLOSED.');
+		$this->assertStringContainsString(
+			'humaniq-register is niet gevonden',
+			$result->getMessage(),
+			'The denial must name the register, not a phantom payroll-run status.'
+		);
+	}//end testDeniesWhenThisInstanceHasNoHumaniqRegister()
+
+	/**
+	 * An unmigrated instance still carrying `hrmq` is READ, not refused.
+	 *
+	 * The mirror of the test above, and the half that would otherwise go
+	 * unnoticed: failing closed everywhere is easy, and useless. The guard has
+	 * to allow the transition it is there to allow.
+	 *
+	 * @return void
+	 */
+	public function testReadsTheHrmqRegisterOnAnUnmigratedInstance(): void {
+		$seen = new \stdClass();
+		$seen->register = null;
+
+		$objectService = new class($seen) {
+
+			/**
+			 * @param \stdClass $seen Recorder.
+			 */
+			public function __construct(
+				private readonly \stdClass $seen,
+			) {
+
+			}//end __construct()
+
+			/**
+			 * @param string $id Object id.
+			 * @param string $register Register slug.
+			 * @param string $schema Schema name.
+			 *
+			 * @return mixed
+			 */
+			public function find(string $id, string $register, string $schema): mixed {
+				$this->seen->register = $register;
+				return ['status' => 'approved'];
+			}//end find()
+
+		};
+
+		$container = $this->createMock(ContainerInterface::class);
+		$container->method('get')->willReturnCallback(
+			static function (string $id) use ($objectService) {
+				if ($id === 'OCA\OpenRegister\Service\ObjectService') {
+					return $objectService;
+				}
+
+				return new FakeSlugResolver(['hrmq']);
+			}
+		);
+
+		$appConfig = $this->createMock(IAppConfig::class);
+		$appConfig->method('getValueString')->willReturn('');
+
+		$guard = new PayrollRunApprovedGuard($container, $appConfig);
+		$result = $guard->check(['payrollRunId' => 'run-1'], 'controleren', 'user-1');
+
+		$this->assertSame('hrmq', $seen->register, 'The read must use the slug this instance actually carries.');
+		$this->assertTrue($result->isAllowed());
+	}//end testReadsTheHrmqRegisterOnAnUnmigratedInstance()
 
 }//end class

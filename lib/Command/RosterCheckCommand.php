@@ -92,6 +92,17 @@ class RosterCheckCommand extends Command {
 		$report = $this->runCheck($input, $rosterId, $period, $jurisdiction);
 
 		$output->writeln('<info>Humaniq roster check</info>');
+
+		// A check that could not read anything is NOT a check that found
+		// nothing. Without this branch both print "rosters gecontroleerd: 0"
+		// and the operator reads a compliant estate off a register that is not
+		// on the instance (ConductionNL/openregister#3579).
+		if (($report['registerResolved'] ?? true) === false) {
+			$output->writeln('  <error>' . (string)($report['error'] ?? 'Het humaniq-register is niet gevonden op deze instance.') . '</error>');
+			$output->writeln('  <error>Er is NIETS gecontroleerd; dit is geen goedkeuring.</error>');
+			return 1;
+		}
+
 		$output->writeln(sprintf('  rosters gecontroleerd    : %d', $report['rostersChecked']));
 		$output->writeln(sprintf('  assignments gecontroleerd: %d', $report['assignmentsChecked']));
 

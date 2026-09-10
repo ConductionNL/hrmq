@@ -43,7 +43,7 @@ declare(strict_types=1);
 
 namespace OCA\Humaniq\Lifecycle;
 
-use OCA\Humaniq\AppInfo\Application;
+use OCA\Humaniq\Support\RegisterSlugLookup;
 use OCA\OpenRegister\Lifecycle\GuardResult;
 use OCA\OpenRegister\Lifecycle\LifecycleGuardInterface;
 use OCP\IAppConfig;
@@ -104,8 +104,22 @@ final class PayrollRunApprovedGuard implements LifecycleGuardInterface {
 			);
 		}
 
+		// An absent register is not "the run is not approved". It is this
+		// instance being unable to say where payroll runs live, and the guard
+		// denies rather than guessing — fail-CLOSED, the same direction every
+		// other branch here takes, but with a message that names the actual
+		// cause so an admin can act on it instead of hunting a phantom status.
+		$register = $this->registerSlug();
+		if ($register === null) {
+			return GuardResult::deny(
+				'Het humaniq-register is niet gevonden op deze instance, dus de gekoppelde loonrun kan niet '
+				. 'worden gecontroleerd; controleren is geweigerd. Voer de humaniq-reparatiestap uit of stel '
+				. 'het register in bij de humaniq-instellingen.'
+			);
+		}
+
 		try {
-			$run = $this->objectService()->find(id: $payrollRunId, register: $this->register(), schema: 'PayrollRun');
+			$run = $this->objectService()->find(id: $payrollRunId, register: $register, schema: 'PayrollRun');
 		} catch (\Throwable $e) {
 			return GuardResult::deny(
 				'De gekoppelde loonrun kon niet worden geladen; controleren is geweigerd.'
@@ -168,16 +182,23 @@ final class PayrollRunApprovedGuard implements LifecycleGuardInterface {
 	}//end objectService()
 
 	/**
-	 * @return string The configured register slug.
+	 * The slug this instance's humaniq register answers to, or null when absent.
 	 *
-	 * The 'hrmq' fallback is FROZEN across the Humaniq rename: OpenRegister's
-	 * ImportHandler resolves the register BY SLUG. Renaming it would create a
-	 * second, empty register and orphan every employee, contract, payslip and
-	 * payroll run already stored under the 'hrmq' slug.
+	 * This used to end `return $register === '' ? 'hrmq' : $register;` under a
+	 * note saying the `hrmq` fallback was frozen across the rename — while the
+	 * `getValueString()` default beside it already said `humaniq`. So the
+	 * frozen branch was reachable only for a config value stored as the empty
+	 * string, and every ordinary instance took the canonical default instead.
+	 * On an instance that has not yet run `MigrateRegisterSlug` the register is
+	 * still `hrmq`, the read below matched nothing, and this guard denied a
+	 * transition that should have been allowed. See
+	 * ConductionNL/openregister#3579.
+	 *
+	 * @return string|null The slug, or null when this instance carries no
+	 *                     humaniq register under any of its known slugs.
 	 */
-	private function register(): string {
-		$register = $this->appConfig->getValueString(Application::APP_ID, 'register', 'humaniq');
-		return $register === '' ? 'hrmq' : $register;
-	}//end register()
+	private function registerSlug(): ?string {
+		return (new RegisterSlugLookup($this->container, $this->appConfig))->slugOrNull();
+	}//end registerSlug()
 
 }//end class
