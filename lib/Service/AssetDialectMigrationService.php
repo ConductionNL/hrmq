@@ -74,7 +74,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+ * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
  */
 
 declare(strict_types=1);
@@ -90,6 +90,8 @@ use RuntimeException;
 /**
  * Rewrites existing Asset/AssetAssignment objects from the old Dutch dialect
  * to the renamed one (idempotent; never deletes; skips rather than guesses).
+ *
+ * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
  */
 class AssetDialectMigrationService {
 
@@ -106,7 +108,7 @@ class AssetDialectMigrationService {
 	 * @param LoggerInterface $logger Logger.
 	 * @param AssetDialectMapper $mapper Pure old->new dialect row mapping.
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	public function __construct(
 		private readonly ContainerInterface $container,
@@ -128,7 +130,7 @@ class AssetDialectMigrationService {
 	 *                                             row can have its category/fields rewritten AND have its status
 	 *                                             skipped-with-reason on the same run (Asset.status, see class docblock).
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	public function migrate(): array {
 		return [
@@ -143,7 +145,7 @@ class AssetDialectMigrationService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function migrateAssets(): array {
 		$report = $this->emptyReport();
@@ -200,7 +202,7 @@ class AssetDialectMigrationService {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function writeAssetRow(string $id, array $row, array $mapped, array &$report): void {
 		if ($mapped['nonStatusChanged'] === false && $mapped['statusChanged'] === false) {
@@ -239,7 +241,7 @@ class AssetDialectMigrationService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function migrateAssignments(): array {
 		$report = $this->emptyReport();
@@ -288,7 +290,7 @@ class AssetDialectMigrationService {
 	/**
 	 * @return array<string, mixed> An empty per-schema report shape.
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function emptyReport(): array {
 		return [
@@ -308,7 +310,7 @@ class AssetDialectMigrationService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function stripSelf(array $row): array {
 		unset($row['@self']);
@@ -320,7 +322,7 @@ class AssetDialectMigrationService {
 	 *
 	 * @return string
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function idOf(array $row): string {
 		return (string)($row['id'] ?? $row['@self']['id'] ?? '');
@@ -335,7 +337,7 @@ class AssetDialectMigrationService {
 	 *
 	 * @return array<int, array<string, mixed>>
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function loadAll(string $schema): array {
 		try {
@@ -366,7 +368,7 @@ class AssetDialectMigrationService {
 	/**
 	 * @return mixed The OpenRegister ObjectService.
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function objectService(): mixed {
 		// ADR-083: establish availability before reaching. class_exists() rather
@@ -404,7 +406,7 @@ class AssetDialectMigrationService {
 	 *
 	 * @throws RuntimeException When this instance carries no humaniq register
 	 *                          under any of its known slugs.
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function register(): string {
 		$slug = (new RegisterSlugLookup($this->container, $this->appConfig))->slugOrNull();
