@@ -104,7 +104,7 @@ class TimeEntryHoursDeriver {
 			return $this->fromDay(incoming: $incoming, stored: $stored);
 		}
 
-		if ($rawEnd === '' && $this->isRunningTimer(incoming: $incoming, stored: $stored) === true) {
+		if ($this->isRunningTimerWrite(incoming: $incoming, stored: $stored) === true) {
 			return $this->fromRunningTimer(rawStart: $rawStart);
 		}
 
@@ -115,8 +115,15 @@ class TimeEntryHoursDeriver {
 	 * Whether this write is a running timer rather than a booking missing its
 	 * end.
 	 *
+	 * Public because the STAMP LISTENER needs the same answer. `origin` is
+	 * `readOnly` on the schema, and a client value for it does not survive the
+	 * ObjectService write path: an entry started with `origin: timer` came back
+	 * stored as `manual`, the schema default. The marker therefore has to be
+	 * stamped server-side like every other protected field, and the listener
+	 * must not re-derive the rule from its own copy of these conditions.
+	 *
 	 * Reads the incoming `origin` first and the stored one second, so that
-	 * stopping a timer — a write that carries an end and no origin — still sees
+	 * stopping a timer, a write that carries an end and no origin, still sees
 	 * the marker on the row it is closing.
 	 *
 	 * @param array<string, mixed>      $incoming The incoming payload.
@@ -126,9 +133,15 @@ class TimeEntryHoursDeriver {
 	 *
 	 * @spec openspec/specs/hours-leaf/spec.md#requirement-an-entry-without-an-end-is-a-running-timer-not-a-defective-booking
 	 */
-	private function isRunningTimer(array $incoming, ?array $stored): bool {
+	public function isRunningTimerWrite(array $incoming, ?array $stored): bool {
+		$rawStart = (string)($incoming['startedAt'] ?? ($stored['startedAt'] ?? ''));
+		$rawEnd = (string)($incoming['endedAt'] ?? ($stored['endedAt'] ?? ''));
+		if ($rawStart === '' || $rawEnd !== '') {
+			return false;
+		}
+
 		return (string)($incoming['origin'] ?? ($stored['origin'] ?? '')) === self::ORIGIN_TIMER;
-	}//end isRunningTimer()
+	}//end isRunningTimerWrite()
 
 	/**
 	 * The running shape: a start, no end, and no hours worked yet.

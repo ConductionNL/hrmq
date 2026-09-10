@@ -193,4 +193,40 @@ class TimeEntryHoursDeriverTest extends TestCase {
 		);
 	}//end testARunningTimerWithAnUnparseableStartIsRefused()
 
+	/**
+	 * The running-timer predicate the STAMP LISTENER shares, in both answers.
+	 *
+	 * This is the assertion that keeps the marker on the stored row. `origin`
+	 * is readOnly on the schema and a client value for it does not survive the
+	 * ObjectService write path, so a timer started with `origin: timer` came
+	 * back stored as `manual` and matched no timer lookup: running, invisible,
+	 * and reported as a success. The listener now stamps it, and it asks this
+	 * method rather than re-deriving the rule from its own copy.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/hours-leaf/spec.md#requirement-an-entry-without-an-end-is-a-running-timer-not-a-defective-booking
+	 */
+	public function testTheRunningTimerPredicateAnswersBothWays(): void {
+		$timer = [
+			'startedAt' => '2026-09-10T09:00:00+00:00',
+			'origin' => TimeEntryHoursDeriver::ORIGIN_TIMER,
+		];
+
+		$this->assertTrue($this->deriver->isRunningTimerWrite($timer, null));
+
+		$this->assertFalse(
+			$this->deriver->isRunningTimerWrite(['startedAt' => $timer['startedAt'], 'origin' => 'manual'], null),
+			'No marker is a booking that lost its end, not a timer.'
+		);
+		$this->assertFalse(
+			$this->deriver->isRunningTimerWrite(['endedAt' => '2026-09-10T11:00:00+00:00'], $timer),
+			'A write carrying an end STOPS the timer, so it must not be re-stamped as running.'
+		);
+		$this->assertFalse(
+			$this->deriver->isRunningTimerWrite(['date' => '2026-09-10', 'hours' => 2], null),
+			'A day booking has no start, so it is not a timer whatever its origin says.'
+		);
+	}//end testTheRunningTimerPredicateAnswersBothWays()
+
 }//end class

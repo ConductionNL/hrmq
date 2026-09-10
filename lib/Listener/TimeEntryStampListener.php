@@ -57,8 +57,8 @@ declare(strict_types=1);
 namespace OCA\Humaniq\Listener;
 
 use OCA\Humaniq\Service\HoursRegisterGateway;
-use OCA\Humaniq\Service\TimeEntryHoursDeriver;
 use OCA\Humaniq\Service\InternalWriteMarker;
+use OCA\Humaniq\Service\TimeEntryHoursDeriver;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IUserSession;
@@ -244,13 +244,47 @@ class TimeEntryStampListener implements IEventListener {
 			'date' => gmdate('Y-m-d', $startedAt),
 		];
 
+		// 5. Provenance, stamped on create and never trusted raw from the
+		// client. THIS ALLOWLIST IS LOAD-BEARING and it silently swallowed the
+		// timer marker: a timer started with `origin: timer` was not in the
+		// list, fell through to `manual`, and then matched no timer lookup at
+		// all. The timer was running, invisible, and every layer reported
+		// success. `timer` is admitted here, and ONLY for a write that really is
+		// a running timer, so a finished booking cannot dress itself up as one.
 		if ($isCreate === true) {
-			$origin = trim((string)($incoming['origin'] ?? ''));
-			$modified['origin'] = in_array($origin, ['manual', 'migration', 'import'], true) === true ? $origin : 'manual';
+			$modified['origin'] = $this->originFor(incoming: $incoming, stored: $stored);
 		}
 
 		return $modified;
 	}//end stamp()
+
+	/**
+	 * The provenance to stamp on a create.
+	 *
+	 * `timer` is admitted only when the write IS a running timer, which is the
+	 * deriver's own rule rather than a second copy of it here. Every other value
+	 * outside the allowlist collapses to `manual`, as it always has: provenance
+	 * is a claim about how a booking was made, and an employee does not get to
+	 * make that claim freely.
+	 *
+	 * @param array<string, mixed>      $incoming The incoming payload.
+	 * @param array<string, mixed>|null $stored   The stored payload (update only).
+	 *
+	 * @return string The origin to stamp.
+	 *
+	 * @spec openspec/specs/hours-leaf/spec.md#requirement-an-entry-without-an-end-is-a-running-timer-not-a-defective-booking
+	 */
+	private function originFor(array $incoming, ?array $stored): string {
+		$origin = trim((string)($incoming['origin'] ?? ''));
+
+		if ($origin === TimeEntryHoursDeriver::ORIGIN_TIMER) {
+			return $this->hoursDeriver->isRunningTimerWrite(incoming: $incoming, stored: $stored) === true
+				? TimeEntryHoursDeriver::ORIGIN_TIMER
+				: 'manual';
+		}
+
+		return in_array($origin, ['manual', 'migration', 'import'], true) === true ? $origin : 'manual';
+	}//end originFor()
 
 	/**
 	 * Resolve the employee for this booking: the write's explicit id (HR
