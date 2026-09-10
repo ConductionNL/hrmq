@@ -12,15 +12,16 @@
 			{{ t('humaniq', 'Hours booked') }}
 		</h3>
 
-		<!-- Running: the tile becomes the timer. -->
-		<div v-if="running" class="hq-hours__figures" data-testid="hq-hours-running">
+		<!-- Timing THIS object: the tile becomes the timer.
+		     Only this object. A timer running elsewhere leaves the figures alone,
+		     because putting another object's elapsed time where this object's
+		     total goes reads as this object's time. -->
+		<div v-if="runningHere" class="hq-hours__figures" data-testid="hq-hours-running">
 			<div class="hq-hours__headline">
 				<span class="hq-hours__value hq-hours__value--running">{{ elapsed }}</span>
 			</div>
 			<p class="hq-hours__sub">
-				{{ runningHere
-					? t('humaniq', 'Timer running on this item')
-					: t('humaniq', 'Timer running on another item') }}
+				{{ t('humaniq', 'Timer running on this item') }}
 			</p>
 		</div>
 
@@ -32,6 +33,9 @@
 			</div>
 			<p class="hq-hours__sub" data-testid="hq-hours-own">
 				{{ ownLine }}
+			</p>
+			<p v-if="running" class="hq-hours__sub" data-testid="hq-hours-running-elsewhere">
+				{{ t('humaniq', 'Timer running on another item') }}
 			</p>
 		</div>
 
@@ -217,6 +221,13 @@ export default {
 		 */
 		ownLine() {
 			if (this.error !== '' || (this.loading === true && this.entries.length === 0)) {
+				return t('humaniq', 'Your share is not known yet')
+			}
+
+			if (this.uid === '') {
+				// No resolvable caller. Matching on '' would count every entry
+				// that carries no userId as the reader's own, which is a claim
+				// about them that nothing supports.
 				return t('humaniq', 'Your share is not known yet')
 			}
 
