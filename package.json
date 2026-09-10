@@ -37,7 +37,7 @@
   "dependencies": {
     "@babel/core": "^7.29.0",
     "@babel/preset-env": "^7.29.5",
-    "@conduction/nextcloud-vue": "^2.38.0",
+    "@conduction/nextcloud-vue": "^2.40.0",
     "@nextcloud/auth": "^2.5.0",
     "@nextcloud/axios": "~2.6.0",
     "@nextcloud/capabilities": "^1.2.1",
@@ -68,11 +68,11 @@
     "@nextcloud/stylelint-config": "^3.2.2",
     "@nextcloud/webpack-vue-config": "^7.0.4",
     "@playwright/test": "^1.59.1",
-    "@typescript-eslint/parser": "^8.68.0",
+    "@typescript-eslint/parser": "^8.69.0",
     "@vue/compiler-sfc": "^3.5.13",
     "axe-core": "^4.13.0",
     "css-loader": "~7.1.5",
-    "eslint": "^10.9.1",
+    "eslint": "^10.10.0",
     "eslint-config-prettier": "^10.1.8",
     "jsdom": "^30.0.1",
     "sass": "^1.103.1",
@@ -81,7 +81,7 @@
     "stylelint": "^17.14.1",
     "vue-eslint-parser": "^10.3.0",
     "vue-loader": "^17.4.2",
-    "webpack": "^5.110.2",
+    "webpack": "^5.110.3",
     "webpack-cli": "^6.0.1"
   }
 }
