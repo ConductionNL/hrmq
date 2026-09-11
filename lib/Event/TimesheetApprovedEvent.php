@@ -43,7 +43,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+ * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
  */
 
 declare(strict_types=1);
@@ -56,7 +56,7 @@ use OCP\EventDispatcher\Event;
  * Fired alongside the webhook on the SAME Timesheet draft/submitted → approved
  * edge {@see \OCA\Humaniq\Service\TimeEntryEventService} already governs.
  *
- * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+ * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
  */
 class TimesheetApprovedEvent extends Event {
 
@@ -137,7 +137,7 @@ class TimesheetApprovedEvent extends Event {
 	 *
 	 * @return string The event id.
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
 	 */
 	public function getEventId(): string {
 		return $this->eventId;
@@ -149,7 +149,7 @@ class TimesheetApprovedEvent extends Event {
 	 *
 	 * @return string The timesheet id.
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
 	 */
 	public function getTimesheetId(): string {
 		return $this->timesheetId;
@@ -160,7 +160,7 @@ class TimesheetApprovedEvent extends Event {
 	 *
 	 * @return string The employee reference.
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
 	 */
 	public function getEmployeeId(): string {
 		return $this->employeeId;
@@ -171,7 +171,7 @@ class TimesheetApprovedEvent extends Event {
 	 *
 	 * @return string The period string.
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-The-typed-event-SHALL-carry-the-raw-period-plus-an-explicit-grain-marker
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-The-typed-event-SHALL-carry-the-raw-period-plus-an-explicit-grain-marker
 	 */
 	public function getPeriod(): string {
 		return $this->period;
@@ -182,7 +182,7 @@ class TimesheetApprovedEvent extends Event {
 	 *
 	 * @return string The period grain marker.
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-The-typed-event-SHALL-carry-the-raw-period-plus-an-explicit-grain-marker
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-The-typed-event-SHALL-carry-the-raw-period-plus-an-explicit-grain-marker
 	 */
 	public function getPeriodGrain(): string {
 		return $this->periodGrain;
@@ -193,7 +193,7 @@ class TimesheetApprovedEvent extends Event {
 	 *
 	 * @return float The hours.
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
 	 */
 	public function getHours(): float {
 		return $this->hours;
@@ -204,7 +204,7 @@ class TimesheetApprovedEvent extends Event {
 	 *
 	 * @return string The project reference.
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
 	 */
 	public function getProjectId(): string {
 		return $this->projectId;
@@ -215,7 +215,7 @@ class TimesheetApprovedEvent extends Event {
 	 *
 	 * @return string The cost centre reference.
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
 	 */
 	public function getCostCenter(): string {
 		return $this->costCenter;
@@ -226,7 +226,7 @@ class TimesheetApprovedEvent extends Event {
 	 *
 	 * @return bool True when billable.
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
 	 */
 	public function isBillable(): bool {
 		return $this->billable;
@@ -237,7 +237,7 @@ class TimesheetApprovedEvent extends Event {
 	 *
 	 * @return string The client reference.
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
 	 */
 	public function getClientRef(): string {
 		return $this->clientRef;
@@ -248,7 +248,7 @@ class TimesheetApprovedEvent extends Event {
 	 *
 	 * @return string The administration id.
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
 	 */
 	public function getAdministrationId(): string {
 		return $this->administrationId;
@@ -259,7 +259,7 @@ class TimesheetApprovedEvent extends Event {
 	 *
 	 * @return string The approver's user id.
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
 	 */
 	public function getApprovedBy(): string {
 		return $this->approvedBy;
@@ -270,7 +270,7 @@ class TimesheetApprovedEvent extends Event {
 	 *
 	 * @return string The approval timestamp.
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
 	 */
 	public function getApprovedAt(): string {
 		return $this->approvedAt;
@@ -286,7 +286,7 @@ class TimesheetApprovedEvent extends Event {
 	 *
 	 * @return string One of the `GRAIN_*` constants.
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-The-typed-event-SHALL-carry-the-raw-period-plus-an-explicit-grain-marker
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-The-typed-event-SHALL-carry-the-raw-period-plus-an-explicit-grain-marker
 	 */
 	public static function classifyPeriodGrain(string $period): string {
 		if (preg_match('/^\d{4}-\d{2}$/', $period) === 1) {

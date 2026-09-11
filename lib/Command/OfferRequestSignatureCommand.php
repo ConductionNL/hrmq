@@ -32,7 +32,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-007
+ * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-007
  */
 
 declare(strict_types=1);
@@ -92,7 +92,7 @@ class OfferRequestSignatureCommand extends Command {
 	 *
 	 * @return int 0 when the outcome is requested/already-signed/skipped-no-docudesk, 1 when failed/usage-error.
 	 *
-	 * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-007
+	 * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-007
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$applicationOption = $input->getOption('application');

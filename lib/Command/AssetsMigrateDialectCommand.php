@@ -25,7 +25,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+ * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
  */
 
 declare(strict_types=1);
@@ -45,7 +45,7 @@ class AssetsMigrateDialectCommand extends Command {
 	/**
 	 * @param AssetDialectMigrationService $migrationService The migration.
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	public function __construct(
 		private readonly AssetDialectMigrationService $migrationService,
@@ -57,7 +57,7 @@ class AssetsMigrateDialectCommand extends Command {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	protected function configure(): void {
 		$this->setName('humaniq:assets:migrate-dialect')
@@ -77,7 +77,7 @@ class AssetsMigrateDialectCommand extends Command {
 	 *
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$report = $this->migrationService->migrate();

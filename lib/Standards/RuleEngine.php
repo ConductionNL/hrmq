@@ -158,7 +158,7 @@ final class RuleEngine {
 	 *
 	 * @return array<string, string>
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-006
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-006
 	 */
 	public static function providerUpsertKeys(): array {
 		$keys = [];

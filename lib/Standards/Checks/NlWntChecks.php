@@ -39,7 +39,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/wnt-disclosure/specs/wnt-disclosure/spec.md#REQ-WNT-003
+ * @spec openspec/specs/wnt-disclosure/spec.md#REQ-WNT-003
  */
 
 declare(strict_types=1);
@@ -59,7 +59,7 @@ final class NlWntChecks implements CheckProvider {
 	 *
 	 * @return array<string, array<string, callable>>
 	 *
-	 * @spec openspec/changes/wnt-disclosure/specs/wnt-disclosure/spec.md#REQ-WNT-003
+	 * @spec openspec/specs/wnt-disclosure/spec.md#REQ-WNT-003
 	 */
 	public static function checks(): array {
 		return [
@@ -75,7 +75,7 @@ final class NlWntChecks implements CheckProvider {
 	 *
 	 * @return array<string, array<string, mixed>>
 	 *
-	 * @spec openspec/changes/wnt-disclosure/specs/wnt-disclosure/spec.md#REQ-WNT-003
+	 * @spec openspec/specs/wnt-disclosure/spec.md#REQ-WNT-003
 	 */
 	public static function seedSpec(): array {
 		return [];
@@ -94,7 +94,7 @@ final class NlWntChecks implements CheckProvider {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/wnt-disclosure/specs/wnt-disclosure/spec.md#REQ-WNT-003
+	 * @spec openspec/specs/wnt-disclosure/spec.md#REQ-WNT-003
 	 */
 	private static function withinWntNorm(array $disclosure, array $context): bool {
 		$employeeId = trim((string)($disclosure['employeeId'] ?? ''));
@@ -146,7 +146,7 @@ final class NlWntChecks implements CheckProvider {
 	 *
 	 * @SuppressWarnings(PHPMD.StaticAccess) TaxTables::load() is a pure value-object factory method -- the same unguarded precedent NlDgaChecks/NlPayrollChecks already use.
 	 *
-	 * @spec openspec/changes/wnt-disclosure/specs/wnt-disclosure/spec.md#REQ-WNT-003
+	 * @spec openspec/specs/wnt-disclosure/spec.md#REQ-WNT-003
 	 */
 	private static function wntNormJaarCents(): ?int {
 		$ids = TaxTables::availableIds();

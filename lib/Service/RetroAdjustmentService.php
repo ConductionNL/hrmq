@@ -38,10 +38,10 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-001
- * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-002
- * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-003
- * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-005
+ * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-001
+ * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-002
+ * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-003
+ * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-005
  */
 
 declare(strict_types=1);
@@ -97,10 +97,10 @@ class RetroAdjustmentService {
 	 *
 	 * @return array<string, mixed> Outcome: {adjustmentId, originalPeriod, employeeId, correctionRef, status, message, idempotent, delta, engineVersion, settlementPeriod, settlementLine}.
 	 *
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-001
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-002
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-003
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-005
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-001
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-002
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-003
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-005
 	 */
 	public function adjustFor(
 		string $originalPeriod,
@@ -220,7 +220,7 @@ class RetroAdjustmentService {
 	 *
 	 * @return array<string, mixed> Outcome (see adjustFor()).
 	 *
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-007
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-007
 	 */
 	public function recomputeAdjustment(string $adjustmentId): array {
 		$adjustment = $this->findAdjustmentById($adjustmentId);
@@ -267,9 +267,9 @@ class RetroAdjustmentService {
 	 *
 	 * @return array<string, mixed> {status, message, deltaEuros, engineVersion, originalPayrollRunId, originalPayslipId, administrationId}.
 	 *
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-001
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-002
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-005
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-001
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-002
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-005
 	 */
 	private function computeDelta(string $originalPeriod, string $employeeId, float $correctedGrossMonthlySalary): array {
 		$payslip = $this->resolveOriginalPayslip($originalPeriod, $employeeId);

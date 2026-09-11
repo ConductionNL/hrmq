@@ -24,7 +24,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-006
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-006
  */
 
 declare(strict_types=1);
@@ -55,7 +55,7 @@ class PayrollRunCommand extends Command {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-006
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-006
 	 */
 	protected function configure(): void {
 		$this->setName('humaniq:payroll:run')
@@ -72,7 +72,7 @@ class PayrollRunCommand extends Command {
 	 *
 	 * @return int 0 when the run was calculated or already exists, 1 on refusal/failure.
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-006
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-006
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$periodOption = $input->getOption('period');

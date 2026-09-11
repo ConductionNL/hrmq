@@ -30,7 +30,7 @@
  * @link https://conduction.nl
  *
  * @spec openspec/changes/archive/2026-07-13-hrmq-docudesk-documents/specs/hrmq-docudesk-documents/spec.md#REQ-HDD-007
- * @spec openspec/changes/payslip-pdf-docudesk/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-003
+ * @spec openspec/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-003
  */
 
 declare(strict_types=1);
@@ -103,7 +103,7 @@ class DocumentsGenerateCommand extends Command {
 	 * @return int 0 when every attempt ends generated/already-generated/skipped-no-docudesk, 1 when any ends failed/usage-error.
 	 *
 	 * @spec openspec/changes/archive/2026-07-13-hrmq-docudesk-documents/specs/hrmq-docudesk-documents/spec.md#REQ-HDD-007
-	 * @spec openspec/changes/payslip-pdf-docudesk/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-003
+	 * @spec openspec/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-003
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$typeOption = $input->getOption('type');

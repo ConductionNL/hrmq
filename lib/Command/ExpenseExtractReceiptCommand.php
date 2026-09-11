@@ -34,7 +34,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-006
+ * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-006
  */
 
 declare(strict_types=1);
@@ -96,7 +96,7 @@ class ExpenseExtractReceiptCommand extends Command {
 	 *
 	 * @return int 0 when every attempt ends extracted/already-extracted/skipped-no-docudesk, 1 when any ends failed or --as-user is refused.
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-006
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-006
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		// Privileged-session establishment BEFORE any ReceiptExtractionService/

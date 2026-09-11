@@ -26,7 +26,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-006
+ * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-006
  */
 
 declare(strict_types=1);
@@ -47,7 +47,7 @@ class PayrollYearTransitionCommand extends Command {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-006
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-006
 	 */
 	protected function configure(): void {
 		$this->setName('humaniq:payroll:year-transition')
@@ -62,7 +62,7 @@ class PayrollYearTransitionCommand extends Command {
 	 *
 	 * @return int 0 when the new table exists, 1 when it is missing or --year is invalid.
 	 *
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-006
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-006
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$year = trim((string)$input->getOption('year'));

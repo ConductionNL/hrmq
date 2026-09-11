@@ -26,7 +26,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-005
+ * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-005
  */
 
 declare(strict_types=1);
@@ -40,7 +40,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlSinglePersonChecks (raw predicate + through the REAL RuleEngine).
  *
- * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-005
+ * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-005
  */
 class NlSinglePersonChecksTest extends TestCase {
 

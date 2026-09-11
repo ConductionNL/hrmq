@@ -27,7 +27,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-007
+ * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-007
  */
 
 declare(strict_types=1);
@@ -84,7 +84,7 @@ class ExpenseController extends Controller {
 	 *
 	 * @return JSONResponse The extraction outcome, 404 when the Expense does not resolve, or 403 when the caller is neither admin nor owner.
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-007
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-007
 	 */
 	#[NoAdminRequired]
 	public function extractReceipt(string $expenseId): JSONResponse {
@@ -127,7 +127,7 @@ class ExpenseController extends Controller {
 	 *
 	 * @return array<string, mixed>|null
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-007
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-007
 	 */
 	private function authorizeExpense(string $expenseId): ?array {
 		// ADR-083: establish availability before reaching, and degrade into the

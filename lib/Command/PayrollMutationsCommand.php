@@ -22,7 +22,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-004
+ * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-004
  */
 
 declare(strict_types=1);
@@ -53,7 +53,7 @@ class PayrollMutationsCommand extends Command {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-004
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-004
 	 */
 	protected function configure(): void {
 		$this->setName('humaniq:payroll:mutations')
@@ -70,7 +70,7 @@ class PayrollMutationsCommand extends Command {
 	 *
 	 * @return int 0 on success, 1 on refusal/failure.
 	 *
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-004
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-004
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$toOption = $input->getOption('to');

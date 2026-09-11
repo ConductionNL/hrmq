@@ -35,7 +35,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+ * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
  */
 
 declare(strict_types=1);
@@ -45,7 +45,7 @@ namespace OCA\Humaniq\Service;
 /**
  * Pure old-dialect -> new-dialect row mapping for Asset and AssetAssignment.
  *
- * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+ * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
  */
 class AssetDialectMapper {
 
@@ -124,7 +124,7 @@ class AssetDialectMapper {
 	 *
 	 * @return array{hardSkipReason: string|null, nonStatusChanged: bool, statusChanged: bool, withoutStatusChange: array<string, mixed>, final: array<string, mixed>}
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	public function mapAssetRow(array $row): array {
 		$withoutStatusChange = $row;
@@ -205,7 +205,7 @@ class AssetDialectMapper {
 	 *
 	 * @return array{value: string|null, changed: bool, skipReason: string|null}
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function mapEnumValue(mixed $value, array $map, array $current, string $label): array {
 		if (is_string($value) === false || $value === '') {
@@ -240,7 +240,7 @@ class AssetDialectMapper {
 	 *
 	 * @return array<string, mixed> The row with both fields in their declared type.
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function normaliseAssetTypes(array $row): array {
 		if (isset($row['purchaseDate']) === true && is_string($row['purchaseDate']) === true) {
@@ -265,7 +265,7 @@ class AssetDialectMapper {
 	 *
 	 * @return array{row: array<string, mixed>, changed: bool, hardSkipReason: string|null}
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function mapFieldRenames(array $row, array $fieldMap): array {
 		$result = $this->applyFieldRenames($row, $fieldMap);
@@ -286,7 +286,7 @@ class AssetDialectMapper {
 	 *
 	 * @return array{row: array<string, mixed>, changed: bool, hardSkipReason: string|null}
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function applyFieldRenames(array $row, array $fieldMap): array {
 		$updated = $row;
@@ -366,7 +366,7 @@ class AssetDialectMapper {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function valuesEquivalent(mixed $a, mixed $b): bool {
 		if ($a === $b) {
@@ -402,7 +402,7 @@ class AssetDialectMapper {
 	 *
 	 * @return bool True only when both are date-shaped strings for one day.
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	private function sameCalendarDay(mixed $a, mixed $b): bool {
 		if (is_string($a) === false || is_string($b) === false) {
@@ -427,7 +427,7 @@ class AssetDialectMapper {
 	 *
 	 * @return array{row: array<string, mixed>, changed: bool, hardSkipReason: string|null}
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	public function mapAssignmentRow(array $row): array {
 		return $this->mapFieldRenames($row, self::ASSIGNMENT_FIELD_MAP);

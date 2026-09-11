@@ -50,7 +50,7 @@
  * @link https://conduction.nl
  *
  * @spec openspec/changes/org-chart-basic/specs/org-chart-basic/spec.md#REQ-ORG-005
- * @spec openspec/changes/mss-team-scope/specs/mss-team-scope/spec.md#REQ-MSS-005
+ * @spec openspec/specs/mss-team-scope/spec.md#REQ-MSS-005
  */
 
 declare(strict_types=1);
@@ -65,7 +65,7 @@ use OCA\Humaniq\Service\OrgResolutionService;
  * consistency + unit-cycle freedom).
  *
  * @spec openspec/changes/org-chart-basic/specs/org-chart-basic/spec.md#REQ-ORG-005
- * @spec openspec/changes/mss-team-scope/specs/mss-team-scope/spec.md#REQ-MSS-005
+ * @spec openspec/specs/mss-team-scope/spec.md#REQ-MSS-005
  */
 final class NlOrgChecks implements CheckProvider {
 
@@ -75,7 +75,7 @@ final class NlOrgChecks implements CheckProvider {
 	 * @return array<string, array<string, callable>>
 	 *
 	 * @spec openspec/changes/org-chart-basic/specs/org-chart-basic/spec.md#REQ-ORG-005
-	 * @spec openspec/changes/mss-team-scope/specs/mss-team-scope/spec.md#REQ-MSS-005
+	 * @spec openspec/specs/mss-team-scope/spec.md#REQ-MSS-005
 	 */
 	public static function checks(): array {
 		return [
@@ -270,7 +270,7 @@ final class NlOrgChecks implements CheckProvider {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/mss-team-scope/spec.md#Requirement:-The-approval-carrying-schemas-SHALL-gain-an-optional-denormalized-managerUserId-scoping-property-(REQ-MSS-001)
+	 * @spec openspec/specs/mss-team-scope/spec.md#Requirement:-The-approval-carrying-schemas-SHALL-gain-an-optional-denormalized-managerUserId-scoping-property-(REQ-MSS-001)
 	 */
 	private static function managerConsistent(array $o, array $c): bool {
 		$managerUserId = trim((string)($o['managerUserId'] ?? ''));

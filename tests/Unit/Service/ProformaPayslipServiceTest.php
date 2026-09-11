@@ -26,8 +26,8 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-001
- * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-006
+ * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-001
+ * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-006
  */
 
 declare(strict_types=1);
@@ -42,8 +42,8 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for ProformaPayslipService.
  *
- * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-001
- * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-006
+ * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-001
+ * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-006
  */
 class ProformaPayslipServiceTest extends TestCase {
 

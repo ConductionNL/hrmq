@@ -29,7 +29,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/uitzend-flexpool/specs/uitzend-flexpool/spec.md
+ * @spec openspec/specs/uitzend-flexpool/spec.md
  */
 
 declare(strict_types=1);
@@ -45,7 +45,7 @@ use PHPUnit\Framework\TestCase;
  * Tests for NlUitzendChecks (raw predicates + the two rules through the real
  * RuleEngine).
  *
- * @spec openspec/changes/uitzend-flexpool/specs/uitzend-flexpool/spec.md
+ * @spec openspec/specs/uitzend-flexpool/spec.md
  */
 class NlUitzendChecksTest extends TestCase {
 

@@ -135,7 +135,7 @@ class AdministrationService {
 	 *
 	 * @return string
 	 *
-	 * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-002
+	 * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-002
 	 */
 	public function getActiveAdministrationMode(string $userId): string {
 		$activeId = $this->getActiveAdministrationId($userId);
@@ -238,7 +238,7 @@ class AdministrationService {
 	 * @return array<int, array{administrationId: string, name: string, role: string, mode: string}>
 	 *
 	 * @spec openspec/changes/multi-administratie/specs/multi-administratie/spec.md#REQ-MULTI-002
-	 * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-002
+	 * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-002
 	 */
 	public function accessibleAdministrations(string $userId): array {
 		$catalog = $this->administrationCatalogById();
@@ -277,7 +277,7 @@ class AdministrationService {
 	 * @return array{activeAdministrationId: string|null, administrations: array<int, array{administrationId: string, name: string, role: string, mode: string}>}
 	 *
 	 * @spec openspec/changes/multi-administratie/specs/multi-administratie/spec.md#REQ-MULTI-004
-	 * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-002
+	 * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-002
 	 */
 	public function context(string $userId): array {
 		return [

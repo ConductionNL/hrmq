@@ -29,8 +29,8 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-006
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-007
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-006
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-007
  */
 
 declare(strict_types=1);
@@ -46,7 +46,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for the run-scoped payroll corpus audit.
  *
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-006
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-006
  */
 class RuleAuditServicePayrollScopeTest extends TestCase {
 

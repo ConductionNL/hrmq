@@ -31,7 +31,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/leave-verzuim-mvp/specs/leave-management/spec.md
+ * @spec openspec/specs/leave-management/spec.md
  * @spec openspec/specs/leave-buy-sell/spec.md#REQ-BUYSELL-003
  */
 
@@ -47,7 +47,7 @@ use PHPUnit\Framework\TestCase;
  * Tests for NlLeaveChecks (raw predicates + the leave-buy-sell backstop
  * through RuleEngine::evaluate).
  *
- * @spec openspec/changes/leave-verzuim-mvp/specs/leave-management/spec.md
+ * @spec openspec/specs/leave-management/spec.md
  * @spec openspec/specs/leave-buy-sell/spec.md#REQ-BUYSELL-003
  */
 class NlLeaveChecksTest extends TestCase {

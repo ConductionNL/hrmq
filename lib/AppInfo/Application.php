@@ -262,7 +262,7 @@ class Application extends App implements IBootstrap {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/time-entry-capture/specs/time-entry-capture/spec.md#REQ-TEC-002
+	 * @spec openspec/specs/time-entry-capture/spec.md#REQ-TEC-002
 	 */
 	private function registerFilteredObjectListener(
 		IEventDispatcher $dispatcher,
@@ -303,8 +303,8 @@ class Application extends App implements IBootstrap {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/time-entry-capture/specs/time-entry-capture/spec.md#REQ-TEC-002
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/humaniq-timesheet-approval/spec.md#Requirement:-Process-fields-are-server-stamped-and-inert-to-client-input
+	 * @spec openspec/specs/time-entry-capture/spec.md#REQ-TEC-002
+	 * @spec openspec/specs/humaniq-timesheet-approval/spec.md#Requirement:-Process-fields-are-server-stamped-and-inert-to-client-input
 	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/time-entry-capture/spec.md#Requirement:-A-time-entry's-parent-timesheet-aggregates-its-entries-(REQ-TEC-004)
 	 */
 	public function boot(IBootContext $context): void {
@@ -449,7 +449,7 @@ class Application extends App implements IBootstrap {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-001
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-001
 	 */
 	private function registerLeaveListeners(IEventDispatcher $dispatcher): void {
 		foreach ([ObjectCreatedEvent::class, ObjectUpdatedEvent::class] as $event) {

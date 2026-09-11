@@ -28,7 +28,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/wnt-disclosure/specs/wnt-disclosure/spec.md#REQ-WNT-003
+ * @spec openspec/specs/wnt-disclosure/spec.md#REQ-WNT-003
  */
 
 declare(strict_types=1);
@@ -42,7 +42,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlWntChecks (raw predicate + through the REAL RuleEngine).
  *
- * @spec openspec/changes/wnt-disclosure/specs/wnt-disclosure/spec.md#REQ-WNT-003
+ * @spec openspec/specs/wnt-disclosure/spec.md#REQ-WNT-003
  */
 class NlWntChecksTest extends TestCase {
 

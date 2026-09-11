@@ -28,7 +28,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-004
+ * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-004
  */
 
 declare(strict_types=1);
@@ -42,8 +42,8 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlWkrChecks (raw predicate + through the REAL RuleEngine).
  *
- * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-002
- * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-004
+ * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-002
+ * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-004
  */
 class NlWkrChecksTest extends TestCase {
 

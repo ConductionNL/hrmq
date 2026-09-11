@@ -40,8 +40,8 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/time-entry-capture/specs/time-entry-capture/spec.md
- * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+ * @spec openspec/specs/time-entry-capture/spec.md
+ * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
  */
 
 declare(strict_types=1);
@@ -59,7 +59,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Builds and dispatches the humaniq approved-time-entry CloudEvent.
  *
- * @spec openspec/changes/time-entry-capture/specs/time-entry-capture/spec.md
+ * @spec openspec/specs/time-entry-capture/spec.md
  */
 class TimeEntryEventService {
 
@@ -132,8 +132,8 @@ class TimeEntryEventService {
 	 *              success/failure does not affect this return value, mirroring
 	 *              the fire-and-forget contract of the webhook dispatch itself.
 	 *
-	 * @spec openspec/changes/time-entry-capture/specs/time-entry-capture/spec.md#REQ-TEC-002
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+	 * @spec openspec/specs/time-entry-capture/spec.md#REQ-TEC-002
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
 	 */
 	public function maybeDispatchApproved(string $schemaSlug, ?array $oldData, array $newData): bool {
 		if (strtolower($schemaSlug) !== self::TIMESHEET_SLUG) {
@@ -161,7 +161,7 @@ class TimeEntryEventService {
 	 *
 	 * @return bool True on the approval edge.
 	 *
-	 * @spec openspec/changes/time-entry-capture/specs/time-entry-capture/spec.md#REQ-TEC-002
+	 * @spec openspec/specs/time-entry-capture/spec.md#REQ-TEC-002
 	 */
 	public function isApprovalTransition(?array $oldData, array $newData): bool {
 		$newStatus = (string)($newData['status'] ?? '');
@@ -186,7 +186,7 @@ class TimeEntryEventService {
 	 *
 	 * @return array<string, mixed> The CloudEvent envelope.
 	 *
-	 * @spec openspec/changes/time-entry-capture/specs/time-entry-capture/spec.md#REQ-TEC-003
+	 * @spec openspec/specs/time-entry-capture/spec.md#REQ-TEC-003
 	 */
 	public function buildApprovedEvent(array $timeEntry): array {
 		$uuid = (string)($timeEntry['id'] ?? $timeEntry['uuid'] ?? '');
@@ -238,7 +238,7 @@ class TimeEntryEventService {
 	 *  is a pure, side-effect-free classifier — the same "pure value-object
 	 *  factory method" precedent already used unguarded in PayrollReproduceService.
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
 	 */
 	public function buildTypedEvent(array $timeEntry): TimesheetApprovedEvent {
 		$uuid = (string)($timeEntry['id'] ?? $timeEntry['uuid'] ?? '');
@@ -279,7 +279,7 @@ class TimeEntryEventService {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
 	 */
 	private function dispatchTypedEvent(array $timeEntry): void {
 		try {
@@ -331,7 +331,7 @@ class TimeEntryEventService {
 	 *
 	 * @return string The ISO 8601 timestamp.
 	 *
-	 * @spec openspec/changes/time-entry-capture/specs/time-entry-capture/spec.md#REQ-TEC-003
+	 * @spec openspec/specs/time-entry-capture/spec.md#REQ-TEC-003
 	 */
 	public function now(): string {
 		return (new DateTimeImmutable('now', new DateTimeZone('UTC')))->format('Y-m-d\TH:i:s\Z');

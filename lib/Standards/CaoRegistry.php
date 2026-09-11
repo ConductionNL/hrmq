@@ -31,7 +31,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-001
+ * @spec openspec/specs/cao-library/spec.md#REQ-CAO-001
  */
 
 declare(strict_types=1);
@@ -94,7 +94,7 @@ final class CaoRegistry {
 	 *
 	 * @return array<string, array{name: string, sector: string, version: string, effectiveDate: string}>
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-001
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-001
 	 */
 	public static function availableCaos(): array {
 		$out = [];
@@ -117,7 +117,7 @@ final class CaoRegistry {
 	 *
 	 * @return array<string, mixed>|null
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-001
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-001
 	 */
 	public static function get(string $caoId): ?array {
 		return (self::all()[$caoId] ?? null);
@@ -134,8 +134,8 @@ final class CaoRegistry {
 	 *
 	 * @return int|null
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-001
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-003
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-001
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-003
 	 */
 	public static function minMaandloonCents(string $caoId, string $schaal): ?int {
 		$cao = self::get($caoId);
@@ -174,8 +174,8 @@ final class CaoRegistry {
 	 *
 	 * @return int|null
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-001
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-004
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-001
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-004
 	 */
 	public static function minLeaveHours(string $caoId, float $contractHoursPerWeek): ?int {
 		if ($contractHoursPerWeek <= 0.0) {

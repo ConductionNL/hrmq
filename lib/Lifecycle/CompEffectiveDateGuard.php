@@ -39,7 +39,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-005
+ * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-005
  */
 
 declare(strict_types=1);
@@ -75,7 +75,7 @@ final class CompEffectiveDateGuard implements LifecycleGuardInterface {
 	 *  the LifecycleGuardInterface signature; the gate depends only on the
 	 *  adjustment's own effectiveDate, not on who is acting or which action fired.
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-005
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-005
 	 */
 	public function check(array $object, string $action, string $userId): GuardResult {
 		$effectiveDate = trim((string)($object['effectiveDate'] ?? ''));

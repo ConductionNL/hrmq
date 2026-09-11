@@ -92,7 +92,7 @@ final class NlDgaChecks implements CheckProvider {
 	 * @return bool
 	 *
 	 * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-004
-	 * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-006
+	 * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-006
 	 */
 	public static function meetsGebruikelijkloonNorm(array $o): bool {
 		if (($o['isDga'] ?? false) !== true) {

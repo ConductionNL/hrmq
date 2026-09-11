@@ -38,8 +38,8 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-003
- * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-005
+ * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-003
+ * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-005
  */
 
 declare(strict_types=1);
@@ -99,7 +99,7 @@ class WkrService {
 	 *
 	 * @return array<string, mixed> Outcome: {status, message, assessment}.
 	 *
-	 * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-003
+	 * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-003
 	 */
 	public function assess(string $administrationId, int $year): array {
 		$administrationId = trim($administrationId);
@@ -169,7 +169,7 @@ class WkrService {
 	 *
 	 * @return array<int, array<string, mixed>> One outcome per (administrationId, year) pair.
 	 *
-	 * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-005
+	 * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-005
 	 */
 	public function assessAll(): array {
 		$outcomes = [];

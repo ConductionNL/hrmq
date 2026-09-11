@@ -25,7 +25,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/offboarding-wizard-mvp/specs/offboarding-wizard/spec.md
+ * @spec openspec/specs/offboarding-wizard/spec.md
  */
 
 declare(strict_types=1);
@@ -38,7 +38,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlOffboardingChecks.
  *
- * @spec openspec/changes/offboarding-wizard-mvp/specs/offboarding-wizard/spec.md
+ * @spec openspec/specs/offboarding-wizard/spec.md
  */
 class NlOffboardingChecksTest extends TestCase {
 

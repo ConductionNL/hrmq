@@ -26,7 +26,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-002
+ * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-002
  */
 
 declare(strict_types=1);
@@ -136,7 +136,7 @@ class OfferLetterService {
 	 *
 	 * @return array{success: bool, fileId: int, fileName: string, error: string|null}
 	 *
-	 * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-002
+	 * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-002
 	 */
 	public function generateAndStore(string $applicationId, string $vacancyId, ?string $userId): array {
 		$selected = $this->selectTemplate();

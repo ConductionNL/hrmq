@@ -29,7 +29,7 @@
  * @link https://conduction.nl
  *
  * @spec openspec/changes/archive/2026-07-13-hrmq-docudesk-documents/specs/hrmq-docudesk-documents/spec.md#REQ-HDD-008
- * @spec openspec/changes/payslip-pdf-docudesk/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-002
+ * @spec openspec/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-002
  */
 
 declare(strict_types=1);
@@ -92,7 +92,7 @@ class DocumentController extends Controller {
 	 * @return JSONResponse The generation outcome, 400 on a missing subject param, or 404 when the subject does not resolve.
 	 *
 	 * @spec openspec/changes/archive/2026-07-13-hrmq-docudesk-documents/specs/hrmq-docudesk-documents/spec.md#REQ-HDD-008
-	 * @spec openspec/changes/payslip-pdf-docudesk/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-002
+	 * @spec openspec/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-002
 	 */
 	#[NoAdminRequired]
 	public function generate(?string $contractId = null, string $documentType = 'arbeidsovereenkomst', ?string $payslipId = null): JSONResponse {
@@ -192,7 +192,7 @@ class DocumentController extends Controller {
 	 *
 	 * @return array<string, mixed>|null
 	 *
-	 * @spec openspec/changes/payslip-pdf-docudesk/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-002
+	 * @spec openspec/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-002
 	 */
 	private function authorizePayslip(string $payslipId): ?array {
 		try {

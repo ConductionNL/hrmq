@@ -37,7 +37,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+ * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
  */
 
 declare(strict_types=1);
@@ -62,7 +62,7 @@ class MigrateAssetDialect implements IRepairStep {
 	 * @param SettingsService $settingsService Availability check.
 	 * @param LoggerInterface $logger The logger.
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	public function __construct(
 		private readonly AssetDialectMigrationService $migrationService,
@@ -77,7 +77,7 @@ class MigrateAssetDialect implements IRepairStep {
 	 *
 	 * @return string
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	public function getName(): string {
 		return 'Rewrite pre-existing humaniq Asset/AssetAssignment objects to the renamed English dialect';
@@ -90,7 +90,7 @@ class MigrateAssetDialect implements IRepairStep {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-008
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-008
 	 */
 	public function run(IOutput $output): void {
 		if ($this->settingsService->isOpenRegisterAvailable() === false) {

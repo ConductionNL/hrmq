@@ -40,8 +40,8 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/asset-management-mvp/specs/asset-management/spec.md#REQ-AST-005
- * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-005
+ * @spec openspec/specs/asset-management/spec.md#REQ-AST-005
+ * @spec openspec/specs/asset-management/spec.md#REQ-AST-005
  */
 
 declare(strict_types=1);

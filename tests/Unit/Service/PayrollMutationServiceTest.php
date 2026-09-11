@@ -37,7 +37,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-009
+ * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-009
  */
 
 declare(strict_types=1);
@@ -53,12 +53,12 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for PayrollMutationService.
  *
- * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-001
- * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-002
- * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-003
- * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-005
- * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-006
- * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-007
+ * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-001
+ * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-002
+ * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-003
+ * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-005
+ * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-006
+ * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-007
  */
 class PayrollMutationServiceTest extends TestCase {
 

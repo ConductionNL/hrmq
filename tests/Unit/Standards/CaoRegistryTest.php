@@ -23,8 +23,8 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-001
- * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-005
+ * @spec openspec/specs/cao-library/spec.md#REQ-CAO-001
+ * @spec openspec/specs/cao-library/spec.md#REQ-CAO-005
  */
 
 declare(strict_types=1);
@@ -37,7 +37,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for CaoRegistry and the cao/*.json corpus.
  *
- * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-001
+ * @spec openspec/specs/cao-library/spec.md#REQ-CAO-001
  */
 class CaoRegistryTest extends TestCase {
 
@@ -65,7 +65,7 @@ class CaoRegistryTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-001
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-001
 	 */
 	public function testAvailableCaosListsTheThreeSeedCaos(): void {
 		$available = CaoRegistry::availableCaos();
@@ -88,7 +88,7 @@ class CaoRegistryTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-001
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-001
 	 */
 	public function testGetResolvesKnownCaoAndNullForUnknown(): void {
 		$cao = CaoRegistry::get('cao-generiek');
@@ -107,7 +107,7 @@ class CaoRegistryTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-001
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-001
 	 */
 	public function testMinMaandloonCentsResolvesVerifiedAnchor(): void {
 		$this->assertSame(229440, CaoRegistry::minMaandloonCents('cao-generiek', 'generiek'));
@@ -121,7 +121,7 @@ class CaoRegistryTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-001
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-001
 	 */
 	public function testMinMaandloonCentsReturnsNullForPlaceholderScale(): void {
 		$this->assertNull(CaoRegistry::minMaandloonCents('cao-metaal-techniek', 'B'));
@@ -134,7 +134,7 @@ class CaoRegistryTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-001
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-001
 	 */
 	public function testMinMaandloonCentsReturnsNullForUnknownCaoOrScale(): void {
 		$this->assertNull(CaoRegistry::minMaandloonCents('cao-does-not-exist', 'A'));
@@ -149,7 +149,7 @@ class CaoRegistryTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-004
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-004
 	 */
 	public function testMinLeaveHoursProratesVerifiedEntitlement(): void {
 		$this->assertSame(160, CaoRegistry::minLeaveHours('cao-generiek', 40.0));
@@ -163,7 +163,7 @@ class CaoRegistryTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-004
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-004
 	 */
 	public function testMinLeaveHoursReturnsNullForPlaceholderUnknownOrZeroWeek(): void {
 		$this->assertNull(CaoRegistry::minLeaveHours('cao-metaal-techniek', 38.0));
@@ -177,7 +177,7 @@ class CaoRegistryTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-001
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-001
 	 */
 	public function testVersionConstantIsBumped(): void {
 		// Bumped 2026-08-05 for the `overtime` leaf added to every corpus file.
@@ -318,7 +318,7 @@ class CaoRegistryTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-001
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-001
 	 */
 	public function testEveryCorpusFileIsWellFormedAndSourced(): void {
 		$files = (glob(__DIR__ . '/../../../lib/Standards/cao/*.json') ?: []);
@@ -362,7 +362,7 @@ class CaoRegistryTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-001
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-001
 	 */
 	public function testCaoGeneriekIsTheVerifiedAnchor(): void {
 		$cao = CaoRegistry::get('cao-generiek');

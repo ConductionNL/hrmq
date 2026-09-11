@@ -31,7 +31,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-001
+ * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-001
  */
 
 declare(strict_types=1);
@@ -51,7 +51,7 @@ use Psr\Log\LoggerInterface;
  *
  * @implements IEventListener<Event>
  *
- * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-001
+ * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-001
  */
 class LeaveApprovalListener implements IEventListener {
 
@@ -87,7 +87,7 @@ class LeaveApprovalListener implements IEventListener {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-001
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-001
 	 */
 	public function handle(Event $event): void {
 		if (($event instanceof ObjectCreatedEvent) === false

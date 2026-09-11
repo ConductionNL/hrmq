@@ -21,7 +21,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-core-schema/specs/payroll-core-schema/spec.md#REQ-PCS-001
+ * @spec openspec/specs/payroll-core-schema/spec.md#REQ-PCS-001
  */
 
 declare(strict_types=1);
@@ -33,7 +33,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for the nl-2026 tax-year table file.
  *
- * @spec openspec/changes/payroll-core-schema/specs/payroll-core-schema/spec.md#REQ-PCS-001
+ * @spec openspec/specs/payroll-core-schema/spec.md#REQ-PCS-001
  */
 class TablesFileTest extends TestCase {
 

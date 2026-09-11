@@ -20,7 +20,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md
+ * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md
  */
 
 declare(strict_types=1);
@@ -33,7 +33,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for TimesheetApprovedEvent.
  *
- * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md
+ * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md
  */
 class TimesheetApprovedEventTest extends TestCase {
 
@@ -42,7 +42,7 @@ class TimesheetApprovedEventTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-A-typed-cross-app-event-SHALL-accompany-the-approved-timesheet-webhook
 	 */
 	public function testGettersExposeConstructorValues(): void {
 		$event = new TimesheetApprovedEvent(
@@ -88,7 +88,7 @@ class TimesheetApprovedEventTest extends TestCase {
 	 *
 	 * @dataProvider periodGrainProvider
 	 *
-	 * @spec openspec/changes/humaniq-timesheet-approved-typed-event/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-The-typed-event-SHALL-carry-the-raw-period-plus-an-explicit-grain-marker
+	 * @spec openspec/specs/humaniq-timesheet-approved-typed-event/spec.md#Requirement:-The-typed-event-SHALL-carry-the-raw-period-plus-an-explicit-grain-marker
 	 */
 	public function testClassifyPeriodGrain(string $period, string $expectedGrain): void {
 		$this->assertSame($expectedGrain, TimesheetApprovedEvent::classifyPeriodGrain($period));

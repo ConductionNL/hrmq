@@ -39,9 +39,9 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-001
- * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-003
- * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-005
+ * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-001
+ * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-003
+ * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-005
  */
 
 declare(strict_types=1);
@@ -59,7 +59,7 @@ final class NlHr21Checks implements CheckProvider, SeedsObjects {
 	 *
 	 * @return array<string, array<string, callable>>
 	 *
-	 * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-003
+	 * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-003
 	 */
 	public static function checks(): array {
 		return [
@@ -91,7 +91,7 @@ final class NlHr21Checks implements CheckProvider, SeedsObjects {
 	 *
 	 * @return array<string, array<int, array<string, mixed>>>
 	 *
-	 * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-001
+	 * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-001
 	 */
 	public static function seedObjects(): array {
 		return [
@@ -154,7 +154,7 @@ final class NlHr21Checks implements CheckProvider, SeedsObjects {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-003
+	 * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-003
 	 */
 	private static function schaalConsistentieSatisfied(array $contract, array $context): bool {
 		$normfunctieId = trim((string)($contract['normfunctieId'] ?? ''));

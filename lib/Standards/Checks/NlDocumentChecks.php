@@ -47,7 +47,7 @@
  * @link https://conduction.nl
  *
  * @spec openspec/changes/archive/2026-07-13-hrmq-docudesk-documents/specs/hrmq-docudesk-documents/spec.md#REQ-HDD-009
- * @spec openspec/changes/payslip-pdf-docudesk/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-004
+ * @spec openspec/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-004
  */
 
 declare(strict_types=1);

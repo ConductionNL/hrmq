@@ -38,7 +38,7 @@
  * predicates remain available as legacyChecks() — the parity oracle, NOT
  * registered in the engine — until staged retirement (REQ-RULE-009).
  *
- * @spec openspec/changes/leave-verzuim-mvp/specs/leave-management/spec.md
+ * @spec openspec/specs/leave-management/spec.md
  * @spec openspec/specs/leave-buy-sell/spec.md#REQ-BUYSELL-003
  * @spec openspec/changes/rules-onto-or-decision-tables/specs/hrm-rule-engine/spec.md#REQ-RULE-008
  */

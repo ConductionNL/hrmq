@@ -19,7 +19,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-005
+ * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-005
  */
 
 declare(strict_types=1);
@@ -32,7 +32,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for CompEffectiveDateGuard.
  *
- * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-005
+ * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-005
  */
 class CompEffectiveDateGuardTest extends TestCase {
 

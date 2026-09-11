@@ -30,7 +30,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-003
+ * @spec openspec/specs/rostering/spec.md#REQ-ROST-003
  */
 
 declare(strict_types=1);

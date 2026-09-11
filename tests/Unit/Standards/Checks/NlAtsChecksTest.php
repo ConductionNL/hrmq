@@ -22,7 +22,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/recruiting-ats-basic/specs/recruiting-applications/spec.md
+ * @spec openspec/specs/recruiting-applications/spec.md
  */
 
 declare(strict_types=1);
@@ -35,7 +35,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlAtsChecks.
  *
- * @spec openspec/changes/recruiting-ats-basic/specs/recruiting-applications/spec.md
+ * @spec openspec/specs/recruiting-applications/spec.md
  */
 class NlAtsChecksTest extends TestCase {
 

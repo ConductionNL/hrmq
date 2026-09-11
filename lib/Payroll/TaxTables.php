@@ -29,7 +29,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
  */
 
 declare(strict_types=1);
@@ -78,7 +78,7 @@ final class TaxTables {
 	 *
 	 * @throws \RuntimeException When the file is missing, unreadable, malformed, or missing required parameter groups.
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
 	 */
 	public static function load(string $id): self {
 		$id = trim($id);
@@ -120,7 +120,7 @@ final class TaxTables {
 	 *
 	 * @return string
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
 	 */
 	public function id(): string {
 		return $this->id;
@@ -132,7 +132,7 @@ final class TaxTables {
 	 *
 	 * @return array<int, string>
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-007
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-007
 	 */
 	public static function availableIds(): array {
 		if (self::$availableIdsCache !== null) {
@@ -153,7 +153,7 @@ final class TaxTables {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-007
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-007
 	 */
 	public static function resetAvailableIdsCache(): void {
 		self::$availableIdsCache = null;
@@ -165,7 +165,7 @@ final class TaxTables {
 	 *
 	 * @return int
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
 	 */
 	public function lv(): int {
 		return self::euroToCents((float)$this->leaf(['loonheffing', 'Lv', 'value']));
@@ -177,7 +177,7 @@ final class TaxTables {
 	 *
 	 * @return int
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
 	 */
 	public function lmax(): int {
 		return self::euroToCents((float)$this->leaf(['loonheffing', 'Lmax', 'value']));
@@ -190,7 +190,7 @@ final class TaxTables {
 	 *
 	 * @return int
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
 	 */
 	public function tijdvakFactor(string $tijdvak = 'maand'): int {
 		$factoren = (array)$this->leaf(['loonheffing', 'tijdvakFactoren', 'value']);
@@ -205,7 +205,7 @@ final class TaxTables {
 	 *
 	 * @return array<int, array{tot: int|null, percentage: float, a: int, c: int}>
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
 	 */
 	public function schijven(string $set): array {
 		$rows = (array)$this->leaf(['loonheffing', 'schijven', $set, 'value']);
@@ -231,7 +231,7 @@ final class TaxTables {
 	 *
 	 * @return array{m1: int, g1: int, g2: int, a1: float}
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
 	 */
 	public function ahk(bool $aow): array {
 		$col = $aow === true ? 'aowAge' : 'belowAow';
@@ -253,7 +253,7 @@ final class TaxTables {
 	 *
 	 * @return array{o1: float, o2: float, o3: float, a1: float, g1: int, g2: int, g3: int, g4: int, m1: int, m2: int, m3: int}
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
 	 */
 	public function ark(bool $aow): array {
 		$col = $aow === true ? 'aowAge' : 'belowAow';
@@ -280,7 +280,7 @@ final class TaxTables {
 	 *
 	 * @return array{m1: int, g1: int, g2: int, a1: float}
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-002
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-002
 	 */
 	public function ouk(): array {
 		return [
@@ -298,7 +298,7 @@ final class TaxTables {
 	 *
 	 * @return array{aow: float, anw: float, wlz: float}
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
 	 */
 	public function volksverzekeringenRates(): array {
 		return [
@@ -314,7 +314,7 @@ final class TaxTables {
 	 *
 	 * @return int
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-002
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-002
 	 */
 	public function aowLeeftijdJaren(): int {
 		return (int)$this->leaf(['aow', 'leeftijdJaren', 'value']);
@@ -328,7 +328,7 @@ final class TaxTables {
 	 *
 	 * @return array{werkgeversheffing: float, inhouding: float, maximumBijdrageloonMaand: int}
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
 	 */
 	public function zvw(): array {
 		return [
@@ -345,7 +345,7 @@ final class TaxTables {
 	 *
 	 * @return array{maximumPremieloonMaand: int, awfLaag: float, awfHoog: float, aofLaag: float, aofHoog: float, wkoOpslag: float, whkDefault: float}
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
 	 */
 	public function werknemersverzekeringen(): array {
 		return [
@@ -365,7 +365,7 @@ final class TaxTables {
 	 *
 	 * @return float
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
 	 */
 	public function vakantiebijslagRate(): float {
 		return (float)$this->leaf(['vakantiebijslag', 'minRatePercent', 'value']);
@@ -429,8 +429,8 @@ final class TaxTables {
 	 *
 	 * @return array{percent: float, maxDurationMonths: int, aftoppingsgrensMaandCents: int, aftoppingsgrensJaarCents: int, salarisnormAlgemeenCents: int, salarisnormMasterOnder30Cents: int}
 	 *
-	 * @spec openspec/changes/30-procent-regeling/specs/30-procent-regeling/spec.md#REQ-30P-001
-	 * @spec openspec/changes/wnt-disclosure/specs/wnt-disclosure/spec.md#REQ-WNT-003
+	 * @spec openspec/specs/30-procent-regeling/spec.md#REQ-30P-001
+	 * @spec openspec/specs/wnt-disclosure/spec.md#REQ-WNT-003
 	 */
 	public function dertigProcentRegeling(): array {
 		return [
@@ -453,7 +453,7 @@ final class TaxTables {
 	 *
 	 * @return array{tranche1Percent: float, tranche1GrensCents: int, tranche2Percent: float, eindheffingPercent: float}
 	 *
-	 * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-002
+	 * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-002
 	 */
 	public function wkr(): array {
 		return [
@@ -474,7 +474,7 @@ final class TaxTables {
 	 *
 	 * @return array{standardPercent: float, evReducedPercent: float, evReducedCataloguswaardeCapCents: int}
 	 *
-	 * @spec openspec/changes/fleet-bijtelling/specs/fleet-bijtelling/spec.md#REQ-FLEET-002
+	 * @spec openspec/specs/fleet-bijtelling/spec.md#REQ-FLEET-002
 	 */
 	public function bijtellingPrivegebruikAuto(): array {
 		return [

@@ -39,11 +39,11 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-001
- * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-002
- * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-003
- * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-004
- * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-005
+ * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-001
+ * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-002
+ * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-003
+ * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-004
+ * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-005
  */
 
 declare(strict_types=1);
@@ -117,7 +117,7 @@ class LeaveAccrualJob extends TimedJob {
 	 *
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 *
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-001
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-001
 	 */
 	protected function run($argument): void {
 		$summary = $this->runAccrual();
@@ -143,9 +143,9 @@ class LeaveAccrualJob extends TimedJob {
 	 *
 	 * @return array<string, mixed> {period, year, enabled, provisioned, accrued, skipped, noop}
 	 *
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-001
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-005
-	 * @spec openspec/changes/humaniq-personal-dashboard/specs/leave-accrual-job/spec.md#REQ-ACCR-006
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-001
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-005
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-006
 	 */
 	public function runAccrual(): array {
 		if ($this->settingsService->isLeaveAccrualEnabled() === false) {
@@ -249,8 +249,8 @@ class LeaveAccrualJob extends TimedJob {
 	 *
 	 * @return array<string, mixed> The saved LeaveBalance.
 	 *
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-002
-	 * @spec openspec/changes/humaniq-personal-dashboard/specs/leave-accrual-job/spec.md#REQ-ACCR-006
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-002
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-006
 	 */
 	private function provision(string $employeeId, int $year, string $period, float $hoursPerWeek, float $deltaBovenwettelijk, ?string $userId = null): array {
 		$payload = [
@@ -298,9 +298,9 @@ class LeaveAccrualJob extends TimedJob {
 	 *
 	 * @return array<string, mixed> The saved LeaveBalance.
 	 *
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-003
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-004
-	 * @spec openspec/changes/humaniq-personal-dashboard/specs/leave-accrual-job/spec.md#REQ-ACCR-006
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-003
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-004
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-006
 	 */
 	private function accrueExisting(array $existing, string $period, float $hoursPerWeek, float $deltaBovenwettelijk, ?string $userId = null): array {
 		$currentEntitled = (float)($existing['entitledHours'] ?? 0);
@@ -580,7 +580,7 @@ class LeaveAccrualJob extends TimedJob {
 	 *
 	 * @return string|null The trimmed value, or null when empty.
 	 *
-	 * @spec openspec/changes/humaniq-personal-dashboard/specs/leave-accrual-job/spec.md#REQ-ACCR-006
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-006
 	 */
 	private function nullableTrim(mixed $value): ?string {
 		$trimmed = trim((string)($value ?? ''));

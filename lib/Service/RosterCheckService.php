@@ -38,7 +38,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-005
+ * @spec openspec/specs/rostering/spec.md#REQ-ROST-005
  */
 
 declare(strict_types=1);
@@ -86,7 +86,7 @@ class RosterCheckService {
 	 *
 	 * @return array<string, mixed> {rostersChecked, assignmentsChecked, violations: [{objectType, objectId, ruleId, severity, statement}], mandatoryViolations}.
 	 *
-	 * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-005
+	 * @spec openspec/specs/rostering/spec.md#REQ-ROST-005
 	 */
 	public function checkRoster(string $rosterId, array $context = []): array {
 		$rosterId = trim($rosterId);
@@ -121,7 +121,7 @@ class RosterCheckService {
 	 *
 	 * @return array<string, mixed> {rostersChecked, assignmentsChecked, violations, mandatoryViolations}.
 	 *
-	 * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-005
+	 * @spec openspec/specs/rostering/spec.md#REQ-ROST-005
 	 */
 	public function checkPeriod(string $period, ?string $administrationId = null, array $context = []): array {
 		$period = trim($period);

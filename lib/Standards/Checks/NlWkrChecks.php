@@ -42,7 +42,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-004
+ * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-004
  */
 
 declare(strict_types=1);
@@ -69,7 +69,7 @@ final class NlWkrChecks implements CheckProvider, SeedsObjects {
 	 *
 	 * @return array<string, array<string, callable>>
 	 *
-	 * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-004
+	 * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-004
 	 */
 	public static function checks(): array {
 		return [
@@ -94,8 +94,8 @@ final class NlWkrChecks implements CheckProvider, SeedsObjects {
 	 *
 	 * @return array<string, array<int, array<string, mixed>>>
 	 *
-	 * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-001
-	 * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-003
+	 * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-001
+	 * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-003
 	 */
 	public static function seedObjects(): array {
 		return [
@@ -145,7 +145,7 @@ final class NlWkrChecks implements CheckProvider, SeedsObjects {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-004
+	 * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-004
 	 */
 	private static function isExposureRecorded(array $o, array $context): bool {
 		$administrationId = trim((string)($o['administrationId'] ?? ''));
@@ -187,7 +187,7 @@ final class NlWkrChecks implements CheckProvider, SeedsObjects {
 	 *
 	 * @return int Available vrije ruimte in integer cents.
 	 *
-	 * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-002
+	 * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-002
 	 */
 	public static function availableVrijeRuimteCents(int $loonsomCents): int {
 		$wkr = self::tables()->wkr();

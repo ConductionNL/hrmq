@@ -27,7 +27,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+ * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
  */
 
 declare(strict_types=1);
@@ -52,7 +52,7 @@ final class CompChecks implements CheckProvider {
 	 *
 	 * @return array<string, array<string, callable>>
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
 	 */
 	public static function checks(): array {
 		return [
@@ -85,7 +85,7 @@ final class CompChecks implements CheckProvider {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
 	 */
 	private static function withinBandSatisfied(array $o, array $context): bool {
 		if (in_array((string)($o['status'] ?? ''), self::APPLICABLE_STATUSES, true) === false) {

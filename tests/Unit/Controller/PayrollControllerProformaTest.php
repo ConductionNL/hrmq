@@ -27,8 +27,8 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-002
- * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-004
+ * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-002
+ * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-004
  */
 
 declare(strict_types=1);
@@ -54,8 +54,8 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for PayrollController::proforma().
  *
- * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-002
- * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-004
+ * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-002
+ * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-004
  */
 class PayrollControllerProformaTest extends TestCase {
 

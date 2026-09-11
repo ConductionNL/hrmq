@@ -36,8 +36,8 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/pension-filing-upa-mvp/specs/pension-filing-upa-mvp/spec.md
- * @spec openspec/changes/mss-team-scope/specs/mss-team-scope/spec.md#REQ-MSS-005
+ * @spec openspec/specs/pension-filing-upa-mvp/spec.md
+ * @spec openspec/specs/mss-team-scope/spec.md#REQ-MSS-005
  * @spec openspec/changes/abp-aansluiting/specs/abp-aansluiting/spec.md#REQ-ABP-003
  */
 
@@ -54,7 +54,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for RuleAuditService's PayrollRun/PensionFiling related-context pre-pass.
  *
- * @spec openspec/changes/pension-filing-upa-mvp/specs/pension-filing-upa-mvp/spec.md
+ * @spec openspec/specs/pension-filing-upa-mvp/spec.md
  */
 class RuleAuditServiceTest extends TestCase {
 
@@ -1473,7 +1473,7 @@ class RuleAuditServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/uitzend-flexpool/specs/uitzend-flexpool/spec.md
+	 * @spec openspec/specs/uitzend-flexpool/spec.md
 	 */
 	public function testSeededUitzendDataFlagsExactlyTheIntendedUitzendbedingViolation(): void {
 		$service = $this->serviceWithRows($this->seededUitzendRows());
@@ -1501,7 +1501,7 @@ class RuleAuditServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/uitzend-flexpool/specs/uitzend-flexpool/spec.md
+	 * @spec openspec/specs/uitzend-flexpool/spec.md
 	 */
 	public function testSeededUitzendDataReportsBumpedCatalogueVersionAndBothRulesEnforceable(): void {
 		$service = $this->serviceWithRows($this->seededUitzendRows());
@@ -1537,7 +1537,7 @@ class RuleAuditServiceTest extends TestCase {
 	 *
 	 * @return array<string, array<int, array<string, mixed>>>
 	 *
-	 * @spec openspec/changes/stagiair-bbl-admin/specs/stagiair-bbl-admin/spec.md#REQ-STAG-005
+	 * @spec openspec/specs/stagiair-bbl-admin/spec.md#REQ-STAG-005
 	 */
 	private function seededStagiairRows(): array {
 		return [
@@ -1592,7 +1592,7 @@ class RuleAuditServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/stagiair-bbl-admin/specs/stagiair-bbl-admin/spec.md#REQ-STAG-005
+	 * @spec openspec/specs/stagiair-bbl-admin/spec.md#REQ-STAG-005
 	 */
 	public function testSeededStagiairDataFlagsExactlyOneBpvViolation(): void {
 		$service = $this->serviceWithRows($this->seededStagiairRows());
@@ -1621,7 +1621,7 @@ class RuleAuditServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/stagiair-bbl-admin/specs/stagiair-bbl-admin/spec.md#REQ-STAG-002
+	 * @spec openspec/specs/stagiair-bbl-admin/spec.md#REQ-STAG-002
 	 */
 	public function testBblContractReportsBumpedCatalogueVersionAndRuleEnforceable(): void {
 		$service = $this->serviceWithRows($this->seededStagiairRows());

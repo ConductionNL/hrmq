@@ -26,7 +26,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-007
+ * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-007
  */
 
 declare(strict_types=1);
@@ -73,7 +73,7 @@ class ExpenseControllerTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-007
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-007
 	 */
 	public function testBlankExpenseIdReturns400BeforeAnyResolve(): void {
 		[$controller, $fake, $service] = $this->buildController(isAdmin: true, uid: 'hr-admin', expenseRow: $this->expense());
@@ -91,7 +91,7 @@ class ExpenseControllerTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-007
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-007
 	 */
 	public function testUnresolvableExpenseReturns404(): void {
 		[$controller, , $service] = $this->buildController(isAdmin: true, uid: 'hr-admin', expenseRow: null);
@@ -114,7 +114,7 @@ class ExpenseControllerTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-007
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-007
 	 */
 	public function testMissingOpenRegisterReturns404WithoutReachingTheStore(): void {
 		[$controller, $fake, $service] = $this->buildController(
@@ -139,7 +139,7 @@ class ExpenseControllerTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-007
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-007
 	 */
 	public function testForeignClaimIsRefused403(): void {
 		[$controller, $fake, $service] = $this->buildController(isAdmin: false, uid: 'someone-else', expenseRow: $this->expense());
@@ -157,7 +157,7 @@ class ExpenseControllerTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-007
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-007
 	 */
 	public function testOwnerMayExtractTheirOwnClaim(): void {
 		[$controller, , $service] = $this->buildController(isAdmin: false, uid: 'employee-1', expenseRow: $this->expense());

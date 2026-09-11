@@ -23,7 +23,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/time-entry-capture/specs/time-entry-capture/spec.md#REQ-TEC-002
+ * @spec openspec/specs/time-entry-capture/spec.md#REQ-TEC-002
  */
 
 declare(strict_types=1);
@@ -42,7 +42,7 @@ use Psr\Log\LoggerInterface;
  *
  * @implements IEventListener<Event>
  *
- * @spec openspec/changes/time-entry-capture/specs/time-entry-capture/spec.md#REQ-TEC-002
+ * @spec openspec/specs/time-entry-capture/spec.md#REQ-TEC-002
  */
 class TimesheetApprovalListener implements IEventListener {
 
@@ -68,7 +68,7 @@ class TimesheetApprovalListener implements IEventListener {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/time-entry-capture/specs/time-entry-capture/spec.md#REQ-TEC-002
+	 * @spec openspec/specs/time-entry-capture/spec.md#REQ-TEC-002
 	 */
 	public function handle(Event $event): void {
 		if (($event instanceof ObjectUpdatedEvent) === false) {

@@ -35,7 +35,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-001
+ * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-001
  */
 
 declare(strict_types=1);
@@ -89,7 +89,7 @@ class LeaveBalanceProjectionService {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-001
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-001
 	 */
 	public function projectForRequest(array $request): void {
 		$employeeId = trim((string)($request['employeeId'] ?? ''));

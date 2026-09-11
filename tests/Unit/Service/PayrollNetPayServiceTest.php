@@ -26,7 +26,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-sepa-netpay-shillinq/specs/payroll-sepa-netpay-shillinq/spec.md
+ * @spec openspec/specs/payroll-sepa-netpay-shillinq/spec.md
  */
 
 declare(strict_types=1);
@@ -43,7 +43,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for PayrollNetPayService.
  *
- * @spec openspec/changes/payroll-sepa-netpay-shillinq/specs/payroll-sepa-netpay-shillinq/spec.md
+ * @spec openspec/specs/payroll-sepa-netpay-shillinq/spec.md
  */
 class PayrollNetPayServiceTest extends TestCase {
 

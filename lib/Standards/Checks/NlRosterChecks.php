@@ -47,7 +47,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-004
+ * @spec openspec/specs/rostering/spec.md#REQ-ROST-004
  */
 
 declare(strict_types=1);

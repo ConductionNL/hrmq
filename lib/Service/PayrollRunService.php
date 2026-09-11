@@ -140,18 +140,18 @@
  * @link https://conduction.nl
  *
  * @spec openspec/specs/sick-pay-calc/spec.md#REQ-SICK-005
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-003
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-004
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-005
- * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-004
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-003
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-004
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-005
+ * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-004
  * @spec openspec/specs/leave-buy-sell/spec.md#REQ-BUYSELL-005
- * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-002
- * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-004
- * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-005
- * @spec openspec/changes/fleet-bijtelling/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
- * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
+ * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-002
+ * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-004
+ * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-005
+ * @spec openspec/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
+ * @spec openspec/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
  * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-001
- * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-001
+ * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-001
  */
 
 declare(strict_types=1);
@@ -242,8 +242,8 @@ class PayrollRunService {
 	 *
 	 * @return array<string, mixed> Outcome: {runId, period, administrationId, status, message, computed, skipped, totals}.
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-003
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-004
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-003
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-004
 	 */
 	public function runFor(string $period, ?string $administrationId = null, bool $recalculate = false): array {
 		$period = trim($period);
@@ -315,7 +315,7 @@ class PayrollRunService {
 	 *
 	 * @return array<string, mixed> Outcome (see runFor()).
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-004
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-004
 	 */
 	public function recalculateRun(string $runId): array {
 		$run = null;
@@ -358,15 +358,15 @@ class PayrollRunService {
 	 * @return array<string, mixed> Outcome (see runFor()).
 	 *
 	 * @spec openspec/specs/sick-pay-calc/spec.md#REQ-SICK-005
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-003
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-005
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-003
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-005
 	 * @spec openspec/specs/leave-buy-sell/spec.md#REQ-BUYSELL-005
-	 * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-002
-	 * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-004
-	 * @spec openspec/changes/fleet-bijtelling/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
+	 * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-002
+	 * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-004
+	 * @spec openspec/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
 	 * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-001
 	 * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-002
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-001
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-001
 	 */
 	private function generate(array $run): array {
 		$runId = $this->idOf($run);
@@ -654,7 +654,7 @@ class PayrollRunService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-005
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-005
 	 * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-001
 	 */
 	private function payslipPayload(string $runId, array $employee, array $contract, string $period, CalculationResult $result): array {
@@ -1047,7 +1047,7 @@ class PayrollRunService {
 	 *
 	 * @return array<string, array<int, array<string, mixed>>>
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
+	 * @spec openspec/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
 	 */
 	private function openAssetAssignmentsByEmployeeKey(): array {
 		$out = [];
@@ -1077,7 +1077,7 @@ class PayrollRunService {
 	 *
 	 * @return array<string, mixed>|null
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
+	 * @spec openspec/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
 	 */
 	private function openVehicleAssignmentFor(array $employee, array $assetAssignmentsByEmployeeKey, array $vehicleAssetsById, string $period): ?array {
 		$keys = array_filter(
@@ -1113,7 +1113,7 @@ class PayrollRunService {
 	 *
 	 * @return array<string, array<string, mixed>>
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
+	 * @spec openspec/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
 	 */
 	private function vehicleAssetsById(): array {
 		$out = [];
@@ -1153,7 +1153,7 @@ class PayrollRunService {
 	 *
 	 * @return int The monthly bijtelling, in cents (0 when there is no Asset, no numeric listPrice, or no headroom above employeeContribution).
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
+	 * @spec openspec/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
 	 */
 	private function bijtellingCentsFor(?array $asset, array $assignment, TaxTables $tables): int {
 		if ($asset === null) {
@@ -1199,7 +1199,7 @@ class PayrollRunService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
+	 * @spec openspec/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
 	 */
 	private function bijtellingFields(?array $assetAssignment, int $bijtellingCents): array {
 		if ($assetAssignment === null) {
@@ -1230,7 +1230,7 @@ class PayrollRunService {
 	 *
 	 * @return int|null The exemption in cents, or null when not applicable.
 	 *
-	 * @spec openspec/changes/30-procent-regeling/specs/30-procent-regeling/spec.md#REQ-30P-003
+	 * @spec openspec/specs/30-procent-regeling/spec.md#REQ-30P-003
 	 */
 	private function thirtyPercentExemptionCentsFor(array $employee, int $grossCents, TaxTables $tables): ?int {
 		if (($employee['thirtyPercentRulingGranted'] ?? false) !== true) {
@@ -1259,7 +1259,7 @@ class PayrollRunService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/30-procent-regeling/specs/30-procent-regeling/spec.md#REQ-30P-003
+	 * @spec openspec/specs/30-procent-regeling/spec.md#REQ-30P-003
 	 */
 	private function thirtyPercentRulingFields(?int $exemptionCents): array {
 		return [
@@ -1281,7 +1281,7 @@ class PayrollRunService {
 	 *
 	 * @return array<string, int>
 	 *
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-004
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-004
 	 */
 	private function appliedRetroAdjustmentsByEmployeeId(string $period): array {
 		$out = [];
@@ -1319,7 +1319,7 @@ class PayrollRunService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-004
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-004
 	 */
 	private function retroAdjustmentFields(int $retroAdjustmentCents, int $nettoPayCents): array {
 		if ($retroAdjustmentCents === 0) {
@@ -1415,7 +1415,7 @@ class PayrollRunService {
 	 *
 	 * @return array<string, array<int, array<string, mixed>>>
 	 *
-	 * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-005
+	 * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-005
 	 */
 	private function activeLoonbeslagenByEmployeeKey(): array {
 		$out = [];
@@ -1448,7 +1448,7 @@ class PayrollRunService {
 	 *
 	 * @return array<string, mixed>|null
 	 *
-	 * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-005
+	 * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-005
 	 */
 	private function activeLoonbeslagFor(array $employee, array $loonbeslagenByEmployeeKey, string $period): ?array {
 		$keys = array_filter(
@@ -1515,7 +1515,7 @@ class PayrollRunService {
 	 *
 	 * @return int The deduction, in cents (0 when there is no headroom).
 	 *
-	 * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-002
+	 * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-002
 	 */
 	private function loonbeslagDeductionCents(array $loonbeslag, int $nettoPaySoFarCents): int {
 		$orderedAmount = ($loonbeslag['orderedAmount'] ?? 0);
@@ -1545,8 +1545,8 @@ class PayrollRunService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-002
-	 * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-004
+	 * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-002
+	 * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-004
 	 */
 	private function loonbeslagFields(?array $loonbeslag, int $deductionCents, int $nettoPaySoFarCents): array {
 		if ($loonbeslag === null) {

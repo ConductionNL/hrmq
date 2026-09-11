@@ -22,9 +22,9 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-001
- * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-003
- * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-005
+ * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-001
+ * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-003
+ * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-005
  */
 
 declare(strict_types=1);
@@ -39,7 +39,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlHr21Checks, driven through the real RuleEngine.
  *
- * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-003
+ * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-003
  */
 class NlHr21ChecksTest extends TestCase {
 
@@ -108,7 +108,7 @@ class NlHr21ChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-003
+	 * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-003
 	 */
 	public function testSchaalConsistentieCheckIsReachableFromTheEngine(): void {
 		$this->assertArrayHasKey('nl-hr21-schaal-consistentie', (NlHr21Checks::checks()['EmploymentContract'] ?? []));
@@ -122,7 +122,7 @@ class NlHr21ChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-003
+	 * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-003
 	 */
 	public function testMismatchedSchaalRaisesMandatoryViolation(): void {
 		$contract = ['normfunctieId' => 'nf-1', 'caoSchaal' => '6'];
@@ -148,7 +148,7 @@ class NlHr21ChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-003
+	 * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-003
 	 */
 	public function testMatchingSchaalPasses(): void {
 		$contract = ['normfunctieId' => 'nf-1', 'caoSchaal' => '8'];
@@ -164,7 +164,7 @@ class NlHr21ChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-003
+	 * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-003
 	 */
 	public function testNullNormfunctieIdIsVacuous(): void {
 		$contract = ['normfunctieId' => null, 'caoSchaal' => '6'];
@@ -180,7 +180,7 @@ class NlHr21ChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-003
+	 * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-003
 	 */
 	public function testUnresolvableNormfunctieIsVacuous(): void {
 		$contract = ['normfunctieId' => 'no-such-normfunctie', 'caoSchaal' => '6'];
@@ -197,7 +197,7 @@ class NlHr21ChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-003
+	 * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-003
 	 */
 	public function testUnverifiedMappingIsVacuousEvenOnMismatch(): void {
 		$contract = ['normfunctieId' => 'nf-1', 'caoSchaal' => '6'];
@@ -217,7 +217,7 @@ class NlHr21ChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-001
+	 * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-001
 	 */
 	public function testSeedIsIllustrativeSubsetWithOneDocumentedVerifiedException(): void {
 		$rows = (NlHr21Checks::seedObjects()['Normfunctie'] ?? []);
@@ -254,7 +254,7 @@ class NlHr21ChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-005
+	 * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-005
 	 */
 	public function testSeedSpansMultipleHoofdprocessen(): void {
 		$rows = (NlHr21Checks::seedObjects()['Normfunctie'] ?? []);
@@ -273,7 +273,7 @@ class NlHr21ChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-001
+	 * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-001
 	 */
 	public function testSeedObjectsIsIdempotentAcrossCalls(): void {
 		$first = NlHr21Checks::seedObjects();

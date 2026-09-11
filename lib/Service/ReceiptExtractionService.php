@@ -79,7 +79,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md
+ * @spec openspec/specs/receipt-ocr/spec.md
  */
 
 declare(strict_types=1);
@@ -174,7 +174,7 @@ class ReceiptExtractionService {
 	 *
 	 * @return array<int, array<string, mixed>> One outcome array per attempt.
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-006
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-006
 	 */
 	public function backlog(?string $expenseId = null, ?string $userId = null): array {
 		$expenseId = ($expenseId !== null && trim($expenseId) !== '') ? trim($expenseId) : null;
@@ -207,10 +207,10 @@ class ReceiptExtractionService {
 	 *
 	 * @return array<string, mixed> Outcome: {expenseId, status, message, receiptExtractionId}.
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-002
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-003
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-004
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-005
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-002
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-003
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-004
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-005
 	 */
 	public function extractForExpense(string $expenseId, ?string $userId = null): array {
 		$expenseId = trim($expenseId);
@@ -251,7 +251,7 @@ class ReceiptExtractionService {
 	 *
 	 * @return array<string, mixed>|null The `already-extracted` outcome, or null to proceed.
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-004
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-004
 	 */
 	private function idempotencyOutcome(string $expenseId): ?array {
 		$active = $this->repository->activeExtractionFor($expenseId);
@@ -285,7 +285,7 @@ class ReceiptExtractionService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-003
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-003
 	 */
 	private function skipNoDocudesk(string $expenseId, ?string $userId): array {
 		$row = $this->repository->createReceiptExtraction(
@@ -312,8 +312,8 @@ class ReceiptExtractionService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-002
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-003
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-002
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-003
 	 */
 	private function runExtraction(string $expenseId, array $expense, string $receiptFile, ?string $userId): array {
 		$row = $this->repository->createReceiptExtraction(
@@ -358,8 +358,8 @@ class ReceiptExtractionService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-002
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-005
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-002
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-005
 	 */
 	private function applyExtractionResult(string $expenseId, array $expense, array $row, array $result): array {
 		$fields = (array)($result['fields'] ?? []);
@@ -422,7 +422,7 @@ class ReceiptExtractionService {
 	 *
 	 * @return array{writes: array<string, mixed>, applied: array<int, string>, raw: array<string, mixed>}
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-002
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-002
 	 */
 	private function mapFields(array $expense, array $fields): array {
 		$writes = [];
@@ -474,7 +474,7 @@ class ReceiptExtractionService {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-003
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-003
 	 */
 	private function docudeskAvailable(): bool {
 		if (FleetAppId::isInstalled($this->appManager, self::DOCUMENT_APP) === false) {

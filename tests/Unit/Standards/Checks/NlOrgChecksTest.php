@@ -25,7 +25,7 @@
  * @link https://conduction.nl
  *
  * @spec openspec/changes/org-chart-basic/specs/org-chart-basic/spec.md#REQ-ORG-005
- * @spec openspec/changes/mss-team-scope/specs/mss-team-scope/spec.md#REQ-MSS-005
+ * @spec openspec/specs/mss-team-scope/spec.md#REQ-MSS-005
  */
 
 declare(strict_types=1);

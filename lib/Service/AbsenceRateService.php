@@ -63,7 +63,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/absence-rate-partial-recovery/specs/absence-rate/spec.md
+ * @spec openspec/specs/absence-rate/spec.md
  */
 
 declare(strict_types=1);
@@ -81,7 +81,7 @@ use DateTimeImmutable;
  * makes every branch below reachable from a unit test without a Nextcloud
  * bootstrap.
  *
- * @spec openspec/changes/absence-rate-partial-recovery/specs/absence-rate/spec.md
+ * @spec openspec/specs/absence-rate/spec.md
  */
 class AbsenceRateService {
 
@@ -102,7 +102,7 @@ class AbsenceRateService {
 	/**
 	 * @param AbsenceProgression $progression The step-function half of the calculation.
 	 *
-	 * @spec openspec/changes/absence-rate-partial-recovery/specs/absence-rate/spec.md#REQ-ABSRATE-002
+	 * @spec openspec/specs/absence-rate/spec.md#REQ-ABSRATE-002
 	 */
 	public function __construct(
 		private readonly AbsenceProgression $progression = new AbsenceProgression(),
@@ -122,7 +122,7 @@ class AbsenceRateService {
 	 * @return array{absentDayEquivalents: float, availableDayEquivalents: float, percentage: float|null, casesWithoutContract: int}
 	 *                                                                                                                               `percentage` is null when availability is zero -- see the class docblock.
 	 *
-	 * @spec openspec/changes/absence-rate-partial-recovery/specs/absence-rate/spec.md#REQ-ABSRATE-001
+	 * @spec openspec/specs/absence-rate/spec.md#REQ-ABSRATE-001
 	 */
 	public function absenceRate(
 		array $cases,
@@ -197,7 +197,7 @@ class AbsenceRateService {
 	 *
 	 * @return float Day-equivalents, already FTE-weighted.
 	 *
-	 * @spec openspec/changes/absence-rate-partial-recovery/specs/absence-rate/spec.md#REQ-ABSRATE-002
+	 * @spec openspec/specs/absence-rate/spec.md#REQ-ABSRATE-002
 	 */
 	public function caseAbsenceDayEquivalents(
 		array $case,
@@ -246,7 +246,7 @@ class AbsenceRateService {
 	 *
 	 * @return array{0: DateTimeImmutable, 1: DateTimeImmutable}|null Clipped window, or null when the case does not overlap the period at all.
 	 *
-	 * @spec openspec/changes/absence-rate-partial-recovery/specs/absence-rate/spec.md#REQ-ABSRATE-002
+	 * @spec openspec/specs/absence-rate/spec.md#REQ-ABSRATE-002
 	 */
 	private function caseWindow(
 		array $case,
@@ -279,7 +279,7 @@ class AbsenceRateService {
 	 *
 	 * @return float Day-equivalents.
 	 *
-	 * @spec openspec/changes/absence-rate-partial-recovery/specs/absence-rate/spec.md#REQ-ABSRATE-002
+	 * @spec openspec/specs/absence-rate/spec.md#REQ-ABSRATE-002
 	 */
 	private function contractAvailability(
 		array $contract,
@@ -318,7 +318,7 @@ class AbsenceRateService {
 	 *
 	 * @return array<string, float> Employee id to FTE, only for employees with a contract overlapping the period.
 	 *
-	 * @spec openspec/changes/absence-rate-partial-recovery/specs/absence-rate/spec.md#REQ-ABSRATE-002
+	 * @spec openspec/specs/absence-rate/spec.md#REQ-ABSRATE-002
 	 */
 	private function fteByEmployee(
 		array $contracts,
@@ -358,7 +358,7 @@ class AbsenceRateService {
 	 *
 	 * @return float FTE, or 0.0 when hoursPerWeek is absent or unusable.
 	 *
-	 * @spec openspec/changes/absence-rate-partial-recovery/specs/absence-rate/spec.md#REQ-ABSRATE-002
+	 * @spec openspec/specs/absence-rate/spec.md#REQ-ABSRATE-002
 	 */
 	private function contractFte(array $contract, float $fullTimeHoursWeek): float {
 		$hours = ($contract['hoursPerWeek'] ?? null);
@@ -376,7 +376,7 @@ class AbsenceRateService {
 	 *
 	 * @return string|null Null when absent, not a string, or blank.
 	 *
-	 * @spec openspec/changes/absence-rate-partial-recovery/specs/absence-rate/spec.md#REQ-ABSRATE-002
+	 * @spec openspec/specs/absence-rate/spec.md#REQ-ABSRATE-002
 	 */
 	private function stringOrNull(mixed $value): ?string {
 		if (is_string($value) === false || trim($value) === '') {

@@ -26,7 +26,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/interview-scheduling/specs/interview-scheduling/spec.md
+ * @spec openspec/specs/interview-scheduling/spec.md
  */
 
 declare(strict_types=1);

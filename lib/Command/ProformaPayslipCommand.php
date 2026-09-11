@@ -23,7 +23,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-003
+ * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-003
  */
 
 declare(strict_types=1);
@@ -54,7 +54,7 @@ class ProformaPayslipCommand extends Command {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-003
+	 * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-003
 	 */
 	protected function configure(): void {
 		$this->setName('humaniq:payroll:proforma')
@@ -76,7 +76,7 @@ class ProformaPayslipCommand extends Command {
 	 *
 	 * @return int 0 on a successful simulation, 1 on malformed input.
 	 *
-	 * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-003
+	 * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-003
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		try {

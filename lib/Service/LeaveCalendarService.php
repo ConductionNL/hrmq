@@ -41,7 +41,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/leave-calendar-nc/specs/leave-calendar-nc/spec.md
+ * @spec openspec/specs/leave-calendar-nc/spec.md
  */
 
 declare(strict_types=1);

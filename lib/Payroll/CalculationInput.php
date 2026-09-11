@@ -36,9 +36,9 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
  * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-001
- * @spec openspec/changes/30-procent-regeling/specs/30-procent-regeling/spec.md#REQ-30P-003
+ * @spec openspec/specs/30-procent-regeling/spec.md#REQ-30P-003
  */
 
 declare(strict_types=1);
@@ -65,10 +65,10 @@ final class CalculationInput {
 	 * @param string $jurisdiction The ISO 3166-1 alpha-2 jurisdiction whose pack computes this wage (jurisdiction-packs). Additive and defaults to `NL`, so every pre-existing named-argument call site is unaffected.
 	 * @param float $thirtyPercentRulingRate The applied 30%-ruling percentage (30-procent-regeling). Additive and defaults to `0.0`, so every pre-existing named-argument call site is unaffected: a positive rate drives the pack's `thirtyPercentExemption`/`belastbaarLoon` bindings, reducing the taxable base while leaving the net-fold's gross unchanged. `0.0` degrades the exemption to zero (non-ruling path byte-identical).
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
 	 * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-001
 	 * @spec openspec/specs/jurisdiction-packs/spec.md#REQ-JP-001
-	 * @spec openspec/changes/30-procent-regeling/specs/30-procent-regeling/spec.md#REQ-30P-003
+	 * @spec openspec/specs/30-procent-regeling/spec.md#REQ-30P-003
 	 */
 	public function __construct(
 		public readonly int $grossMonthlySalaryCents,
@@ -91,7 +91,7 @@ final class CalculationInput {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-001
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-001
 	 */
 	public function toArray(): array {
 		return [
@@ -120,7 +120,7 @@ final class CalculationInput {
 	 *
 	 * @return string
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-001
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-001
 	 */
 	public function toCanonicalJson(): string {
 		$data = $this->toArray();
@@ -142,7 +142,7 @@ final class CalculationInput {
 	 *
 	 * @throws InvalidArgumentException When `$json` does not decode to a JSON object.
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
 	 */
 	public static function fromCanonicalJson(string $json): self {
 		$decoded = json_decode($json, true);
@@ -171,7 +171,7 @@ final class CalculationInput {
 	 *
 	 * @return self
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
 	 */
 	public static function fromDecoded(array $decoded): self {
 		return new self(

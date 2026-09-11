@@ -39,7 +39,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/stagiair-bbl-admin/specs/stagiair-bbl-admin/spec.md
+ * @spec openspec/specs/stagiair-bbl-admin/spec.md
  */
 
 declare(strict_types=1);
@@ -58,7 +58,7 @@ final class NlStagiairChecks implements CheckProvider {
 	 *
 	 * @return array<string, array<string, callable>>
 	 *
-	 * @spec openspec/changes/stagiair-bbl-admin/specs/stagiair-bbl-admin/spec.md
+	 * @spec openspec/specs/stagiair-bbl-admin/spec.md
 	 */
 	public static function checks(): array {
 		return [
@@ -81,7 +81,7 @@ final class NlStagiairChecks implements CheckProvider {
 	 *
 	 * @return array<string, array<string, mixed>>
 	 *
-	 * @spec openspec/changes/stagiair-bbl-admin/specs/stagiair-bbl-admin/spec.md
+	 * @spec openspec/specs/stagiair-bbl-admin/spec.md
 	 */
 	public static function seedSpec(): array {
 		return [];
@@ -98,7 +98,7 @@ final class NlStagiairChecks implements CheckProvider {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/stagiair-bbl-admin/specs/stagiair-bbl-admin/spec.md
+	 * @spec openspec/specs/stagiair-bbl-admin/spec.md
 	 */
 	private static function bpvSatisfied(array $object): bool {
 		if (($object['bpvOvereenkomstOndertekend'] ?? false) === true) {
@@ -125,7 +125,7 @@ final class NlStagiairChecks implements CheckProvider {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/stagiair-bbl-admin/specs/stagiair-bbl-admin/spec.md
+	 * @spec openspec/specs/stagiair-bbl-admin/spec.md
 	 */
 	private static function bblBpvSatisfied(array $object): bool {
 		if ((string)($object['type'] ?? '') !== 'bbl') {

@@ -32,9 +32,9 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-003
- * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-004
- * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-006
+ * @spec openspec/specs/cao-library/spec.md#REQ-CAO-003
+ * @spec openspec/specs/cao-library/spec.md#REQ-CAO-004
+ * @spec openspec/specs/cao-library/spec.md#REQ-CAO-006
  */
 
 declare(strict_types=1);
@@ -50,7 +50,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlCaoChecks, driven through the real RuleEngine.
  *
- * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-003
+ * @spec openspec/specs/cao-library/spec.md#REQ-CAO-003
  */
 class NlCaoChecksTest extends TestCase {
 
@@ -148,7 +148,7 @@ class NlCaoChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-003
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-003
 	 */
 	public function testPayScaleCheckIsReachableFromTheEngine(): void {
 		$this->assertArrayHasKey('nl-cao-minimumloon-schaal', (NlCaoChecks::checks()['EmploymentContract'] ?? []));
@@ -162,7 +162,7 @@ class NlCaoChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-003
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-003
 	 */
 	public function testSalaryBelowVerifiedMinimumRaisesMandatoryViolation(): void {
 		$contract = ['employeeId' => 'emp-1', 'cao' => 'cao-generiek', 'caoSchaal' => 'generiek'];
@@ -179,7 +179,7 @@ class NlCaoChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-003
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-003
 	 */
 	public function testSalaryAtOrAboveMinimumPasses(): void {
 		$contract = ['employeeId' => 'emp-1', 'cao' => 'cao-generiek', 'caoSchaal' => 'generiek'];
@@ -195,7 +195,7 @@ class NlCaoChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-003
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-003
 	 */
 	public function testPlaceholderScaleIsAdvisory(): void {
 		$contract = ['employeeId' => 'emp-1', 'cao' => 'cao-metaal-techniek', 'caoSchaal' => 'B'];
@@ -211,7 +211,7 @@ class NlCaoChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-003
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-003
 	 */
 	public function testNullCaoOrScaleIsVacuous(): void {
 		$noCao = RuleEngine::evaluate('EmploymentContract', ['employeeId' => 'emp-1'], $this->context(100.00));
@@ -228,7 +228,7 @@ class NlCaoChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-004
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-004
 	 */
 	public function testLeaveBelowVerifiedMinimumRaisesMandatoryViolation(): void {
 		$balance = [
@@ -251,7 +251,7 @@ class NlCaoChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-004
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-004
 	 */
 	public function testLeaveAtOrAboveMinimumPasses(): void {
 		$balance = [
@@ -272,7 +272,7 @@ class NlCaoChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-004
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-004
 	 */
 	public function testNonHolidayLeaveTypeIsVacuous(): void {
 		$balance = [
@@ -294,7 +294,7 @@ class NlCaoChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-004
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-004
 	 */
 	public function testLeaveVacuousWhenNoCaoOrPlaceholderCao(): void {
 		$balance = [
@@ -320,7 +320,7 @@ class NlCaoChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-006
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-006
 	 */
 	public function testSeedObjectsProjectsOneRowPerCaoKeyedOnCaoId(): void {
 		$seed = NlCaoChecks::seedObjects();
@@ -355,7 +355,7 @@ class NlCaoChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-006
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-006
 	 */
 	public function testSeedObjectsIsDeterministic(): void {
 		$this->assertSame(NlCaoChecks::seedObjects(), NlCaoChecks::seedObjects());
@@ -472,7 +472,7 @@ class NlCaoChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/uitzend-flexpool/specs/uitzend-flexpool/spec.md
+	 * @spec openspec/specs/uitzend-flexpool/spec.md
 	 */
 	public function testAgencyContractWithCaoAbuIsEvaluatedButVacuous(): void {
 		// cao-abu is loaded and resolvable through the existing registry.

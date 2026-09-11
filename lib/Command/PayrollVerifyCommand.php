@@ -23,7 +23,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-006
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-006
  */
 
 declare(strict_types=1);
@@ -54,7 +54,7 @@ class PayrollVerifyCommand extends Command {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-006
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-006
 	 */
 	protected function configure(): void {
 		$this->setName('humaniq:payroll:verify')
@@ -71,7 +71,7 @@ class PayrollVerifyCommand extends Command {
 	 *
 	 * @return int 0 when no mandatory violation exists, 1 otherwise.
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-006
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-006
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$periodOption = $input->getOption('period');

@@ -25,7 +25,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
+ * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
  */
 
 declare(strict_types=1);
@@ -45,7 +45,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 /**
  * Tests for PayrollReproduceCommand.
  *
- * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
+ * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
  */
 class PayrollReproduceCommandTest extends TestCase {
 

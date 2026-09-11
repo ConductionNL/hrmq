@@ -70,13 +70,13 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-008
- * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-008
- * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-002
- * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-004
- * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-007
- * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-005
- * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-006
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-008
+ * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-008
+ * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-002
+ * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-004
+ * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-007
+ * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-005
+ * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-006
  */
 
 declare(strict_types=1);
@@ -159,7 +159,7 @@ class PayrollController extends Controller {
 	 *
 	 * @return JSONResponse The recalculation outcome, 400 on a missing runId or non-draft run, 404 when the run does not resolve.
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-008
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-008
 	 */
 	#[NoAdminRequired]
 	public function calculate(?string $runId = null): JSONResponse {
@@ -210,7 +210,7 @@ class PayrollController extends Controller {
 	 *
 	 * @return JSONResponse {reportId, report} on success; 400 on a missing/invalid toRunId or cross-administration pair, 403 for a non-admin caller, 404 when a run does not resolve.
 	 *
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-008
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-008
 	 */
 	#[NoAdminRequired]
 	public function mutations(?string $toRunId = null, ?string $fromRunId = null): JSONResponse {
@@ -258,7 +258,7 @@ class PayrollController extends Controller {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-008
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-008
 	 */
 	private function isAdminOrHr(): bool {
 		$uid = $this->userSession->getUser()?->getUID();
@@ -292,8 +292,8 @@ class PayrollController extends Controller {
 	 *
 	 * @return JSONResponse The full breakdown, 400 on malformed input, 404 when the caller cannot resolve the payroll register.
 	 *
-	 * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-002
-	 * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-004
+	 * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-002
+	 * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-004
 	 */
 	#[NoAdminRequired]
 	public function proforma(
@@ -345,7 +345,7 @@ class PayrollController extends Controller {
 	 *
 	 * @return bool True when the caller's RBAC can resolve the payroll register/schema.
 	 *
-	 * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-004
+	 * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-004
 	 */
 	private function authorizeProformaAccess(): bool {
 		try {
@@ -382,7 +382,7 @@ class PayrollController extends Controller {
 	 *
 	 * @return JSONResponse `{isDga, grossAnnualSalaryCents, jaarnormCents, met, justification}` for the caller's own DGA record, or 404 when no own DGA Employee resolves.
 	 *
-	 * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-006
+	 * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-006
 	 */
 	#[NoAdminRequired]
 	public function dgaStatus(): JSONResponse {
@@ -443,7 +443,7 @@ class PayrollController extends Controller {
 	 *
 	 * @return array<string, mixed>|null
 	 *
-	 * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-006
+	 * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-006
 	 */
 	private function resolveOwnEmployee(string $userId): ?array {
 		try {
@@ -480,7 +480,7 @@ class PayrollController extends Controller {
 	 *
 	 * @return JSONResponse The recompute outcome, 400 on a missing adjustmentId or an already-applied adjustment, 404 when it does not resolve.
 	 *
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-007
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-007
 	 */
 	#[NoAdminRequired]
 	public function adjust(?string $adjustmentId = null): JSONResponse {
@@ -525,7 +525,7 @@ class PayrollController extends Controller {
 	 *
 	 * @return array<string, mixed>|null
 	 *
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-007
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-007
 	 */
 	private function authorizeAdjustment(string $adjustmentId): ?array {
 		try {
@@ -561,7 +561,7 @@ class PayrollController extends Controller {
 	 *
 	 * @return JSONResponse The recompute outcome, 400 on a missing assessmentId, 403 for a non-admin caller, 404 when it does not resolve.
 	 *
-	 * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-005
+	 * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-005
 	 */
 	#[NoAdminRequired]
 	public function wkrAssess(?string $assessmentId = null): JSONResponse {
@@ -606,7 +606,7 @@ class PayrollController extends Controller {
 	 *
 	 * @return array<string, mixed>|null
 	 *
-	 * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-005
+	 * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-005
 	 */
 	private function authorizeAssessment(string $assessmentId): ?array {
 		try {
@@ -638,7 +638,7 @@ class PayrollController extends Controller {
 	 *
 	 * @return array<string, mixed>|null
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-008
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-008
 	 */
 	private function authorizeRun(string $runId): ?array {
 		try {

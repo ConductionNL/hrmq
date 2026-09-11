@@ -28,7 +28,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
+ * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
  */
 
 declare(strict_types=1);
@@ -81,7 +81,7 @@ class CompController extends Controller {
 	 *
 	 * @return JSONResponse The effectuation outcome, 400 on a missing/non-approved adjustment, 404 when it does not resolve.
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
 	 */
 	#[NoAdminRequired]
 	public function effectuate(?string $adjustmentId = null): JSONResponse {
@@ -133,7 +133,7 @@ class CompController extends Controller {
 	 *
 	 * @return array<string, mixed>|null
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
 	 */
 	private function authorizeAdjustment(string $adjustmentId): ?array {
 		try {

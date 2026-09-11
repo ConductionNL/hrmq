@@ -28,7 +28,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md
+ * @spec openspec/specs/receipt-ocr/spec.md
  */
 
 declare(strict_types=1);
@@ -46,7 +46,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for ReceiptExtractionService.
  *
- * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md
+ * @spec openspec/specs/receipt-ocr/spec.md
  */
 class ReceiptExtractionServiceTest extends TestCase {
 

@@ -94,7 +94,7 @@ class TimeEntryHoursDeriver {
 	 * @throws HoursWriteRefusedException When the booking is in neither shape,
 	 *  or the shape it is in is impossible.
 	 *
-	 * @spec openspec/changes/a-time-entry-can-be-booked-to-a-day/specs/time-entry-capture/spec.md#requirement-humaniq-captures-time-entries-under-a-submit-approve-lifecycle-req-tec-001
+	 * @spec openspec/specs/time-entry-capture/spec.md#requirement-humaniq-captures-time-entries-under-a-submit-approve-lifecycle-req-tec-001
 	 */
 	public function derive(array $incoming, ?array $stored): array {
 		$rawStart = (string)($incoming['startedAt'] ?? ($stored['startedAt'] ?? ''));
@@ -180,7 +180,7 @@ class TimeEntryHoursDeriver {
 	 *
 	 * @throws HoursWriteRefusedException On an impossible span.
 	 *
-	 * @spec openspec/changes/a-time-entry-can-be-booked-to-a-day/specs/time-entry-capture/spec.md#requirement-humaniq-captures-time-entries-under-a-submit-approve-lifecycle-req-tec-001
+	 * @spec openspec/specs/time-entry-capture/spec.md#requirement-humaniq-captures-time-entries-under-a-submit-approve-lifecycle-req-tec-001
 	 */
 	private function fromClock(array $incoming, ?array $stored, string $rawStart, string $rawEnd): array {
 		// Plain strtotime: timestamps are timezone-agnostic, and the derived
@@ -224,7 +224,7 @@ class TimeEntryHoursDeriver {
 	 * @throws HoursWriteRefusedException When the date or the hours is missing
 	 *  or impossible.
 	 *
-	 * @spec openspec/changes/a-time-entry-can-be-booked-to-a-day/specs/time-entry-capture/spec.md#requirement-humaniq-captures-time-entries-under-a-submit-approve-lifecycle-req-tec-001
+	 * @spec openspec/specs/time-entry-capture/spec.md#requirement-humaniq-captures-time-entries-under-a-submit-approve-lifecycle-req-tec-001
 	 */
 	private function fromDay(array $incoming, ?array $stored): array {
 		$date = strtotime((string)($incoming['date'] ?? ($stored['date'] ?? '')));

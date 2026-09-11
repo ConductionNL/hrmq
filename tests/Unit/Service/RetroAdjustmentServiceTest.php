@@ -30,10 +30,10 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-001
- * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-002
- * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-003
- * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-005
+ * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-001
+ * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-002
+ * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-003
+ * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-005
  */
 
 declare(strict_types=1);
@@ -50,7 +50,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for RetroAdjustmentService.
  *
- * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-001
+ * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-001
  */
 class RetroAdjustmentServiceTest extends TestCase {
 
