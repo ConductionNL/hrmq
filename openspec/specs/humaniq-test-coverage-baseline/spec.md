@@ -11,6 +11,14 @@ built_by: openspec/changes/archive/2026-09-07-humaniq-test-coverage-baseline
 **OpenSpec changes**:
 - [humaniq-test-coverage-baseline](../../changes/archive/2026-09-07-humaniq-test-coverage-baseline/) _(archived 2026-09-07)_ — a real test baseline: PHPUnit infrastructure the codebase already referenced, unit coverage of the compliance predicate layer, and an end-to-end path (kind: code)
 
+## Purpose
+
+Prove humaniq's core with tests that actually run. humaniq used to point at a test suite that
+did not exist. There was no `tests/` directory and no `phpunit.xml`, and the `check:manifest`
+script named a missing file. This capability sets the minimum baseline. The compliance predicates
+have unit tests that execute. One real page is proven to render in a browser. Every script
+points at a file that exists.
+
 ## Requirements
 
 ### Requirement: The compliance predicate layer has real unit-test coverage

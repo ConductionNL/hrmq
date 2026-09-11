@@ -45,17 +45,46 @@ Every scoped HR/payroll schema carries an optional, nullable, plain-string
   SickLeaveCase, Onboarding, Vacancy, Application, OrgUnit, OrgAssignment, AttendanceRecord, Asset,
   AssetAssignment, ReviewCycle, PerformanceReview, PensionFiling, LoonaangifteFiling (the payroll
   aggregates already carried it). **Delivered.**
+
+#### Scenario: A scoped schema carries a plain-string administrationId
+@e2e exclude Schema shape in the register fragments, not a browser behaviour.
+- **WHEN** a scoped schema such as `Employee`, `Payslip` or `Timesheet` is read from `lib/Settings/register.d/`
+- **THEN** it declares `administrationId` as an optional, nullable string
+- **AND** that property carries no `$ref`
+
 ### Requirement: An Administration catalog and access membership model the tenant axis (REQ-MULTI-002)
 
 An `Administration` catalog (name/KvK/loonheffingennummer/active) and an
   `AdministrationAccess` membership (userId → administratie, role accountant|hr|employee) model the
   tenant axis. **Delivered.**
+
+#### Scenario: The catalog and the membership are declared
+@e2e exclude Schema shape in the register fragment, not a browser behaviour.
+- **WHEN** `lib/Settings/register.d/hr-administratie.json` is read
+- **THEN** the administratie catalog schema (slug `hrAdministration` since REQ-MULTI-020) carries `name`, `kvkNumber`, `loonheffingennummer` and `active`
+- **AND** `AdministrationAccess` carries `userId`, `administrationId` and a `role` of `accountant`, `hr` or `employee`
+
 ### Requirement: The active administratie is a per-user, access-guarded selection (REQ-MULTI-003)
 
 The active administratie is a per-user selection persisted behind an
   access-guarded setter: `POST /api/administration/active` resolves the posted id to a caller
   `AdministrationAccess` row *before* storing (unknown/inaccessible → 404); routes precede the SPA
   catch-all. **Delivered.**
+
+#### Scenario: An inaccessible administratie is refused before anything is stored
+@e2e exclude Endpoint guard, covered by AdministrationControllerTest::testActivatingAnInaccessibleAdministratieReturns404AndNeverWrites.
+- **GIVEN** a caller with no `AdministrationAccess` row for `ADM-002`
+- **WHEN** they `POST /api/administration/active` with `administrationId: ADM-002`
+- **THEN** the response is 404
+- **AND** their active administratie is unchanged
+
+#### Scenario: An accessible administratie becomes active
+@e2e exclude Endpoint behaviour, covered by AdministrationControllerTest::testActivatingAnAccessibleAdministratiePersistsAndReturnsIt.
+- **GIVEN** a caller with an `AdministrationAccess` row for `ADM-001`
+- **WHEN** they `POST /api/administration/active` with `administrationId: ADM-001`
+- **THEN** the response carries `activeAdministrationId: ADM-001` and the selection is stored for that caller
+- **AND** both `/api/administration/*` routes are declared in `appinfo/routes.php` before the SPA catch-all
+
 ### Requirement: Every page is implicitly scoped to the active administratie (REQ-MULTI-004)
 
 Every list and detail page is implicitly scoped to the active administratie via
@@ -67,6 +96,17 @@ Every list and detail page is implicitly scoped to the active administratie via
   successful switch so every page re-scopes without a reload. The `?`-optional grammar means an unset
   selection (or a single-administratie install) drops the clause and shows all accessible rows — no
   regression, exactly as originally intended.
+
+#### Scenario: A scoped page filters on the active administratie
+- **WHEN** an administration-scoped index or detail page is read from the effective manifest
+- **THEN** its `filter` carries `administrationId: "@workspace.activeAdministrationId?"`
+
+#### Scenario: Switching administratie re-scopes open pages
+- **GIVEN** a user on a scoped page
+- **WHEN** they switch administratie in `AdministrationSwitcher.vue`
+- **THEN** the switcher writes the new id into the `cnWorkspaceContext` that `App.vue` provides
+- **AND** the page re-scopes without a reload
+
 ### Requirement: A dedicated @administration filter token — SUPERSEDED (REQ-MULTI-005)
 
 ~~The `@administration` filter token is a first-class member of the CLOSED
@@ -81,6 +121,13 @@ Every list and detail page is implicitly scoped to the active administratie via
   "provided by CnDashboardPage" (page-scoped), but Vue's inject walks the WHOLE ancestor chain — humaniq
   provides it once at its own SPA root (`App.vue`) instead, which makes it available fleet-wide across
   every page type with zero nextcloud-vue change. No upstream issue was ever needed; none is filed.
+
+#### Scenario: No dedicated @administration token is used
+@e2e exclude The absence of a manifest token, which no page can assert.
+- **WHEN** the manifest filters are searched for an `@administration` token
+- **THEN** none is found
+- **AND** the scoping uses the existing `@workspace.activeAdministrationId?` token instead
+
 ### Requirement: The switcher lives under Configuratie and adds no top-level menu (REQ-MULTI-006)
 
 The switch lives under `Configuratie › Administraties` (a switcher SFC backed by
@@ -88,6 +135,12 @@ The switch lives under `Configuratie › Administraties` (a switcher SFC backed 
   **Delivered** (the Dashboard-widget `runtime.user` visibleIf wiring remains a separate, small,
   named follow-up — unrelated to the #64 correction above; the Dashboard page itself carries no
   `administrationId`-scoped widgets today).
+
+#### Scenario: The switcher sits under Configuratie
+- **WHEN** the effective manifest's menu is read
+- **THEN** `Administraties` is a child of `ConfiguratieGroup` and opens the `AdministrationSwitcher` page at `/configuratie/administraties`
+- **AND** no top-level menu entry exists for it
+
 ### Requirement: A consistency rule flags scope mismatches, and scoping is NOT a security boundary (REQ-MULTI-007)
 
 `nl-administratie-scope-consistency` (recommended severity, auto-discovered by
@@ -95,11 +148,31 @@ The switch lives under `Configuratie › Administraties` (a switcher SFC backed 
   disagrees with its parent; and scoping is documented as **NOT a security boundary** (hard
   per-administratie OpenRegister-organisation isolation is a named security fast-follow).
   **Delivered.**
+
+#### Scenario: A record whose administratie disagrees with its employee is flagged
+@e2e exclude Audit-time predicate, covered by NlAdministratieChecksTest::testEmployeeAnchoredRecordMismatchingItsEmployeeViolates.
+- **GIVEN** a `Timesheet` with `administrationId: ADM-002` whose `Employee` carries `administrationId: ADM-001`
+- **WHEN** the rule audit runs
+- **THEN** `nl-administratie-scope-consistency` reports a violation at `recommended` severity
+
+#### Scenario: A record without an administratie is never flagged
+@e2e exclude Audit-time predicate, covered by NlAdministratieChecksTest::testEmployeeAnchoredRecordWithNoOwnAdministrationIdIsVacuous.
+- **GIVEN** a `Timesheet` with no `administrationId`
+- **WHEN** the rule audit runs
+- **THEN** `nl-administratie-scope-consistency` is satisfied
+
 ### Requirement: Seeds demonstrate the switch and the isolation (REQ-MULTI-008)
 
 Seeds demonstrate the switch and the isolation: two `Administration` rows
   (ADM-001/ADM-002), `AdministrationAccess` granting the admin accountant access to both, existing
   core-entity seeds backfilled to ADM-001 plus a small isolated ADM-002 set. **Delivered.**
+
+#### Scenario: The seed carries two administraties and access to both
+@e2e exclude Seed data content, not a browser behaviour.
+- **WHEN** `lib/Settings/register.d/hr-seed.json` is imported
+- **THEN** `hrAdministration` rows `ADM-001` and `ADM-002` exist
+- **AND** the `admin` user holds an `accountant` `AdministrationAccess` row for each
+- **AND** a small set of other seeded objects carries `administrationId: ADM-002`
 
 ### Requirement: The HR administration is a facet of a legal entity (REQ-MULTI-020)
 

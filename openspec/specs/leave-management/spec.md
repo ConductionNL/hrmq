@@ -205,8 +205,6 @@ against that year, so a request spanning New Year splits across two balances.
 - **THEN** the request contributes 0 hours
 - **AND** its id appears in a warning
 
-## MODIFIED Requirements
-
 ### Requirement: The accrual job SHALL remain the only writer of entitled hours
 
 `openspec/specs/leave-accrual-job/spec.md` states that "the buy/sell settlement path mutates

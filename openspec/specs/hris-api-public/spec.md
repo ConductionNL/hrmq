@@ -11,7 +11,13 @@ built_by: openspec/changes/archive/2026-09-07-hris-api-public
 **OpenSpec changes**:
 - [hris-api-public](../../changes/archive/2026-09-07-hris-api-public/) _(archived 2026-09-07)_ — humaniq builds no parallel REST/GraphQL/webhook/SCIM stack; external access is Nextcloud app passwords over OpenRegister's own API, catalogued by a new IntegrationAccount schema under Configuratie (kind: config)
 
-# Delta — hris-api-public
+## Purpose
+
+Give external systems access to HR data through the existing API, and keep a record of who
+has it. humaniq builds no API of its own. External systems call the OpenRegister object API the
+humaniq frontend already uses, and log in with a standard Nextcloud app password. The
+`IntegrationAccount` catalog records which external systems have access, so an administrator can
+review and audit it. The catalog records access. It does not grant or block it.
 
 Modernises the 2026-05 `spec/hris-api-public` draft (a bespoke REST v1 + GraphQL + webhooks + SCIM
 stack) against current HEAD with the honest finding that the CRUD/pagination/filtering/RBAC

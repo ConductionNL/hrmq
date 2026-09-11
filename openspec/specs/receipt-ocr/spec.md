@@ -17,7 +17,7 @@ Give every `Expense` with an attached `receiptFile` an automatic prefill of its 
 
 **Implementation-verified correction to the docudesk contract** (design.md D4 explicitly flagged its `fields` key-name assumption as unverified; confirmed against `docudesk/lib/Service/FinancialExtractionService.php` at the installed HEAD during implementation): `extractFinancial(array $data, string $requestedBy): array` does **not** return `fields` keyed `amount`/`date`/`vendor`/`vatAmount`. Its real shaped-field set (`FIELD_DEFAULTS`) is `supplierName`/`supplierIban`/`supplierKvk`/`supplierVatId`/`invoiceNumber`/`issueDate`/`dueDate`/`currency`/`totalExcl`/`totalVat`/`totalIncl`/`vatBreakdown`/`lines`. `ReceiptExtractionService::FIELD_SOURCE_KEYS` maps the four prefillable Expense fields onto the REAL keys: `amount` ← `totalIncl` (VAT-inclusive total — the amount actually claimed), `expenseDate` ← `issueDate`, `vendor` ← `supplierName`, `vatAmount` ← `totalVat`. `$data` takes `fileId` (int) or `documentUri` (string) plus `docType` (`receipt`|`supplier-invoice`); `Expense.receiptFile` is passed as `fileId` when purely numeric, else as `documentUri`. The prefill-not-overwrite RULE itself (below) is unchanged by this correction, per design.md D4's own instruction to adjust the constant map, not the rule.
 
-## ADDED Requirements
+## Requirements
 
 @e2e exclude backend service/controller/command change plus a declarative manifest action; humaniq has no app-level e2e suite yet (tracked by active change humaniq-test-coverage-baseline)
 

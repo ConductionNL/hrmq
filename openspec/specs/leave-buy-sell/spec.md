@@ -59,7 +59,7 @@ The one compliance-critical rule this capability must never break: a sell may on
 would push `bovenwettelijkHours` negative is refused before it can ever threaten the statutory floor,
 structurally, not just by convention.
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: LeaveTransaction SHALL run a declarative request/approve lifecycle with separation of duties reusing NoSelfApprovalGuard (REQ-BUYSELL-001)
 

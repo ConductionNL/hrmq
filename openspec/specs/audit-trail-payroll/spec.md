@@ -32,7 +32,7 @@ smallest genuine delta: persist the exact resolved input, and give a verifier a 
 actually re-derives and compares — consuming OpenRegister's existing audit/hash-chain
 infrastructure rather than building a second, payroll-private one.
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: Every engine-produced Payslip SHALL persist the exact resolved calculation inputs used to compute it (REQ-AUDP-001)
 

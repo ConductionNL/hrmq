@@ -47,7 +47,7 @@ pattern). External market-data benchmarking (positioning a band or proposal agai
 survey percentiles) needs a licensed external feed that does not exist in the fleet, so it is an
 explicit Non-Goal, not implied scope.
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: A SalaryBand reference schema SHALL model pay bands in integer cents of gross monthly salary (REQ-COMP-001)
 
