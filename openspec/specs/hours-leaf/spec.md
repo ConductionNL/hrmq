@@ -1,15 +1,15 @@
 ---
 capability: hours-leaf
-status: in-progress
-built_by: openspec/changes/hours-leaf-for-any-object
+status: done
+built_by: openspec/changes/archive/2026-09-11-hours-leaf-for-any-object
 ---
 
 # hours-leaf Specification
 
-**Status**: in-progress
+**Status**: done
 **Scope**: humaniq
 **OpenSpec changes**:
-- [hours-leaf-for-any-object](../../changes/hours-leaf-for-any-object/) _(in progress, first pass merged as humaniq#287)_ - humaniq supplies the hours surface for any object as an OpenRegister integration leaf, so a consuming app places the leaf instead of querying humaniq's register. The continuation adds the leaf bundle that was never built, the KPI shape, the booking dialog and the administration link, and a timer stored as one open time entry.
+- [hours-leaf-for-any-object](../../changes/archive/2026-09-11-hours-leaf-for-any-object/) _(archived 2026-09-11; merged as humaniq#287, #412, #416, #418 and #420, with dossiq#2368, #2494 and #2510)_ - humaniq supplies the hours surface for any object as an OpenRegister integration leaf, so a consuming app places the leaf instead of querying humaniq's register. The continuation adds the leaf bundle that was never built, the KPI shape, the booking dialog and the administration link, and a timer stored as one open time entry.
 
 ## Purpose
 

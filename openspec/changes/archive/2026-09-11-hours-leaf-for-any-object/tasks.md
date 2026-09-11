@@ -20,7 +20,7 @@
 - [x] Add `src/dialogs/HoursBookingDialog.vue` — the booking dialog Humaniq renders over the host page, seeded with the object reference and offering neither reference field for editing.
 - [x] Point the view-hours action at `/apps/humaniq/time-entries` filtered on the host object. It currently points at `/timesheets`, which is a different schema's page.
 - [x] Restore a running timer on mount, and say so rather than offering a start when the caller's timer belongs to another object.
-- [ ] Move dossiq's `case-kpis-hours` onto this leaf, retiring the last cross-app register query on the case detail page. (dossiq repo.)
+- [x] Move dossiq's `case-kpis-hours` onto this leaf, retiring the last cross-app register query on the case detail page. Done in ConductionNL/dossiq#2368: the widget is an `integration` placement, and `src/manifest.json` names the humaniq register nowhere, checked over 49 pages and 80 widgets.
 - [x] Add PHPUnit coverage for the controller's refusal paths and the listener's open-entry branch, each mutation-checked against a planted break.
 - [x] Add an e2e journey covering start / leave / return / stop against a seeded
   host object: `tests/e2e/spec-coverage/hours-leaf-timer.spec.ts`. It asks a
@@ -28,11 +28,14 @@
   the page" a test can hold, and it reads the STORED row rather than the
   response. That is what caught the `origin` allowlist swallowing the timer
   marker; every response along the way looked correct.
-- [ ] The book-hours dialog and the view-hours link are covered in dossiq's
+- [x] The book-hours dialog and the view-hours link are covered in dossiq's
   `tests/e2e/case-hours-leaf.spec.ts`, which mounts the leaf where it really
   renders. That half needs humaniq installed and dossiq's CI installs only
-  openregister, so it is registered behind `DOSSIQ_E2E_HUMANIQ=1` and HAS NEVER
-  RUN. Read a first green run as evidence, not this line.
+  openregister, so it is registered behind `DOSSIQ_E2E_HUMANIQ=1`. It has now
+  RUN: 3 passed, exit 0, against the dev instance on 2026-09-11 (tile, booking
+  through the dialog, timer surviving a reload). Getting it green found four
+  spec defects, fixed in ConductionNL/dossiq#2510, the worst of which left 10
+  hours of test bookings on a real timesheet.
 - [x] Add the new l10n keys with Dutch.
 
 ## Acceptance criteria

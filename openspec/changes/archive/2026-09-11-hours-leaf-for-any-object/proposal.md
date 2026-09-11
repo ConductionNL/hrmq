@@ -30,7 +30,7 @@ library: a widget declaring `requiredApp` renders chrome and a set-up state
 instead of a number. This change closes the specific half — the reason dossiq
 had to reach into another app's register at all.
 
-## What this change does
+## What Changes
 
 Humaniq supplies the hours surface as an OpenRegister integration leaf,
 `humaniq-hours`. A consuming app PLACES the leaf and passes the object context;
