@@ -15,7 +15,7 @@ built_by: openspec/changes/archive/2026-07-15-offer-esign
 
 Close the MVP gap the `Application.aanbieden` transition's own docblock names ("An offer is extended to the candidate. No offer-letter generation/e-signature in the MVP."): generate a real offer-letter PDF via docudesk from `Application`+`Vacancy` data and raise a real docudesk signing request, tracked directly on the `Application` object (`offerLetterFileId`/`offerSigningRequestId`/`offerSigningStatus`), duck-typed optional and idempotent — while stating plainly what this change does NOT claim: candidate self-service signing completion, webhook-driven status updates, and auto-hire on completion all stay explicitly out of scope.
 
-## ADDED Requirements
+## Requirements
 
 @e2e exclude backend occ/service/controller change plus declarative manifest action; humaniq has no app-level e2e suite yet (tracked by active change humaniq-test-coverage-baseline)
 

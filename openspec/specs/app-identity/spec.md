@@ -48,6 +48,19 @@ the old value is non-empty AND the new namespace holds no value, the old rows
 are never deleted, and any `Throwable` is logged and skipped rather than
 thrown — a repair step that throws aborts the install.
 
+#### Scenario: A stored hrmq value is copied to humaniq
+@e2e exclude Repair step with no page, covered by MigrateAppConfigKeysTest::testCopiesStoredValuesToTheNewNamespace.
+- **GIVEN** an app config key with a non-empty value under `hrmq` and no value under `humaniq`
+- **WHEN** `MigrateAppConfigKeys` runs
+- **THEN** the same value is stored under `humaniq`
+- **AND** the `hrmq` row is left in place
+
+#### Scenario: Reserved and already-present keys are not written
+@e2e exclude Repair step with no page, covered by MigrateAppConfigKeysTest::testReservedKeysAreNeverCopied and testExistingNewValueIsNotClobbered.
+- **GIVEN** the `hrmq` keys `enabled`, `installed_version` and `types`, and a key that already has a value under `humaniq`
+- **WHEN** `MigrateAppConfigKeys` runs
+- **THEN** none of those keys is written under `humaniq`
+
 ### Requirement: Per-user preferences SHALL survive the app-id rename (REQ-AID-002)
 
 `lib/Repair/MigrateUserPreferences.php` SHALL be an
@@ -74,6 +87,19 @@ REQ-AID-001: a value is copied only when the user has nothing stored under
 the new app id, the old rows are never deleted, and any `Throwable` is logged
 and skipped.
 
+#### Scenario: A user's active administratie survives the rename
+@e2e exclude Repair step with no page, covered by MigrateUserPreferencesTest::testCopiesTheActiveAdministrationForEachUser.
+- **GIVEN** a seen user with `active_administration_id` stored under `hrmq` and nothing stored under `humaniq`
+- **WHEN** `MigrateUserPreferences` runs
+- **THEN** that user's `active_administration_id` under `humaniq` holds the same value
+- **AND** the `hrmq` value is left in place
+
+#### Scenario: A choice already made under humaniq is kept
+@e2e exclude Repair step with no page, covered by MigrateUserPreferencesTest::testExistingNewPreferenceIsNotClobbered.
+- **GIVEN** a user with one `active_administration_id` under `hrmq` and a different one under `humaniq`
+- **WHEN** `MigrateUserPreferences` runs
+- **THEN** the value under `humaniq` is unchanged
+
 ### Requirement: Both migration steps SHALL run on install as well as on upgrade (REQ-AID-003)
 
 `appinfo/info.xml` SHALL register both steps under **both**
@@ -92,6 +118,12 @@ The ordering before `InitializeRegister` is load-bearing for REQ-AID-001:
 itself, so running it first would leave those keys already present under
 `humaniq` and the migration would skip them as "already present", stranding
 the old values.
+
+#### Scenario: Both steps run in both blocks, ahead of the register import
+@e2e exclude Install-time step order in appinfo/info.xml, which no page can observe.
+- **WHEN** `appinfo/info.xml` is read
+- **THEN** `MigrateAppConfigKeys` and `MigrateUserPreferences` are listed under both `repair-steps/post-migration` and `repair-steps/install`
+- **AND** in each block both are listed before `InitializeRegister`
 
 ### Requirement: Identifiers owned by other systems SHALL NOT be renamed (REQ-AID-004)
 
@@ -118,3 +150,9 @@ literally `hrmq` and each carries a comment at its definition explaining why:
   app that is supposed to still say `hrmq`.
 - **Archived `openspec/changes/archive/**` directories** and the `@spec` paths
   pointing at them, which are historical records.
+
+#### Scenario: The docudesk identifiers still say hrmq
+@e2e exclude Source constants with no page, sourceApp asserted by OfferEsignServiceTest.
+- **WHEN** `HrDocumentService`, `OfferLetterService` and `OfferEsignService` are read
+- **THEN** `TEMPLATE_NAMESPACE` in the first two and `sourceApp` in the third are still the literal `hrmq`
+- **AND** `OLD_APP_ID` in both migration steps is still `hrmq`

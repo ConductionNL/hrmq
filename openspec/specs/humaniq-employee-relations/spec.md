@@ -11,6 +11,13 @@ built_by: openspec/changes/archive/2026-09-07-humaniq-employee-relations-widget
 **OpenSpec changes**:
 - [humaniq-employee-relations-widget](../../changes/archive/2026-09-07-humaniq-employee-relations-widget/) _(archived 2026-09-07)_ — Timesheet and Expense declare a resolvable Employee relation, and the detail-page related widget surfaces the linked Employee (kind: config)
 
+## Purpose
+
+See the employee behind a timesheet or expense claim in the related panel of its detail page.
+That panel can only list the employee when `employeeId` is a real reference to an `Employee`
+object, not a loose name string. This capability makes the reference resolvable, from the schema
+through to the seed data.
+
 ## Requirements
 
 ### Requirement: Timesheet and Expense claims declare a resolvable Employee relation

@@ -232,5 +232,3 @@ referencing a non-existent `RuleComplianceGuard` class.
 - THEN the documentation MUST NOT reference a class that does not exist in the codebase
 - AND MUST accurately describe the audit as reporting-only (or reference the real guard, if one
   has since been implemented)
-
-## MODIFIED Requirements

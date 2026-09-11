@@ -32,7 +32,7 @@ a drag-and-drop planbord, shift-swap) is an explicit non-goal — a future openc
 with a dedicated WFM tool; humaniq owns the plan of record and the ATW compliance view, not the
 optimiser.
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: Reusable shift definitions SHALL be modelled (REQ-ROST-001)
 

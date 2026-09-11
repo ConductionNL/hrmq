@@ -2,7 +2,7 @@
   {
     "slug": "30-procent-regeling",
     "title": "30 Procent Regeling",
-    "summary": "",
+    "summary": "Apply a granted 30%-ruling in payroll, so an employee hired from abroad pays wage tax on less of their wage.",
     "status": "stable",
     "docsUrl": "openspec/specs/30-procent-regeling/spec.md"
   },
@@ -121,7 +121,7 @@
   {
     "slug": "hris-api-public",
     "title": "Hris API Public",
-    "summary": "",
+    "summary": "Give external systems access to HR data through the existing API, and keep a record of who has it.",
     "status": "stable",
     "docsUrl": "openspec/specs/hris-api-public/spec.md"
   },
@@ -156,7 +156,7 @@
   {
     "slug": "humaniq-employee-relations",
     "title": "Humaniq Employee Relations",
-    "summary": "",
+    "summary": "See the employee behind a timesheet or expense claim in the related panel of its detail page.",
     "status": "stable",
     "docsUrl": "openspec/specs/humaniq-employee-relations/spec.md"
   },
@@ -422,7 +422,7 @@
   {
     "slug": "single-person-modes",
     "title": "Single Person Modes",
-    "summary": "",
+    "summary": "Run a one-person administratie without the screens built for teams.",
     "status": "stable",
     "docsUrl": "openspec/specs/single-person-modes/spec.md"
   },
@@ -443,7 +443,7 @@
   {
     "slug": "uitzend-flexpool",
     "title": "Uitzend Flexpool",
-    "summary": "",
+    "summary": "Run payroll for an uitzendbureau and track the fasensysteem on each agency contract.",
     "status": "stable",
     "docsUrl": "openspec/specs/uitzend-flexpool/spec.md"
   },
@@ -471,7 +471,7 @@
   {
     "slug": "wnt-disclosure",
     "title": "Wnt Disclosure",
-    "summary": "",
+    "summary": "Mark topfunctionarissen, record their yearly WNT disclosure, and flag pay above the norm.",
     "status": "stable",
     "docsUrl": "openspec/specs/wnt-disclosure/spec.md"
   }
