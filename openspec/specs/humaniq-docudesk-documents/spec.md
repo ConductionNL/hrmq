@@ -16,7 +16,7 @@ built_by: openspec/changes/archive/2026-07-13-hrmq-docudesk-documents
 
 Generate the standard Dutch HR documents (arbeidsovereenkomst, aanbiedingsbrief, werkgeversverklaring, getuigschrift) from templates hosted in docudesk (`namespace: hrmq`), by calling docudesk's `DocumentService::generateDocument()` on the same instance (never HTTP), storing the returned PDF on a new `GeneratedDocument` record via OpenRegister's FileService, degrading gracefully to `skipped-no-docudesk` when docudesk is absent, and giving `EmploymentContract.writtenContract` machine-checked document evidence (`nl-contract-schriftelijk`). humaniq builds no template engine — the `spec/document-template-engine` draft is superseded by this consumption leaf.
 
-## ADDED Requirements
+## Requirements
 
 @e2e exclude backend occ/service change plus declarative manifest pages; humaniq has no app-level e2e suite yet (tracked by active change humaniq-test-coverage-baseline)
 

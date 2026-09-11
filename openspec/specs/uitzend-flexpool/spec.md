@@ -11,7 +11,14 @@ built_by: openspec/changes/archive/2026-09-07-uitzend-flexpool
 **OpenSpec changes**:
 - [uitzend-flexpool](../../changes/archive/2026-09-07-uitzend-flexpool/) _(archived 2026-09-07)_ — humaniq serves the uitzendbureau: the uitzendkracht is the agency's own Employee on an `agency` EmploymentContract, with fasensysteem stage, uitzendbeding applicability and an inlenersbeloning reference, two labour rules and a placeholder ABU CAO (kind: config)
 
-# Delta — uitzend-flexpool
+## Purpose
+
+Run payroll for an uitzendbureau and track the fasensysteem on each agency contract. The
+uitzendbureau employs its uitzendkrachten, so humaniq serves the agency, not the inlener that hires
+the worker. An uitzendkracht is an ordinary `Employee` on an `agency` `EmploymentContract`. That
+contract tracks the fasensysteem stage, whether the uitzendbeding applies, and the inlenersbeloning
+reference. Two labour rules flag an uitzendbeding past fase A and an agency wage with no
+inlenersbeloning reference.
 
 Modernises the 2026-05 `spec/uitzend-flexpool-integration` draft against current HEAD, reversing
 its central design choice: humaniq serves the **uitzendbureau** (the uitzendkracht's actual employer

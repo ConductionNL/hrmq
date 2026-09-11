@@ -42,7 +42,7 @@ in this pass, so this change ships only a small illustrative seed subset, explic
 claimed-complete library, with every seeded mapping `caoSchaalVerified: false` except one documented
 proof-case exception used solely to demonstrate the consistency check.
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: A new Normfunctie reference schema SHALL map standard municipal job functions to a Cao Gemeenten schaal (REQ-HR21-001)
 

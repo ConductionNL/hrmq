@@ -11,7 +11,13 @@ built_by: openspec/changes/archive/2026-09-07-single-person-modes
 **OpenSpec changes**:
 - [single-person-modes](../../changes/archive/2026-09-07-single-person-modes/) _(archived 2026-09-07)_ — ZZP/DGA and eenmanszaak as MODES of one administration, not separate apps: an hrAdministration.mode enum, the mode in runtime.user context, mode-gated menu surfaces, an employee-count drift check and a self-service gebruikelijkloon verdict (kind: code)
 
-# Delta — single-person-modes
+## Purpose
+
+Run a one-person administratie without the screens built for teams. A DGA runs payroll for
+themselves, or an eenmanszaak runs no payroll at all. The org chart and team approvals only get in
+their way. Set the mode on the administratie and humaniq hides what does not apply. Switching back
+is always possible and loses no data. A DGA can also check, on their own self-service page,
+whether their salary meets the gebruikelijkloon norm.
 
 An `Administration.mode` toggle (ADR-001 Rule 4), the `manifest.runtime.user` wiring that lets nc-vue's
 `visibleIf` primitive act on it (closing `multi-administratie` REQ-MULTI-006), `visibleIf`-gated menu surfaces for

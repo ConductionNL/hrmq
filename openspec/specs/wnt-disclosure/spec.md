@@ -11,7 +11,14 @@ built_by: openspec/changes/archive/2026-09-07-wnt-disclosure
 **OpenSpec changes**:
 - [wnt-disclosure](../../changes/archive/2026-09-07-wnt-disclosure/) _(archived 2026-09-07)_ — WNT topfunctionaris marking and transitional-exemption ground on Employee, a WntDisclosure schema for the annual verantwoording, a norm-breach corpus rule and pages under the payroll group (kind: config)
 
-# wnt-disclosure
+## Purpose
+
+Mark topfunctionarissen, record their yearly WNT disclosure, and flag pay above the norm. The
+Wet normering topinkomens (WNT) caps the pay of topfunctionarissen at (semi-)public institutions
+and requires a yearly public disclosure. humaniq records a valid transitional exemption when one
+applies. Each topfunctionaris gets one disclosure record per year, and a year's records together
+form that year's WNT-verantwoording. An audit rule flags total compensation above the WNT norm
+without a valid exemption.
 
 ## Requirements
 

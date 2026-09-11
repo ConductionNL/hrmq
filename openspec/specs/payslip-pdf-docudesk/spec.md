@@ -17,7 +17,7 @@ built_by: openspec/changes/archive/2026-07-14-payslip-pdf-docudesk
 
 Give every `Payslip` a downloadable loonstrook PDF and every employee-year a jaaropgaaf PDF — rendered by docudesk from `namespace: hrmq` templates through the already-shipped `HrDocumentService` pipe (humaniq assembles data, docudesk renders — no Dompdf/Twig in humaniq, superseding the `spec/payslip-generation` draft's in-app engine), with an honest `Jaaropgaaf` aggregate derived only from real Payslip fields, and machine-checked BW 7:626 evidence via `nl-loonstrook-verplicht`.
 
-## ADDED Requirements
+## Requirements
 
 @e2e exclude backend occ/service/controller change plus declarative manifest pages; humaniq has no app-level e2e suite yet (tracked by active change humaniq-test-coverage-baseline)
 

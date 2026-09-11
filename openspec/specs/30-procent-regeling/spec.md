@@ -11,7 +11,13 @@ built_by: openspec/changes/archive/2026-09-07-30-procent-regeling
 **OpenSpec changes**:
 - [30-procent-regeling](../../changes/archive/2026-09-07-30-procent-regeling/) _(archived 2026-09-07)_ — the 30%-ruling reaches the payroll engine: versioned 2026 table parameters, Employee-side grant fields, a taxable-wage reduction through the pack, and a corpus rule for term/cap/salary-norm breaches (kind: code)
 
-# Delta — 30-procent-regeling
+## Purpose
+
+Apply a granted 30%-ruling in payroll, so an employee hired from abroad pays wage tax on
+less of their wage. The Belastingdienst grants this ruling (expatregeling). Before this capability
+humaniq recorded it on the employee, but the payroll engine never used it. Now a granted ruling
+lowers the taxable wage on the payslip, and net pay rises accordingly. An audit rule flags a ruling
+that runs past its term, exceeds the cap, or sits below the salary norm.
 
 Consumes `jurisdiction-packs` (merged 2026-07-15, `depends_on`): the 30%-ruling (expatregeling,
 Wet LB 1964 art. 31a) — a qualifying incoming employee's granted ruling reduces the taxable wage
