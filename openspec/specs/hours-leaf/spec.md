@@ -197,8 +197,11 @@ there is nothing that can disagree with it.
 
 #### Scenario: A timer running against a different object
 - **WHEN** a user with a timer running against object A opens object B
-- **THEN** B's surface says a timer is running elsewhere and offers no start,
-  because the constraint is per user and not per object.
+- **THEN** B's surface says a timer is running elsewhere, and its stopwatch is
+  present but disabled with that reason as its accessible name, because the
+  constraint is per user and not per object. The control stays visible so the
+  card keeps one shape in every state; a stopwatch that vanishes reads as a
+  broken card rather than as a rule.
 
 ### Requirement: A user has at most one running timer
 The server SHALL refuse to start a timer for a caller who already has one
