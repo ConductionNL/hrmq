@@ -123,18 +123,109 @@ class RegisterSlugLookupTest extends TestCase {
 	}//end testAWhitespaceOnlyConfigValueIsTreatedAsUnset()
 
 	/**
-	 * An OpenRegister that cannot produce a resolver answers null, not a guess.
+	 * An instance that can answer NEITHER way answers null, not a guess.
 	 *
-	 * This is an OpenRegister too old to publish the contract. It is the same
-	 * answer as an absent register, for the same reason: this instance cannot
-	 * say where to read, and inventing a slug is exactly the failure being
-	 * removed.
+	 * The container here produces no resolver and no register mapper, so there
+	 * is genuinely nothing left to ask. Inventing a slug is exactly the failure
+	 * being removed.
 	 *
 	 * @return void
 	 */
 	public function testAnswersNullWhenNoResolverCanBeObtained(): void {
 		$this->assertNull($this->lookup('', null)->slugOrNull());
 	}//end testAnswersNullWhenNoResolverCanBeObtained()
+
+	/**
+	 * Build a lookup over an instance whose OpenRegister predates the contract.
+	 *
+	 * The container holds ONLY the register mapper, so `resolver()` fails to
+	 * produce anything and the table fallback is the path under test.
+	 *
+	 * @param list<string> $present Slugs that have a register row.
+	 *
+	 * @return array{0: RegisterSlugLookup, 1: FakeRegisterMapper}
+	 */
+	private function preContractLookup(array $present): array {
+		$mapper = new FakeRegisterMapper($present);
+		$container = new FakeContainer(['OCA\OpenRegister\Db\RegisterMapper' => $mapper]);
+
+		$appConfig = $this->createMock(IAppConfig::class);
+		$appConfig->method('getValueString')->willReturn('');
+
+		return [new RegisterSlugLookup($container, $appConfig), $mapper];
+	}//end preContractLookup()
+
+	/**
+	 * THE CASE THIS FALLBACK EXISTS FOR.
+	 *
+	 * An OpenRegister older than the published contract (anything before
+	 * ConductionNL/openregister#3571) cannot be asked through the resolver, and
+	 * no fleet app declares an `<app>` dependency that would stop that pairing.
+	 * Answering null there reported a register that is demonstrably present as
+	 * missing: measured on the dev instance 2026-09-11, where
+	 * `MigrateAssetDialect` warned on every upgrade while the register sat in
+	 * OpenRegister under `humaniq`.
+	 *
+	 * @return void
+	 */
+	public function testReadsTheRegisterTableWhenTheContractIsAbsent(): void {
+		[$lookup, $mapper] = $this->preContractLookup(['humaniq']);
+
+		$this->assertSame('humaniq', $lookup->slugOrNull());
+		$this->assertSame(['humaniq', 'hrmq'], $mapper->asked);
+	}//end testReadsTheRegisterTableWhenTheContractIsAbsent()
+
+	/**
+	 * The fallback finds the superseded slug on an unmigrated instance too.
+	 *
+	 * Falling back must not quietly re-pin the canonical slug; it has to make
+	 * the same candidate-ordered choice the contract makes.
+	 *
+	 * @return void
+	 */
+	public function testTheRegisterTableFallbackFindsTheSupersededSlug(): void {
+		[$lookup] = $this->preContractLookup(['hrmq']);
+
+		$this->assertSame('hrmq', $lookup->slugOrNull());
+	}//end testTheRegisterTableFallbackFindsTheSupersededSlug()
+
+	/**
+	 * The fallback still answers null when no register row exists.
+	 *
+	 * This is the property that makes the fallback safe to add: it returns a
+	 * slug for a ROW, never a canonical guess. A register that is not there is
+	 * still an absence.
+	 *
+	 * @return void
+	 */
+	public function testTheRegisterTableFallbackAnswersNullForAnAbsentRegister(): void {
+		[$lookup] = $this->preContractLookup([]);
+
+		$this->assertNull($lookup->slugOrNull());
+	}//end testTheRegisterTableFallbackAnswersNullForAnAbsentRegister()
+
+	/**
+	 * The contract's own ABSENT answer is final; the table is not asked after it.
+	 *
+	 * Asking twice would turn the resolver's considered "not here" into a
+	 * second opinion, and the fallback exists only for an instance that cannot
+	 * give the first one.
+	 *
+	 * @return void
+	 */
+	public function testTheRegisterTableIsNotConsultedWhenTheResolverAnswers(): void {
+		$mapper = new FakeRegisterMapper(['humaniq']);
+		$container = new FakeContainer([
+			'OCA\OpenRegister\Contract\RegisterSlugResolverInterface' => new FakeSlugResolver([]),
+			'OCA\OpenRegister\Db\RegisterMapper' => $mapper,
+		]);
+
+		$appConfig = $this->createMock(IAppConfig::class);
+		$appConfig->method('getValueString')->willReturn('');
+
+		$this->assertNull((new RegisterSlugLookup($container, $appConfig))->slugOrNull());
+		$this->assertSame([], $mapper->asked);
+	}//end testTheRegisterTableIsNotConsultedWhenTheResolverAnswers()
 
 	/**
 	 * Both slugs present is AMBIGUOUS, and ambiguous still resolves.

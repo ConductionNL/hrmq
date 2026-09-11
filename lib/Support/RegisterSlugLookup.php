@@ -29,6 +29,15 @@
  * published probe for exactly that; the candidate list is not derivable, which
  * is why the contract takes one.
  *
+ * AN OPENREGISTER TOO OLD FOR THAT CONTRACT IS NOT AN ABSENT REGISTER. The
+ * first revision of this class returned null in that case, which put every
+ * caller into its absent branch on an instance whose register was sitting
+ * right there: the asset dialect repair step warned "register niet gevonden"
+ * on every upgrade, and the leave-sell and payroll-run guards denied. When the
+ * contract is missing the register table is read directly instead, through
+ * `RegisterMapper::findIdsBySlugs()`. Only a register row still produces a
+ * slug, so the guarantee this class exists for is intact.
+ *
  * A STORED CONFIG VALUE WINS AND IS USED AS GIVEN. An admin who has named a
  * register has answered the question, and `MigrateRegisterSlug` re-points that
  * value when it still says `hrmq`, so a stored value is already this
@@ -105,6 +114,19 @@ final class RegisterSlugLookup {
 	private const RESOLVER = 'OCA\OpenRegister\Contract\RegisterSlugResolverInterface';
 
 	/**
+	 * OpenRegister's register mapper, used only when the contract is absent.
+	 *
+	 * Named as a STRING for the same reason `RESOLVER` is, and reached the same
+	 * duck-typed way: `class_exists()`, then `method_exists()` on the one method
+	 * this class calls. `findIdsBySlugs()` is a plain read of
+	 * `oc_openregister_registers` with no RBAC and no tenancy filter, which is
+	 * what a repair step running as nobody needs.
+	 *
+	 * @var string
+	 */
+	private const MAPPER = 'OCA\OpenRegister\Db\RegisterMapper';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param ContainerInterface $container DI container, for the lazy resolver lookup.
@@ -121,10 +143,7 @@ final class RegisterSlugLookup {
 	 * The slug to read the humaniq register with here, or null when it is absent.
 	 *
 	 * @return string|null The slug, or null when this instance carries no
-	 *                     humaniq register under any of its known slugs — or
-	 *                     when OpenRegister is too old to publish the resolver,
-	 *                     which answers the same question the same way: this
-	 *                     instance cannot say where to read.
+	 *                     humaniq register under any of its known slugs.
 	 */
 	public function slugOrNull(): ?string {
 		$configured = trim($this->appConfig->getValueString(Application::APP_ID, 'register', ''));
@@ -134,7 +153,7 @@ final class RegisterSlugLookup {
 
 		$resolver = $this->resolver();
 		if ($resolver === null) {
-			return null;
+			return $this->slugFromRegisterTable();
 		}
 
 		// The resolution is deliberately left untyped here. Declaring
@@ -156,14 +175,101 @@ final class RegisterSlugLookup {
 	}//end slugOrNull()
 
 	/**
+	 * The slug found by reading OpenRegister's register table directly.
+	 *
+	 * THE FALLBACK FOR AN OPENREGISTER THAT PREDATES THE CONTRACT, AND THE
+	 * REASON IT HAD TO EXIST. `RegisterSlugResolverInterface` landed in
+	 * OpenRegister #3571. No app in this fleet declares an `<app>` dependency
+	 * in `appinfo/info.xml`, so humaniq is routinely installed beside an older
+	 * OpenRegister, and on such an instance `resolver()` answers null. Treating
+	 * that as "the register is absent" is what this class was built to stop
+	 * doing with a slug, and it did it anyway with a null: measured on the dev
+	 * instance 2026-09-11, where the register plainly exists under `humaniq`
+	 * (register id 35, objects readable over the API) and every reader still
+	 * got null. `MigrateAssetDialect` printed
+	 * "Could not migrate Asset/AssetAssignment dialect: Het humaniq-register is
+	 * niet gevonden op deze instance" on the upgrade, and the two lifecycle
+	 * guards fail CLOSED on the same null, so leave-sell approvals and payroll
+	 * run approvals were being denied for a register that is there.
+	 *
+	 * "OpenRegister cannot answer" and "the register is not here" are different
+	 * facts. Only the resolver's own ABSENT answer means the second one; a
+	 * missing resolver means ask another way. This is that other way, and it
+	 * keeps the property that matters: it returns a slug only for a register
+	 * row that actually exists, never a canonical guess.
+	 *
+	 * `RegisterMapper` is OpenRegister's internal storage, not a published
+	 * contract, so it is reached defensively and never on the preferred path:
+	 * where the contract exists it wins and this method is not called.
+	 *
+	 * @return string|null The newest candidate slug that exists on this
+	 *                     instance, or null when none of them does and when
+	 *                     OpenRegister offers no way to ask.
+	 */
+	private function slugFromRegisterTable(): ?string {
+		$mapper = $this->registerMapper();
+		if ($mapper === null) {
+			return null;
+		}
+
+		try {
+			$found = $mapper->findIdsBySlugs(self::CANDIDATES);
+		} catch (Throwable) {
+			return null;
+		}
+
+		if (is_array($found) === false) {
+			return null;
+		}
+
+		// CANDIDATES is newest first and the mapper keys its answer by
+		// lower-cased slug, so the first hit in this order is the same choice
+		// the contract makes when both rows exist.
+		foreach (self::CANDIDATES as $candidate) {
+			$ids = ($found[strtolower($candidate)] ?? []);
+			if (is_array($ids) === true && $ids !== []) {
+				return $candidate;
+			}
+		}
+
+		return null;
+	}//end slugFromRegisterTable()
+
+	/**
+	 * OpenRegister's register mapper, or null when it cannot be reached.
+	 *
+	 * @return object|null The mapper, guaranteed to carry `findIdsBySlugs()`,
+	 *                     or null.
+	 */
+	private function registerMapper(): ?object {
+		// ADR-083: establish availability before reaching.
+		if (class_exists(self::MAPPER) === false) {
+			return null;
+		}
+
+		try {
+			$mapper = $this->container->get(self::MAPPER);
+		} catch (Throwable) {
+			return null;
+		}
+
+		if (is_object($mapper) === false || method_exists($mapper, 'findIdsBySlugs') === false) {
+			return null;
+		}
+
+		return $mapper;
+	}//end registerMapper()
+
+	/**
 	 * OpenRegister's slug resolver, or null when this instance cannot offer one.
 	 *
 	 * @return object|null The resolver, or null.
 	 */
 	private function resolver(): ?object {
 		// ADR-083: establish availability before reaching. An OpenRegister that
-		// predates the contract is not an error to shout about — it is an
-		// instance that cannot answer, which the caller already has to handle.
+		// predates the contract is not an error to shout about; it is an
+		// instance that cannot answer THIS way, and the caller then asks the
+		// register table directly via slugFromRegisterTable().
 		if (interface_exists(self::RESOLVER) === false) {
 			return null;
 		}

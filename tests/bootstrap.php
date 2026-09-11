@@ -182,6 +182,16 @@ if (interface_exists('OCA\\OpenRegister\\Contract\\RegisterSlugResolverInterface
 	require __DIR__ . '/stubs/OpenRegisterSlugResolverStub.php';
 }
 
+// Same rule, one layer below: when that contract is NOT published (an
+// OpenRegister older than #3571, which is what the dev instance was running on
+// 2026-09-11), RegisterSlugLookup reads the register table directly and guards
+// that with class_exists('OCA\OpenRegister\Db\RegisterMapper'). Without the
+// name present the fallback refuses unconditionally and the test for it would
+// pass for the wrong reason. Name-only stub; the tests inject their own fake.
+if (class_exists('OCA\\OpenRegister\\Db\\RegisterMapper') === false) {
+	require __DIR__ . '/stubs/OpenRegisterRegisterMapperStub.php';
+}
+
 // Same rule, different classes: the hours-process listeners
 // (TimeEntryStampListener, TimesheetProcessStampListener,
 // TimesheetAggregateListener) consume OpenRegister's object lifecycle events
