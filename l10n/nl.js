@@ -1777,6 +1777,7 @@ OC.L10N.register(
         "Written off": "Afgeschreven",
         "Year": "Jaar",
         "Yes / no": "Ja / nee",
+        "You already have a timer running on another item": "Je hebt al een timer lopen op een ander item",
         "You already have a timer running.": "Er loopt al een timer.",
         "You have no administration access rows. Ask an administrator to grant you access.": "Je hebt geen toegangsregels voor een administratie. Vraag een beheerder om je toegang te geven.",
         "Your hours could not be booked. Try again.": "Je uren konden niet worden geboekt. Probeer het opnieuw.",

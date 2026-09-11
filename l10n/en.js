@@ -1777,6 +1777,7 @@ OC.L10N.register(
         "Written off": "Written off",
         "Year": "Year",
         "Yes / no": "Yes / no",
+        "You already have a timer running on another item": "You already have a timer running on another item",
         "You already have a timer running.": "You already have a timer running.",
         "You have no administration access rows. Ask an administrator to grant you access.": "You have no administration access rows. Ask an administrator to grant you access.",
         "Your hours could not be booked. Try again.": "Your hours could not be booked. Try again.",

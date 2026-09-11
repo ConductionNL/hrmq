@@ -22,11 +22,10 @@
 				     Putting it inside the menu would cost two presses for the
 				     thing that has to be instant. -->
 				<button
-					v-if="canUseTimer"
 					type="button"
 					class="hq-hours__timer"
 					:class="{ 'hq-hours__timer--running': runningHere }"
-					:disabled="busy"
+					:disabled="busy || !canUseTimer"
 					:title="timerTitle"
 					:aria-label="timerTitle"
 					data-testid="hq-hours-timer"
@@ -285,11 +284,15 @@ export default {
 		/**
 		 * Whether the timer control does anything if pressed.
 		 *
-		 * Hidden rather than disabled while a timer runs on ANOTHER object: a
-		 * disabled start invites the reader to work out why, and the sub-line has
-		 * already told them.
+		 * DISABLED rather than hidden while a timer runs on ANOTHER object. It was
+		 * hidden, and the card then changed shape by state: the stopwatch simply
+		 * vanished, which reads as a broken card rather than as a rule, and the
+		 * one reader most likely to press it is the one who forgot the other
+		 * timer. A present, disabled control carries its reason in its name.
+		 * Nothing depends on this for the rule itself: the server refuses a
+		 * second start regardless.
 		 *
-		 * @return {boolean} True when the control is offered.
+		 * @return {boolean} True when pressing the control does something.
 		 *
 		 * @spec openspec/specs/hours-leaf/spec.md#requirement-a-user-has-at-most-one-running-timer
 		 */
@@ -308,7 +311,13 @@ export default {
 		 * @spec openspec/specs/hours-leaf/spec.md#requirement-hours-can-be-added-from-the-surface-that-shows-them
 		 */
 		timerTitle() {
-			return this.runningHere ? t('humaniq', 'Stop the timer') : t('humaniq', 'Start a timer')
+			if (this.runningHere === true) {
+				return t('humaniq', 'Stop the timer')
+			}
+			if (this.canUseTimer === false) {
+				return t('humaniq', 'You already have a timer running on another item')
+			}
+			return t('humaniq', 'Start a timer')
 		},
 
 		/**
