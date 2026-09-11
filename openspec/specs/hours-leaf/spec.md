@@ -62,8 +62,15 @@ The widget SHALL distinguish "no hours booked" from "hours could not be read".
   about the data the widget actually read.
 
 ### Requirement: Hours can be added from the surface that shows them
-The leaf SHALL offer three controls over the host object's hours: booking hours
-directly, opening the hour administration for that object, and a timer.
+The leaf SHALL render as a card with its own chrome, and SHALL offer two
+controls in its header: a stopwatch that starts and stops a timer, and ONE action
+button that opens a menu holding booking hours and opening the hour
+administration for that object. The stopwatch sits to the left of the action
+button.
+
+The card draws its own border because a mount-mode leaf is handed a bare
+element: without chrome it reads as loose text between neighbouring cards that
+have it.
 
 Booking hours SHALL open a dialog Humaniq renders in its own bundle, on the page
 the reader is already on. Sending a reader to another app to book time against
@@ -71,12 +78,13 @@ the case in front of them loses the case, and every field the dialog would have
 seeded has to be found again by hand.
 
 Opening the administration SHALL be a link into Humaniq's time-entry index,
-narrowed to this host object, because the tile shows a few recent bookings and
-the question "where does this total come from" needs all of them.
+narrowed to this host object. The card itself lists NO bookings: a KPI answers
+one question, and the rows behind the total are one press away for the reader
+who wants them.
 
-The timer SHALL be a secondary control beside the two actions, not a third equal
-one: it is the shortcut for work happening right now, while the other two are the
-ordinary path.
+The stopwatch is its own control rather than a menu item because it is the
+shortcut for work happening right now, and a shortcut behind a menu costs two
+presses for the one thing that has to be instant.
 
 #### Scenario: Booking hours from a case
 - **WHEN** a user activates the book-hours action on a host object
@@ -95,6 +103,18 @@ ordinary path.
 - **WHEN** a user starts the timer and later stops it
 - **THEN** a time entry carrying the host object's reference is written, and the
   widget's total reflects it without a page reload.
+
+#### Scenario: The card lists no bookings
+- **WHEN** the host object carries several bookings
+- **THEN** the card shows only the total and the caller's share, and lists none
+  of the bookings behind them, which stay reachable through View hours in the
+  action menu.
+
+#### Scenario: The controls in the card header
+- **WHEN** the card renders
+- **THEN** its header holds a stopwatch and, to its right, a single action button
+  whose menu offers Book hours and View hours, rather than three separate
+  buttons competing with the figure.
 
 #### Scenario: The surface while the timer runs
 - **WHEN** the timer is running

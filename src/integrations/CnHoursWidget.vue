@@ -4,13 +4,84 @@
 -->
 
 <template>
-	<div class="hq-hours" data-testid="hq-hours-widget">
-		<!-- The leaf names itself. A host places it as a card among other cards
-		     and hands a mount-mode leaf no title, so without this the tile is a
-		     bare number and the reader has to guess what was counted. -->
-		<h3 class="hq-hours__caption" data-testid="hq-hours-caption">
-			{{ t('humaniq', 'Hours booked') }}
-		</h3>
+	<div class="hq-hours" :data-surface="surface" data-testid="hq-hours-widget">
+		<!-- CHROME. A host places a mount-mode leaf into a bare element and hands
+		     it no card, so the leaf draws its own or it reads as loose text
+		     sitting on the page between the cards that do have one. -->
+		<div class="hq-hours__header">
+			<!-- The leaf names itself for the same reason: the host hands it no
+			     title either, and a KPI that is only a number does not say what
+			     was counted. -->
+			<h3 class="hq-hours__caption" data-testid="hq-hours-caption">
+				{{ t('humaniq', 'Hours booked') }}
+			</h3>
+
+			<div class="hq-hours__controls">
+				<!-- The stopwatch is its own control, left of the actions, because
+				     it is the one-press shortcut for work happening right now.
+				     Putting it inside the menu would cost two presses for the
+				     thing that has to be instant. -->
+				<button
+					v-if="canUseTimer"
+					type="button"
+					class="hq-hours__timer"
+					:class="{ 'hq-hours__timer--running': runningHere }"
+					:disabled="busy"
+					:title="timerTitle"
+					:aria-label="timerTitle"
+					data-testid="hq-hours-timer"
+					@click="toggleTimer">
+					<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+						<template v-if="runningHere">
+							<rect x="7" y="7" width="10" height="10" rx="1.5" fill="currentColor" />
+						</template>
+						<template v-else>
+							<path
+								d="M9 2h6M12 7a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM12 4.5V7M18.5 6l1.5-1.5M12 10.5V14h2.5"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round" />
+						</template>
+					</svg>
+				</button>
+
+				<!-- ONE action button, not three. Booking and viewing are the two
+				     ordinary paths and they belong together behind the control the
+				     reader reaches for; the tile's job is the figure. -->
+				<div class="hq-hours__menu">
+					<button
+						type="button"
+						class="hq-hours__action"
+						:aria-expanded="String(menuOpen)"
+						aria-haspopup="menu"
+						data-testid="hq-hours-actions"
+						@click="menuOpen = !menuOpen">
+						{{ t('humaniq', 'Actions') }}
+						<span class="hq-hours__caret" aria-hidden="true">▾</span>
+					</button>
+
+					<div v-if="menuOpen" class="hq-hours__menu-list" role="menu">
+						<button
+							type="button"
+							class="hq-hours__menu-item"
+							role="menuitem"
+							data-testid="hq-hours-book"
+							@click="openBooking">
+							{{ t('humaniq', 'Book hours') }}
+						</button>
+						<a
+							class="hq-hours__menu-item"
+							role="menuitem"
+							:href="administrationHref"
+							data-testid="hq-hours-view">
+							{{ t('humaniq', 'View hours') }}
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<!-- Timing THIS object: the tile becomes the timer.
 		     Only this object. A timer running elsewhere leaves the figures alone,
@@ -25,7 +96,10 @@
 			</p>
 		</div>
 
-		<!-- Idle: the object's total, over the caller's own share. -->
+		<!-- Idle: the object's total, over the caller's own share.
+		     The bookings behind the total are NOT listed here. A KPI answers one
+		     question, and the administration is one press away in the actions for
+		     the reader who wants the rows. -->
 		<div v-else class="hq-hours__figures">
 			<div class="hq-hours__headline">
 				<span class="hq-hours__value" data-testid="hq-hours-total">{{ displayTotal }}</span>
@@ -42,46 +116,6 @@
 		<p v-if="error" class="hq-hours__error" role="alert">
 			{{ error }}
 		</p>
-		<p v-else-if="!running && entries.length === 0 && !loading" class="hq-hours__empty">
-			{{ t('humaniq', 'Nobody has booked hours on this yet.') }}
-		</p>
-		<ul v-else-if="visibleEntries.length > 0" class="hq-hours__list">
-			<li v-for="entry in visibleEntries" :key="entryKey(entry)" class="hq-hours__row">
-				<span class="hq-hours__row-hours">{{ formatHours(entry.hours) }}</span>
-				<span class="hq-hours__row-desc">{{ entry.description || t('humaniq', 'No description') }}</span>
-				<span class="hq-hours__row-date">{{ formatDate(entry) }}</span>
-			</li>
-		</ul>
-
-		<div class="hq-hours__actions">
-			<button
-				v-if="canUseTimer"
-				type="button"
-				class="hq-hours__timer"
-				:class="{ 'hq-hours__timer--running': runningHere }"
-				:disabled="busy"
-				:title="timerTitle"
-				:aria-label="timerTitle"
-				data-testid="hq-hours-timer"
-				@click="toggleTimer">
-				<span aria-hidden="true">{{ runningHere ? '■' : '▶' }}</span>
-			</button>
-
-			<button
-				type="button"
-				class="hq-hours__action"
-				data-testid="hq-hours-book"
-				@click="showBooking = true">
-				{{ t('humaniq', 'Book hours') }}
-			</button>
-
-			<a
-				class="hq-hours__action"
-				:href="administrationHref"
-				data-testid="hq-hours-view">
-				{{ t('humaniq', 'View hours') }}
-			</a>
-		</div>
 
 		<HoursBookingDialog
 			v-if="showBooking"
@@ -160,17 +194,16 @@ export default {
 			default: '',
 		},
 
-		/** The render surface the host mounted us into. */
+		/**
+		 * The render surface the host mounted us into. Part of the leaf contract the
+		 * host always passes, exposed as `data-surface` so a host can style the card
+		 * per surface without the leaf guessing how much room it has.
+		 */
 		surface: {
 			type: String,
 			default: 'detail-page',
 		},
 
-		/** How many entries to list under the total. */
-		limit: {
-			type: Number,
-			default: 5,
-		},
 	},
 
 	data() {
@@ -186,6 +219,7 @@ export default {
 			now: Date.now(),
 			tick: null,
 			showBooking: false,
+			menuOpen: false,
 		}
 	},
 
@@ -299,26 +333,6 @@ export default {
 			const s = seconds % 60
 
 			return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
-		},
-
-		/**
-		 * The entries to list under the figures.
-		 *
-		 * A dashboard tile is a headline figure with room for barely a line, so it
-		 * lists none; a detail page or a sidebar has room for the recent bookings
-		 * that explain the total. This is what `surface` is for: the host tells the
-		 * leaf how much room it has, and the leaf decides.
-		 *
-		 * @return {object[]} The entries to render.
-		 *
-		 * @spec openspec/specs/hours-leaf/spec.md#requirement-humaniq-supplies-the-hours-surface-for-any-object
-		 */
-		visibleEntries() {
-			if (['user-dashboard', 'app-dashboard'].includes(this.surface) === true) {
-				return []
-			}
-
-			return this.entries.slice(0, this.limit)
 		},
 
 		/**
@@ -476,6 +490,22 @@ export default {
 		},
 
 		/**
+		 * Open the booking dialog from the actions menu.
+		 *
+		 * Closes the menu first: leaving it open behind a modal puts two focus
+		 * traps on the page, and the one underneath is the one a screen reader
+		 * finds on Escape.
+		 *
+		 * @return {void}
+		 *
+		 * @spec openspec/specs/hours-leaf/spec.md#requirement-hours-can-be-added-from-the-surface-that-shows-them
+		 */
+		openBooking() {
+			this.menuOpen = false
+			this.showBooking = true
+		},
+
+		/**
 		 * The sum of an entry list's hours.
 		 *
 		 * Used for both figures, so the headline and the caller's share can never
@@ -492,23 +522,6 @@ export default {
 		},
 
 		/**
-		 * A stable key for one entry row.
-		 *
-		 * Falls back to the booking's own facts when the register hands back no
-		 * id: a duplicated key makes Vue reuse the wrong row, which shows one
-		 * booking's hours against another's description.
-		 *
-		 * @param {object} entry The entry.
-		 *
-		 * @return {string} The key.
-		 *
-		 * @spec openspec/specs/hours-leaf/spec.md#requirement-humaniq-supplies-the-hours-surface-for-any-object
-		 */
-		entryKey(entry) {
-			return String(entry.id || entry['@self']?.id || `${entry.startedAt || entry.date}-${entry.hours}`)
-		},
-
-		/**
 		 * Format an hours figure to at most two decimals, without trailing zeroes.
 		 *
 		 * @param {number} value The hours.
@@ -521,37 +534,29 @@ export default {
 			return String(Math.round(((Number(value) || 0) * 100)) / 100)
 		},
 
-		/**
-		 * Format a booking's day as a short local date.
-		 *
-		 * Reads `startedAt` first and `date` second, because an entry is recorded
-		 * in either shape and only one of the two is ever set.
-		 *
-		 * @param {object} entry The entry.
-		 *
-		 * @return {string} The formatted date, or ''.
-		 *
-		 * @spec openspec/specs/hours-leaf/spec.md#requirement-humaniq-supplies-the-hours-surface-for-any-object
-		 */
-		formatDate(entry) {
-			const raw = entry.startedAt || entry.date || ''
-			if (raw === '') {
-				return ''
-			}
-
-			const d = new Date(raw)
-
-			return Number.isNaN(d.getTime()) === true ? '' : d.toLocaleDateString()
-		},
 	},
 }
 </script>
 
 <style scoped>
+/* The card the host does not draw. A mount-mode leaf is handed a bare element,
+   so without this the tile is loose text between neighbours that have chrome. */
 .hq-hours {
+	background-color: var(--color-main-background);
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius-large, 12px);
+	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
+	padding: 12px 16px;
+}
+
+.hq-hours__header {
+	align-items: flex-start;
+	display: flex;
+	gap: 8px;
+	justify-content: space-between;
 }
 
 .hq-hours__caption {
@@ -559,6 +564,54 @@ export default {
 	font-size: inherit;
 	font-weight: normal;
 	margin: 0;
+}
+
+.hq-hours__controls {
+	align-items: center;
+	display: flex;
+	flex: 0 0 auto;
+	gap: 6px;
+}
+
+.hq-hours__menu {
+	position: relative;
+}
+
+.hq-hours__menu-list {
+	background-color: var(--color-main-background);
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius);
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+	display: flex;
+	flex-direction: column;
+	inset-inline-end: 0;
+	min-width: 160px;
+	padding: 4px;
+	position: absolute;
+	top: calc(100% + 4px);
+	z-index: 100;
+}
+
+.hq-hours__menu-item {
+	background: transparent;
+	border: none;
+	border-radius: var(--border-radius);
+	color: var(--color-main-text);
+	cursor: pointer;
+	font: inherit;
+	padding: 8px 10px;
+	text-align: start;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.hq-hours__menu-item:hover,
+.hq-hours__menu-item:focus-visible {
+	background-color: var(--color-background-hover);
+}
+
+.hq-hours__caret {
+	margin-inline-start: 4px;
 }
 
 .hq-hours__headline {
@@ -579,9 +632,7 @@ export default {
 }
 
 .hq-hours__sub,
-.hq-hours__unit,
-.hq-hours__empty,
-.hq-hours__row-date {
+.hq-hours__unit {
 	color: var(--color-text-maxcontrast);
 }
 
@@ -592,39 +643,6 @@ export default {
 .hq-hours__error {
 	color: var(--color-error);
 	margin: 0;
-}
-
-.hq-hours__list {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-.hq-hours__row {
-	display: flex;
-	gap: 8px;
-	justify-content: space-between;
-}
-
-.hq-hours__row-desc {
-	flex: 1 1 auto;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
-.hq-hours__row-hours {
-	font-weight: bold;
-	min-width: 3em;
-}
-
-.hq-hours__actions {
-	align-items: center;
-	display: flex;
-	gap: 8px;
 }
 
 .hq-hours__action {
@@ -651,10 +669,10 @@ export default {
 	cursor: pointer;
 	display: flex;
 	flex: 0 0 auto;
-	height: 28px;
+	height: 32px;
 	justify-content: center;
 	padding: 0;
-	width: 28px;
+	width: 32px;
 }
 
 .hq-hours__timer:hover:enabled,
