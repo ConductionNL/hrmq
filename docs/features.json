@@ -108,7 +108,7 @@
     "slug": "hours-leaf",
     "title": "Hours Leaf",
     "summary": "Answer one question about any object in the fleet: how much time has been spent on it, by everyone and by you, and let a reader add to that figure without leaving the page they are on.",
-    "status": "beta",
+    "status": "stable",
     "docsUrl": "openspec/specs/hours-leaf/spec.md"
   },
   {
