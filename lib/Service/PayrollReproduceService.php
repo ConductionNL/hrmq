@@ -33,7 +33,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
+ * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
  */
 
 declare(strict_types=1);
@@ -114,7 +114,7 @@ final class PayrollReproduceService {
 	 *
 	 * @return array<string, mixed> `{payslipId, status: reproduced|mismatch|refused, message, mismatches}`.
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
 	 */
 	public function reproduce(string $payslipId): array {
 		$payslipId = trim($payslipId);

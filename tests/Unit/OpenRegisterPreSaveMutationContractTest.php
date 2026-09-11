@@ -37,7 +37,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/humaniq-hours-process-redesign/specs/humaniq-timesheet-approval/spec.md#Requirement:-Process-fields-are-server-stamped-and-inert-to-client-input
+ * @spec openspec/specs/humaniq-timesheet-approval/spec.md#Requirement:-Process-fields-are-server-stamped-and-inert-to-client-input
  */
 
 declare(strict_types=1);
@@ -182,7 +182,7 @@ class OpenRegisterPreSaveMutationContractTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/humaniq-timesheet-approval/spec.md#Requirement:-Process-fields-are-server-stamped-and-inert-to-client-input
+	 * @spec openspec/specs/humaniq-timesheet-approval/spec.md#Requirement:-Process-fields-are-server-stamped-and-inert-to-client-input
 	 */
 	public function testPreSaveMutationPersistsAndControlWriteDoesNot(): void {
 		// Phase 1 — CREATE: hook rewrites description; assert the PERSISTED row carries it.

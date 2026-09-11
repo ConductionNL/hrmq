@@ -29,7 +29,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-006
+ * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-006
  */
 
 declare(strict_types=1);
@@ -50,7 +50,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 /**
  * Tests for ExpenseExtractReceiptCommand.
  *
- * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-006
+ * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-006
  */
 class ExpenseExtractReceiptCommandTest extends TestCase {
 

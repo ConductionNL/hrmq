@@ -22,7 +22,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
+ * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
  */
 
 declare(strict_types=1);
@@ -73,7 +73,7 @@ class CompEffectuateCommand extends Command {
 	 *
 	 * @return int 0 when every selected adjustment ends applied/skipped, 1 when any ends failed.
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$cycleOption = $input->getOption('cycle');

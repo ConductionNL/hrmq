@@ -31,7 +31,7 @@
  * @link https://conduction.nl
  *
  * @spec openspec/specs/multi-administratie/spec.md#REQ-MULTI-004
- * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-002
+ * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-002
  */
 
 declare(strict_types=1);
@@ -53,7 +53,7 @@ use Psr\Log\LoggerInterface;
  * Tests for PageController.
  *
  * @spec openspec/specs/multi-administratie/spec.md#REQ-MULTI-004
- * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-002
+ * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-002
  */
 class PageControllerTest extends TestCase {
 

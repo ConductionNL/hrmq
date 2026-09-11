@@ -34,7 +34,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/uitzend-flexpool/specs/uitzend-flexpool/spec.md
+ * @spec openspec/specs/uitzend-flexpool/spec.md
  */
 
 declare(strict_types=1);
@@ -58,7 +58,7 @@ final class NlUitzendChecks implements CheckProvider {
 	 *
 	 * @return array<string, array<string, callable>>
 	 *
-	 * @spec openspec/changes/uitzend-flexpool/specs/uitzend-flexpool/spec.md
+	 * @spec openspec/specs/uitzend-flexpool/spec.md
 	 */
 	public static function checks(): array {
 		return [
@@ -91,7 +91,7 @@ final class NlUitzendChecks implements CheckProvider {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/uitzend-flexpool/specs/uitzend-flexpool/spec.md
+	 * @spec openspec/specs/uitzend-flexpool/spec.md
 	 */
 	private static function uitzendbedingAlleenFaseASatisfied(array $contract): bool {
 		if ((string)($contract['type'] ?? '') !== self::AGENCY_TYPE) {
@@ -118,7 +118,7 @@ final class NlUitzendChecks implements CheckProvider {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/uitzend-flexpool/specs/uitzend-flexpool/spec.md
+	 * @spec openspec/specs/uitzend-flexpool/spec.md
 	 */
 	private static function inlenersbeloningOnderbouwingSatisfied(array $contract): bool {
 		if ((string)($contract['type'] ?? '') !== self::AGENCY_TYPE) {

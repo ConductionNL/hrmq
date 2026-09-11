@@ -73,7 +73,7 @@ final class NlPayrollChecks implements CheckProvider, SeedsObjects {
 	 *
 	 * @return array<string, array<string, callable>>
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-006
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-006
 	 */
 	public static function checks(): array {
 		return [
@@ -475,7 +475,7 @@ final class NlPayrollChecks implements CheckProvider, SeedsObjects {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/30-procent-regeling/specs/30-procent-regeling/spec.md#REQ-30P-004
+	 * @spec openspec/specs/30-procent-regeling/spec.md#REQ-30P-004
 	 */
 	private static function thirtyPercentTermSatisfied(array $o): bool {
 		if (($o['thirtyPercentRulingGranted'] ?? false) !== true) {
@@ -517,7 +517,7 @@ final class NlPayrollChecks implements CheckProvider, SeedsObjects {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/30-procent-regeling/specs/30-procent-regeling/spec.md#REQ-30P-004
+	 * @spec openspec/specs/30-procent-regeling/spec.md#REQ-30P-004
 	 */
 	private static function thirtyPercentSalaryNormSatisfied(array $o): bool {
 		if (($o['thirtyPercentRulingGranted'] ?? false) !== true) {
@@ -553,7 +553,7 @@ final class NlPayrollChecks implements CheckProvider, SeedsObjects {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/30-procent-regeling/specs/30-procent-regeling/spec.md#REQ-30P-004
+	 * @spec openspec/specs/30-procent-regeling/spec.md#REQ-30P-004
 	 */
 	private static function thirtyPercentExemptionMatchesFormula(array $o, array $context): bool {
 		if (($o['thirtyPercentRulingExemption'] ?? null) === null) {

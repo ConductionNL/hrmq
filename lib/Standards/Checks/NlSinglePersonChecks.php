@@ -43,7 +43,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-005
+ * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-005
  */
 
 declare(strict_types=1);
@@ -60,7 +60,7 @@ final class NlSinglePersonChecks implements CheckProvider {
 	 *
 	 * @return array<string, array<string, callable>>
 	 *
-	 * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-005
+	 * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-005
 	 */
 	public static function checks(): array {
 		return [
@@ -76,7 +76,7 @@ final class NlSinglePersonChecks implements CheckProvider {
 	 *
 	 * @return array<string, array<string, mixed>>
 	 *
-	 * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-005
+	 * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-005
 	 */
 	public static function seedSpec(): array {
 		return [];
@@ -95,7 +95,7 @@ final class NlSinglePersonChecks implements CheckProvider {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-005
+	 * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-005
 	 */
 	private static function exactlyOneDgaEmployee(array $object, array $context): bool {
 		if ((string)($object['mode'] ?? 'standard') !== 'dga_single_person') {

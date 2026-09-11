@@ -25,7 +25,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-006
+ * @spec openspec/specs/cao-library/spec.md#REQ-CAO-006
  */
 
 declare(strict_types=1);

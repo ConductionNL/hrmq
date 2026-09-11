@@ -34,7 +34,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/pension-filing-upa-mvp/specs/pension-filing-upa-mvp/spec.md
+ * @spec openspec/specs/pension-filing-upa-mvp/spec.md
  */
 
 declare(strict_types=1);

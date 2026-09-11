@@ -20,7 +20,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+ * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
  */
 
 declare(strict_types=1);
@@ -35,7 +35,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for CompChecks, driven through the real RuleEngine.
  *
- * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+ * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
  */
 class CompChecksTest extends TestCase {
 
@@ -104,7 +104,7 @@ class CompChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
 	 */
 	public function testWithinBandCheckIsReachableFromTheEngine(): void {
 		$this->assertArrayHasKey('comp-adjustment-within-band', (CompChecks::checks()['CompAdjustment'] ?? []));
@@ -117,7 +117,7 @@ class CompChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
 	 */
 	public function testAboveMaxRaisesMandatoryViolation(): void {
 		$adjustment = ['status' => 'proposed', 'targetBandId' => 'band-a', 'proposedSalary' => 500000];
@@ -142,7 +142,7 @@ class CompChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
 	 */
 	public function testBelowMinRaisesMandatoryViolation(): void {
 		$adjustment = ['status' => 'approved', 'targetBandId' => 'band-a', 'proposedSalary' => 100000];
@@ -157,7 +157,7 @@ class CompChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
 	 */
 	public function testWithinBandPasses(): void {
 		$adjustment = ['status' => 'effective', 'targetBandId' => 'band-a', 'proposedSalary' => 360000];
@@ -172,7 +172,7 @@ class CompChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
 	 */
 	public function testBoundaryValuesPass(): void {
 		$context = $this->context('band-a', 300000, 420000);
@@ -190,7 +190,7 @@ class CompChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
 	 */
 	public function testNullTargetBandIsVacuous(): void {
 		$adjustment = ['status' => 'approved', 'targetBandId' => null, 'proposedSalary' => 999999999];
@@ -206,7 +206,7 @@ class CompChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
 	 */
 	public function testDraftStatusIsVacuous(): void {
 		$adjustment = ['status' => 'draft', 'targetBandId' => 'band-a', 'proposedSalary' => 999999999];
@@ -222,7 +222,7 @@ class CompChecksTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
 	 */
 	public function testUnresolvableBandIsVacuous(): void {
 		$adjustment = ['status' => 'approved', 'targetBandId' => 'no-such-band', 'proposedSalary' => 999999999];

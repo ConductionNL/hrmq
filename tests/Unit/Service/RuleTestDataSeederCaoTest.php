@@ -22,7 +22,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-006
+ * @spec openspec/specs/cao-library/spec.md#REQ-CAO-006
  */
 
 declare(strict_types=1);
@@ -43,7 +43,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests the Cao seed upsert idempotency + convergence.
  *
- * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-006
+ * @spec openspec/specs/cao-library/spec.md#REQ-CAO-006
  */
 class RuleTestDataSeederCaoTest extends TestCase {
 
@@ -199,7 +199,7 @@ class RuleTestDataSeederCaoTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-006
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-006
 	 */
 	public function testSeedUpsertsCaoObjectsWithoutDuplicating(): void {
 		$expected = count(CaoRegistry::availableCaos());
@@ -243,7 +243,7 @@ class RuleTestDataSeederCaoTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-006
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-006
 	 */
 	public function testCaoUpsertKeyIsRegistered(): void {
 		$this->assertSame('caoId', (RuleEngine::providerUpsertKeys()['Cao'] ?? null));

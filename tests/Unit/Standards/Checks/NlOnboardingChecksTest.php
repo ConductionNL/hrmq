@@ -22,7 +22,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/onboarding-wizard-mvp/specs/onboarding-wizard/spec.md
+ * @spec openspec/specs/onboarding-wizard/spec.md
  */
 
 declare(strict_types=1);
@@ -35,7 +35,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlOnboardingChecks.
  *
- * @spec openspec/changes/onboarding-wizard-mvp/specs/onboarding-wizard/spec.md
+ * @spec openspec/specs/onboarding-wizard/spec.md
  */
 class NlOnboardingChecksTest extends TestCase {
 

@@ -26,8 +26,8 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-001
- * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-006
+ * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-001
+ * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-006
  */
 
 declare(strict_types=1);
@@ -70,8 +70,8 @@ class ProformaPayslipService {
 	 *
 	 * @throws \InvalidArgumentException When any input is malformed (the controller maps this to HTTP 400).
 	 *
-	 * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-001
-	 * @spec openspec/changes/proforma-payslip/specs/proforma-payslip/spec.md#REQ-PRO-006
+	 * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-001
+	 * @spec openspec/specs/proforma-payslip/spec.md#REQ-PRO-006
 	 */
 	public function simulate(array $params): array {
 		$gross = self::requireNumeric($params['gross'] ?? null, 'Bruto maandsalaris');

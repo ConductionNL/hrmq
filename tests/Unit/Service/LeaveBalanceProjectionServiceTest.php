@@ -28,8 +28,8 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-001
- * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-002
+ * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-001
+ * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-002
  */
 
 declare(strict_types=1);
@@ -46,7 +46,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for LeaveBalanceProjectionService.
  *
- * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-001
+ * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-001
  */
 class LeaveBalanceProjectionServiceTest extends TestCase {
 
@@ -235,7 +235,7 @@ class LeaveBalanceProjectionServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-001
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-001
 	 */
 	public function testApprovedRequestIsProjectedOntoTheBalance(): void {
 		$request = [
@@ -260,7 +260,7 @@ class LeaveBalanceProjectionServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-001
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-001
 	 */
 	public function testAnUnapprovedRequestContributesNothing(): void {
 		$request = [
@@ -289,7 +289,7 @@ class LeaveBalanceProjectionServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-001
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-001
 	 */
 	public function testAnUnchangedProjectionWritesNothing(): void {
 		$request = [
@@ -316,7 +316,7 @@ class LeaveBalanceProjectionServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-001
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-001
 	 */
 	public function testOnlyTheBalancesOwnApprovedRequestsAreSummed(): void {
 		$mine = [
@@ -350,7 +350,7 @@ class LeaveBalanceProjectionServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-001
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-001
 	 */
 	public function testAMissingBalanceIsNeverCreated(): void {
 		$request = [
@@ -375,7 +375,7 @@ class LeaveBalanceProjectionServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-002
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-002
 	 */
 	public function testHoursAreDerivedFromWorkingDaysWhenAbsent(): void {
 		// Monday 2026-03-02 to Friday 2026-03-06 is five working days at 8h.
@@ -395,7 +395,7 @@ class LeaveBalanceProjectionServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-002
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-002
 	 */
 	public function testWeekendDaysAreNotCounted(): void {
 		// Friday 2026-03-06 to Monday 2026-03-09 is two working days at 8h.
@@ -414,7 +414,7 @@ class LeaveBalanceProjectionServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-002
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-002
 	 */
 	public function testAPartTimeContractDerivesShorterDays(): void {
 		$resolved = LeaveHoursCalculator::requestHours(
@@ -432,7 +432,7 @@ class LeaveBalanceProjectionServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-002
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-002
 	 */
 	public function testAnExplicitHoursValueWinsOverDerivation(): void {
 		$resolved = LeaveHoursCalculator::requestHours(
@@ -450,7 +450,7 @@ class LeaveBalanceProjectionServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-002
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-002
 	 */
 	public function testHoursAreNotDerivableWithoutAContractSnapshot(): void {
 		$resolved = LeaveHoursCalculator::requestHours(
@@ -469,7 +469,7 @@ class LeaveBalanceProjectionServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-002
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-002
 	 */
 	public function testAnUnderivableRequestIsNamed(): void {
 		$projection = LeaveHoursCalculator::usedHoursFor(
@@ -499,7 +499,7 @@ class LeaveBalanceProjectionServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-002
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-002
 	 */
 	public function testADerivedRequestSpanningNewYearSplits(): void {
 		// 2026-12-28 (Mon) to 2027-01-01 (Fri): four working days in 2026
@@ -516,7 +516,7 @@ class LeaveBalanceProjectionServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-002
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-002
 	 */
 	public function testWorkingDayCountingEdgeCases(): void {
 		// A single working day.

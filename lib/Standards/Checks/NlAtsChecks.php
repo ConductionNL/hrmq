@@ -32,7 +32,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/recruiting-ats-basic/specs/recruiting-applications/spec.md
+ * @spec openspec/specs/recruiting-applications/spec.md
  */
 
 declare(strict_types=1);

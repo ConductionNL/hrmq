@@ -36,7 +36,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-001
+ * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-001
  */
 
 declare(strict_types=1);
@@ -73,7 +73,7 @@ final class NlRetroChecks implements CheckProvider {
 	 *
 	 * @return array<string, array<string, callable>>
 	 *
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-001
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-001
 	 */
 	public static function checks(): array {
 		return [
@@ -89,7 +89,7 @@ final class NlRetroChecks implements CheckProvider {
 	 *
 	 * @return array<string, array<string, mixed>>
 	 *
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-001
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-001
 	 */
 	public static function seedSpec(): array {
 		return [];
@@ -110,7 +110,7 @@ final class NlRetroChecks implements CheckProvider {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-001
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-001
 	 */
 	private static function isDeltaConsistent(array $o, array $context): bool {
 		$engineVersion = trim((string)($o['engineVersion'] ?? ''));

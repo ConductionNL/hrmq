@@ -111,7 +111,7 @@ class AdministrationController extends Controller {
 	 * @return JSONResponse `{activeAdministrationId, administrations}` (each administratie carries `mode`).
 	 *
 	 * @spec openspec/changes/multi-administratie/specs/multi-administratie/spec.md#REQ-MULTI-004
-	 * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-002
+	 * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-002
 	 */
 	#[NoAdminRequired]
 	public function context(): JSONResponse {

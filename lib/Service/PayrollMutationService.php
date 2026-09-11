@@ -47,12 +47,12 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-001
- * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-002
- * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-003
- * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-005
- * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-006
- * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-007
+ * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-001
+ * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-002
+ * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-003
+ * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-005
+ * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-006
+ * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-007
  */
 
 declare(strict_types=1);
@@ -108,9 +108,9 @@ class PayrollMutationService {
 	 *
 	 * @return array<string, mixed> Outcome: {status, message, report} — `report` is the full diff payload (see buildReport()), null on failure/refusal.
 	 *
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-001
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-006
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-007
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-001
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-006
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-007
 	 */
 	public function diff(string $toRunId, ?string $fromRunId = null): array {
 		$toRunId = trim($toRunId);
@@ -158,8 +158,8 @@ class PayrollMutationService {
 	 *
 	 * @return array<string, mixed> Outcome: {status, message, report}.
 	 *
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-006
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-007
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-006
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-007
 	 */
 	private function diffResolvedRuns(?array $fromRun, ?string $fromRunId, array $toRun, string $toRunId): array {
 		if ($fromRun !== null
@@ -183,7 +183,7 @@ class PayrollMutationService {
 	 *
 	 * @return array<string, mixed> Outcome: {status, message, reportId}.
 	 *
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-005
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-005
 	 */
 	public function persist(array $report): array {
 		$fromRunId = ($report['fromRunId'] ?? null);
@@ -226,10 +226,10 @@ class PayrollMutationService {
 	 *
 	 * @return array<string, mixed> {fromRunId, toRunId, fromPeriod, toPeriod, administrationId, enteredCount, leftCount, changedCount, unchangedCount, grossDelta, netDelta, loonheffingDelta, employerCostDelta, totalWageCostDelta, lines}.
 	 *
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-001
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-002
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-003
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-007
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-001
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-002
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-003
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-007
 	 */
 	private function buildReport(?array $fromRun, array $toRun): array {
 		$toRunId = $this->idOf($toRun);
@@ -301,7 +301,7 @@ class PayrollMutationService {
 	 *
 	 * @return string `entered`|`left`|`changed`|`unchanged`.
 	 *
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-001
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-001
 	 */
 	private function classify(?array $from, ?array $to): string {
 		if ($from === null) {
@@ -332,7 +332,7 @@ class PayrollMutationService {
 	 *
 	 * @return array<string, mixed>|null
 	 *
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-006
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-006
 	 */
 	private function resolvePriorRun(array $toRun, array $runsById): ?array {
 		$administrationId = (string)($toRun['administrationId'] ?? '');
@@ -374,7 +374,7 @@ class PayrollMutationService {
 	 *
 	 * @return array<string, array<string, int>>
 	 *
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-002
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-002
 	 */
 	private function payslipCentsByEmployee(string $runId): array {
 		$out = [];
@@ -415,7 +415,7 @@ class PayrollMutationService {
 	 *
 	 * @return array<string, mixed>|null
 	 *
-	 * @spec openspec/changes/payroll-mutation-reports/specs/payroll-mutation-reports/spec.md#REQ-MUT-005
+	 * @spec openspec/specs/payroll-mutation-reports/spec.md#REQ-MUT-005
 	 */
 	private function findExistingReport(?string $fromRunId, string $toRunId): ?array {
 		foreach ($this->loadAll('PayrollMutationReport') as $candidate) {

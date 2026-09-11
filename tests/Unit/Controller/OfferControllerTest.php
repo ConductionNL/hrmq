@@ -25,7 +25,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-007
+ * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-007
  */
 
 declare(strict_types=1);
@@ -47,7 +47,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for OfferController.
  *
- * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-007
+ * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-007
  */
 class OfferControllerTest extends TestCase {
 
@@ -114,7 +114,7 @@ class OfferControllerTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-007
+	 * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-007
 	 */
 	public function testMissingOpenRegisterReturns404WithoutReachingTheStore(): void {
 		[$controller, $fake, $offerEsignService] = $this->buildController(isAdmin: true, applicationRow: $this->application(), openRegisterAvailable: false);

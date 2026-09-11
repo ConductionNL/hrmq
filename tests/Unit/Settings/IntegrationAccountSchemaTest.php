@@ -24,7 +24,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/hris-api-public/specs/hris-api-public/spec.md#REQ-HRIS-003
+ * @spec openspec/specs/hris-api-public/spec.md#REQ-HRIS-003
  */
 
 declare(strict_types=1);
@@ -36,7 +36,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Pins the IntegrationAccount schema fragment's shape.
  *
- * @spec openspec/changes/hris-api-public/specs/hris-api-public/spec.md#REQ-HRIS-003
+ * @spec openspec/specs/hris-api-public/spec.md#REQ-HRIS-003
  */
 class IntegrationAccountSchemaTest extends TestCase {
 

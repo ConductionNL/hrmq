@@ -27,7 +27,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/loonaangifte-filing-lifecycle/specs/loonaangifte-filing-lifecycle/spec.md
+ * @spec openspec/specs/loonaangifte-filing-lifecycle/spec.md
  */
 
 declare(strict_types=1);

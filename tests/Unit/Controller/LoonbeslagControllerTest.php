@@ -26,7 +26,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-006
+ * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-006
  */
 
 declare(strict_types=1);
@@ -47,7 +47,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for LoonbeslagController.
  *
- * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-006
+ * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-006
  */
 class LoonbeslagControllerTest extends TestCase {
 

@@ -57,7 +57,7 @@ final class CalculationInputMapper {
 	 * @return array<string, mixed>
 	 *
 	 * @spec openspec/specs/jurisdiction-packs/spec.md#REQ-JP-007
-	 * @spec openspec/changes/30-procent-regeling/specs/30-procent-regeling/spec.md#REQ-30P-003
+	 * @spec openspec/specs/30-procent-regeling/spec.md#REQ-30P-003
 	 */
 	public function toPackInputs(CalculationInput $input): array {
 		return [

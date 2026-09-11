@@ -46,10 +46,10 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/humaniq-hours-process-redesign/specs/time-entry-capture/spec.md#Requirement:-humaniq-captures-time-entries-under-a-submit→approve-lifecycle-(REQ-TEC-001)
- * @spec openspec/changes/humaniq-hours-process-redesign/specs/time-entry-capture/spec.md#Requirement:-Entries-of-a-submitted-or-approved-timesheet-are-immutable-(REQ-TEC-005)
+ * @spec openspec/specs/time-entry-capture/spec.md#Requirement:-humaniq-captures-time-entries-under-a-submit→approve-lifecycle-(REQ-TEC-001)
+ * @spec openspec/specs/time-entry-capture/spec.md#Requirement:-Entries-of-a-submitted-or-approved-timesheet-are-immutable-(REQ-TEC-005)
  * @spec openspec/changes/humaniq-hours-process-redesign/specs/mijn-hr-self-service/spec.md#REQ-MHS-002:-Timesheet,-Expense,-LeaveRequest-and-Payslip-SHALL-carry-an-optional-denormalized-userId
- * @spec openspec/changes/humaniq-hours-process-redesign/specs/employer-hourly-cost-rate/spec.md#Requirement:-Cost-allocation-references-live-on-the-time-entry-and-are-never-employee-typed
+ * @spec openspec/specs/employer-hourly-cost-rate/spec.md#Requirement:-Cost-allocation-references-live-on-the-time-entry-and-are-never-employee-typed
  */
 
 declare(strict_types=1);
@@ -81,7 +81,7 @@ use Psr\Log\LoggerInterface;
  *  refactor of a lifecycle-bearing listener and belongs in its own change,
  *  not folded into one that adds a booking shape.
  *
- * @spec openspec/changes/humaniq-hours-process-redesign/specs/time-entry-capture/spec.md#Requirement:-humaniq-captures-time-entries-under-a-submit→approve-lifecycle-(REQ-TEC-001)
+ * @spec openspec/specs/time-entry-capture/spec.md#Requirement:-humaniq-captures-time-entries-under-a-submit→approve-lifecycle-(REQ-TEC-001)
  */
 class TimeEntryStampListener implements IEventListener {
 
@@ -126,7 +126,7 @@ class TimeEntryStampListener implements IEventListener {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/time-entry-capture/spec.md#Requirement:-Entries-of-a-submitted-or-approved-timesheet-are-immutable-(REQ-TEC-005)
+	 * @spec openspec/specs/time-entry-capture/spec.md#Requirement:-Entries-of-a-submitted-or-approved-timesheet-are-immutable-(REQ-TEC-005)
 	 */
 	public function handle(Event $event): void {
 		if ($this->marker->isInternal() === true) {
@@ -160,7 +160,7 @@ class TimeEntryStampListener implements IEventListener {
 	 *
 	 * @throws HoursWriteRefusedException On any deliberate refusal.
 	 *
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/time-entry-capture/spec.md#Requirement:-Entries-of-a-submitted-or-approved-timesheet-are-immutable-(REQ-TEC-005)
+	 * @spec openspec/specs/time-entry-capture/spec.md#Requirement:-Entries-of-a-submitted-or-approved-timesheet-are-immutable-(REQ-TEC-005)
 	 */
 	private function dispatch(Event $event): void {
 		if ($event instanceof \OCA\OpenRegister\Event\ObjectDeletingEvent) {
@@ -214,7 +214,7 @@ class TimeEntryStampListener implements IEventListener {
 	 *
 	 * @throws HoursWriteRefusedException On any deliberate refusal.
 	 *
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/time-entry-capture/spec.md#Requirement:-humaniq-captures-time-entries-under-a-submit→approve-lifecycle-(REQ-TEC-001)
+	 * @spec openspec/specs/time-entry-capture/spec.md#Requirement:-humaniq-captures-time-entries-under-a-submit→approve-lifecycle-(REQ-TEC-001)
 	 */
 	private function stamp(array $incoming, ?array $stored, bool $isCreate): array {
 		// 1. Employee resolution (Decision 5.1): explicit id (HR entry) or
@@ -336,7 +336,7 @@ class TimeEntryStampListener implements IEventListener {
 	 *
 	 * @throws HoursWriteRefusedException When a parent is immutable or conflicts.
 	 *
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/time-entry-capture/spec.md#Requirement:-Entries-of-a-submitted-or-approved-timesheet-are-immutable-(REQ-TEC-005)
+	 * @spec openspec/specs/time-entry-capture/spec.md#Requirement:-Entries-of-a-submitted-or-approved-timesheet-are-immutable-(REQ-TEC-005)
 	 */
 	private function resolveTimesheet(
 		array $incoming,
@@ -381,7 +381,7 @@ class TimeEntryStampListener implements IEventListener {
 	 *
 	 * @throws HoursWriteRefusedException When the period's timesheet is locked.
 	 *
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/time-entry-capture/spec.md#Requirement:-humaniq-captures-time-entries-under-a-submit→approve-lifecycle-(REQ-TEC-001)
+	 * @spec openspec/specs/time-entry-capture/spec.md#Requirement:-humaniq-captures-time-entries-under-a-submit→approve-lifecycle-(REQ-TEC-001)
 	 */
 	private function findOrCreateTimesheet(string $employeeId, string $period): string {
 		$candidates = $this->gateway->findFiltered('Timesheet', ['employeeId' => $employeeId, 'period' => $period]);
@@ -426,7 +426,7 @@ class TimeEntryStampListener implements IEventListener {
 	 *
 	 * @throws HoursWriteRefusedException When the parent is locked.
 	 *
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/time-entry-capture/spec.md#Requirement:-Entries-of-a-submitted-or-approved-timesheet-are-immutable-(REQ-TEC-005)
+	 * @spec openspec/specs/time-entry-capture/spec.md#Requirement:-Entries-of-a-submitted-or-approved-timesheet-are-immutable-(REQ-TEC-005)
 	 */
 	private function assertParentMutable(string $timesheetId): void {
 		$parent = $this->gateway->findObjectData($timesheetId, 'Timesheet');
@@ -455,7 +455,7 @@ class TimeEntryStampListener implements IEventListener {
 	 *
 	 * @throws HoursWriteRefusedException When the parent is locked.
 	 *
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/time-entry-capture/spec.md#Requirement:-Entries-of-a-submitted-or-approved-timesheet-are-immutable-(REQ-TEC-005)
+	 * @spec openspec/specs/time-entry-capture/spec.md#Requirement:-Entries-of-a-submitted-or-approved-timesheet-are-immutable-(REQ-TEC-005)
 	 */
 	private function guardDelete(object $entity): void {
 		$data = ($entity->getObject() ?? []);

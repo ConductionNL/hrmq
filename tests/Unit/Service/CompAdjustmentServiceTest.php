@@ -25,8 +25,8 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
- * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+ * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
+ * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
  */
 
 declare(strict_types=1);
@@ -43,7 +43,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for CompAdjustmentService.
  *
- * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
+ * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
  */
 class CompAdjustmentServiceTest extends TestCase {
 
@@ -246,7 +246,7 @@ class CompAdjustmentServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
 	 */
 	public function testApprovedDueWithinBandWritesSalaryAndBecomesEffective(): void {
 		[$service, $fake] = $this->service($this->fixture());
@@ -274,7 +274,7 @@ class CompAdjustmentServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
 	 */
 	public function testNonApprovedAdjustmentRefusedWritesNothing(): void {
 		[$service, $fake] = $this->service($this->fixture(['status' => 'proposed']));
@@ -292,7 +292,7 @@ class CompAdjustmentServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
 	 */
 	public function testNotYetDueAdjustmentRefusedWritesNothing(): void {
 		$tomorrow = gmdate('Y-m-d', (strtotime('today') + 86400));
@@ -312,7 +312,7 @@ class CompAdjustmentServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
 	 */
 	public function testOutOfBandAdjustmentRefusedWritesNothing(): void {
 		[$service, $fake] = $this->service($this->fixture(['proposedSalary' => 900000]));
@@ -330,7 +330,7 @@ class CompAdjustmentServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
 	 */
 	public function testBandLessAdjustmentApplies(): void {
 		[$service] = $this->service($this->fixture(['targetBandId' => null, 'proposedSalary' => 999999]));
@@ -347,7 +347,7 @@ class CompAdjustmentServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
 	 */
 	public function testAlreadyEffectiveAdjustmentIsIdempotentNoOp(): void {
 		[$service, $fake] = $this->service($this->fixture(['status' => 'effective']));
@@ -364,7 +364,7 @@ class CompAdjustmentServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
 	 */
 	public function testDryRunEvaluatesWithoutWriting(): void {
 		[$service, $fake] = $this->service($this->fixture());
@@ -383,7 +383,7 @@ class CompAdjustmentServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
 	 */
 	public function testEffectuateCycleBatchesEveryAdjustmentInTheCycle(): void {
 		$tomorrow = gmdate('Y-m-d', (strtotime('today') + 86400));

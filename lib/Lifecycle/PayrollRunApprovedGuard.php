@@ -36,7 +36,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/pension-filing-upa-mvp/specs/pension-filing-upa-mvp/spec.md
+ * @spec openspec/specs/pension-filing-upa-mvp/spec.md
  */
 
 declare(strict_types=1);
@@ -94,7 +94,7 @@ final class PayrollRunApprovedGuard implements LifecycleGuardInterface {
 	 *  the LifecycleGuardInterface signature; the gate depends only on the
 	 *  referenced PayrollRun's status, not on who is acting.
 	 *
-	 * @spec openspec/changes/pension-filing-upa-mvp/specs/pension-filing-upa-mvp/spec.md
+	 * @spec openspec/specs/pension-filing-upa-mvp/spec.md
 	 */
 	public function check(array $object, string $action, string $userId): GuardResult {
 		$payrollRunId = trim((string)($object['payrollRunId'] ?? ''));

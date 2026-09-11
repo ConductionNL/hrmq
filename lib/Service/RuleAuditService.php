@@ -105,7 +105,7 @@ class RuleAuditService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/time-attendance-mvp/specs/time-attendance/spec.md#REQ-TA-004
+	 * @spec openspec/specs/time-attendance/spec.md#REQ-TA-004
 	 */
 	public function audit(array $context = []): array {
 		// Cross-type pre-pass (pension-filing-upa-mvp): a lightweight sibling index
@@ -330,14 +330,14 @@ class RuleAuditService {
 	 *
 	 * @return array<string, array<string, mixed>>
 	 *
-	 * @spec openspec/changes/offboarding-wizard-mvp/specs/offboarding-wizard/spec.md#REQ-OFB-004
-	 * @spec openspec/changes/asset-management-mvp/specs/asset-management/spec.md#REQ-AST-005
-	 * @spec openspec/changes/mss-team-scope/specs/mss-team-scope/spec.md#REQ-MSS-005
+	 * @spec openspec/specs/offboarding-wizard/spec.md#REQ-OFB-004
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-005
+	 * @spec openspec/specs/mss-team-scope/spec.md#REQ-MSS-005
 	 * @spec openspec/changes/multi-administratie/specs/multi-administratie/spec.md#REQ-MULTI-007
 	 * @spec openspec/changes/abp-aansluiting/specs/abp-aansluiting/spec.md#REQ-ABP-003
-	 * @spec openspec/changes/wnt-disclosure/specs/wnt-disclosure/spec.md#REQ-WNT-003
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-005
-	 * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/fleet-bijtelling/spec.md#REQ-FLEET-004
+	 * @spec openspec/specs/wnt-disclosure/spec.md#REQ-WNT-003
+	 * @spec openspec/specs/asset-management/spec.md#REQ-AST-005
+	 * @spec openspec/specs/fleet-bijtelling/spec.md#REQ-FLEET-004
 	 */
 	private function buildRelatedContext(): array {
 		$byId = [];
@@ -701,7 +701,7 @@ class RuleAuditService {
 	 *
 	 * @return array<string, mixed> {runsChecked, payslipsChecked, violations: [{objectType, objectId, ruleId, severity, statement}], mandatoryViolations}.
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-006
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-006
 	 */
 	public function auditPayrollRunScope(string $period, ?string $administrationId = null, array $context = []): array {
 		$context['related'] = $this->buildRelatedContext();
@@ -799,9 +799,9 @@ class RuleAuditService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-007
-	 * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-007
-	 * @spec openspec/changes/30-procent-regeling/specs/30-procent-regeling/spec.md#REQ-30P-004
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-007
+	 * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-007
+	 * @spec openspec/specs/30-procent-regeling/spec.md#REQ-30P-004
 	 */
 	private function buildPayrollContext(): array {
 		$runsById = [];
@@ -856,8 +856,8 @@ class RuleAuditService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-003
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-004
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-003
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-004
 	 */
 	private function buildCaoContext(): array {
 		$employeesById = [];
@@ -900,7 +900,7 @@ class RuleAuditService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
 	 */
 	private function buildCompContext(): array {
 		$salaryBandsById = [];
@@ -930,7 +930,7 @@ class RuleAuditService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/functiehuis-hr21/specs/functiehuis-hr21/spec.md#REQ-HR21-003
+	 * @spec openspec/specs/functiehuis-hr21/spec.md#REQ-HR21-003
 	 */
 	private function buildHr21Context(): array {
 		$normfunctiesById = [];
@@ -972,7 +972,7 @@ class RuleAuditService {
 	 *
 	 * @return array<string, array<int, array<string, mixed>>>
 	 *
-	 * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-004
+	 * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-004
 	 */
 	private function buildWkrContext(): array {
 		$runsById = [];
@@ -1081,7 +1081,7 @@ class RuleAuditService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-001
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-001
 	 */
 	private function buildRetroContext(): array {
 		$payslipsById = [];
@@ -1180,7 +1180,7 @@ class RuleAuditService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-004
+	 * @spec openspec/specs/rostering/spec.md#REQ-ROST-004
 	 */
 	private function buildRosterContext(): array {
 		$publishedRosterIds = [];
@@ -1333,7 +1333,7 @@ class RuleAuditService {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/hr-signals/specs/hr-signals/spec.md#REQ-SIG-004
+	 * @spec openspec/specs/hr-signals/spec.md#REQ-SIG-004
 	 */
 	private function buildSignalsContext(): array {
 		$contractsByEmployeeId = [];

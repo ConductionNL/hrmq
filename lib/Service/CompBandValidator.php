@@ -29,7 +29,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+ * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
  */
 
 declare(strict_types=1);
@@ -49,7 +49,7 @@ class CompBandValidator {
 	 *
 	 * @return array{status: string, message: string}|null Null when within band; an outcome fragment otherwise.
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
 	 */
 	public function evaluate(?array $band, int $proposedSalaryCents): ?array {
 		if ($band === null) {

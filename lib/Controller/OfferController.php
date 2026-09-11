@@ -25,7 +25,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-007
+ * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-007
  */
 
 declare(strict_types=1);
@@ -83,7 +83,7 @@ class OfferController extends Controller {
 	 *
 	 * @return JSONResponse The requestSignature() outcome, 400 on a missing applicationId or wrong stage, 403 for a non-admin/HR caller, 404 when the Application does not resolve.
 	 *
-	 * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-007
+	 * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-007
 	 */
 	#[NoAdminRequired]
 	public function requestSignature(?string $applicationId = null): JSONResponse {
@@ -147,7 +147,7 @@ class OfferController extends Controller {
 	 *
 	 * @return array<string, mixed>|null
 	 *
-	 * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-007
+	 * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-007
 	 */
 	private function authorizeApplication(string $applicationId): ?array {
 		// ADR-083: establish availability before reaching, and degrade into the

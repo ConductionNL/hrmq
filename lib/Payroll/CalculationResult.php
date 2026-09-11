@@ -22,7 +22,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
  */
 
 declare(strict_types=1);
@@ -54,7 +54,7 @@ final class CalculationResult {
 	 * @param int $employerChargesCents `werknemersverzekeringen + zvw`.
 	 * @param bool $aboveLmax Whether the tabelloon exceeded the tables' `Lmax` ceiling (documented edge, design.md D2 step 3).
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
 	 */
 	public function __construct(
 		public readonly int $grossPayCents,

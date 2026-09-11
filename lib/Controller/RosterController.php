@@ -25,7 +25,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-005
+ * @spec openspec/specs/rostering/spec.md#REQ-ROST-005
  */
 
 declare(strict_types=1);
@@ -77,7 +77,7 @@ class RosterController extends Controller {
 	 *
 	 * @return JSONResponse The check report, 400 on a missing rosterId, 404 when the roster does not resolve.
 	 *
-	 * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-005
+	 * @spec openspec/specs/rostering/spec.md#REQ-ROST-005
 	 */
 	#[NoAdminRequired]
 	public function check(?string $rosterId = null): JSONResponse {
@@ -109,7 +109,7 @@ class RosterController extends Controller {
 	 *
 	 * @return array<string, mixed>|null
 	 *
-	 * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-005
+	 * @spec openspec/specs/rostering/spec.md#REQ-ROST-005
 	 */
 	private function authorizeRoster(string $rosterId): ?array {
 		try {

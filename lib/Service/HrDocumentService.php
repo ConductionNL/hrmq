@@ -67,7 +67,7 @@
  * `document-dossier-avg` proposal's shape).
  *
  * @spec openspec/changes/archive/2026-07-13-hrmq-docudesk-documents/specs/hrmq-docudesk-documents/spec.md
- * @spec openspec/changes/payslip-pdf-docudesk/specs/payslip-pdf-docudesk/spec.md
+ * @spec openspec/specs/payslip-pdf-docudesk/spec.md
  * @spec openspec/specs/avg-dsr/spec.md#REQ-DSR-005
  */
 
@@ -241,7 +241,7 @@ class HrDocumentService {
 	 * @return array<int, array<string, mixed>> One outcome array per attempt.
 	 *
 	 * @spec openspec/changes/archive/2026-07-13-hrmq-docudesk-documents/specs/hrmq-docudesk-documents/spec.md#REQ-HDD-007
-	 * @spec openspec/changes/payslip-pdf-docudesk/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-003
+	 * @spec openspec/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-003
 	 */
 	public function generateBacklog(
 		?string $documentType = null,
@@ -412,7 +412,7 @@ class HrDocumentService {
 	 *
 	 * @return array<string, mixed> Outcome: {employeeId, contractId, documentType, status, message, generatedDocumentId}.
 	 *
-	 * @spec openspec/changes/payslip-pdf-docudesk/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-002
+	 * @spec openspec/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-002
 	 */
 	public function generateLoonstrook(string $payslipId, ?string $userId = null): array {
 		$payslipId = trim($payslipId);
@@ -450,7 +450,7 @@ class HrDocumentService {
 	 *
 	 * @return array<string, mixed> Outcome: {employeeId, contractId, documentType, status, message, generatedDocumentId}.
 	 *
-	 * @spec openspec/changes/payslip-pdf-docudesk/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-003
+	 * @spec openspec/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-003
 	 */
 	public function generateJaaropgaaf(string $employeeId, int $year, ?string $userId = null): array {
 		$employeeId = trim($employeeId);
@@ -503,8 +503,8 @@ class HrDocumentService {
 	 * @spec openspec/changes/archive/2026-07-13-hrmq-docudesk-documents/specs/hrmq-docudesk-documents/spec.md#REQ-HDD-004
 	 * @spec openspec/changes/archive/2026-07-13-hrmq-docudesk-documents/specs/hrmq-docudesk-documents/spec.md#REQ-HDD-005
 	 * @spec openspec/changes/archive/2026-07-13-hrmq-docudesk-documents/specs/hrmq-docudesk-documents/spec.md#REQ-HDD-006
-	 * @spec openspec/changes/payslip-pdf-docudesk/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-002
-	 * @spec openspec/changes/payslip-pdf-docudesk/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-003
+	 * @spec openspec/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-002
+	 * @spec openspec/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-003
 	 */
 	private function generateInternal(
 		string $employeeId,
@@ -857,8 +857,8 @@ class HrDocumentService {
 	 *
 	 * @return array<string, mixed>|null The upserted Jaaropgaaf, or null when there is nothing to aggregate.
 	 *
-	 * @spec openspec/changes/payslip-pdf-docudesk/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-001
-	 * @spec openspec/changes/payslip-pdf-docudesk/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-003
+	 * @spec openspec/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-001
+	 * @spec openspec/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-003
 	 */
 	private function upsertJaaropgaaf(string $employeeId, int $year): ?array {
 		$totalGrossPay = 0.0;

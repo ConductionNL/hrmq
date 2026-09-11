@@ -29,7 +29,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-006
+ * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-006
  */
 
 declare(strict_types=1);
@@ -55,7 +55,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for PayrollController::dgaStatus().
  *
- * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-006
+ * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-006
  */
 class PayrollControllerDgaStatusTest extends TestCase {
 

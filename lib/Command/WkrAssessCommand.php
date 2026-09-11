@@ -22,7 +22,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-005
+ * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-005
  */
 
 declare(strict_types=1);
@@ -53,7 +53,7 @@ class WkrAssessCommand extends Command {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-005
+	 * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-005
 	 */
 	protected function configure(): void {
 		$this->setName('humaniq:wkr:assess')
@@ -70,7 +70,7 @@ class WkrAssessCommand extends Command {
 	 *
 	 * @return int 0 on success, 1 on failure.
 	 *
-	 * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-005
+	 * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-005
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		if ((bool)$input->getOption('all') === true) {

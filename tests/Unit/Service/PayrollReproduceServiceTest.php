@@ -30,7 +30,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
+ * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
  */
 
 declare(strict_types=1);
@@ -50,7 +50,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for PayrollReproduceService.
  *
- * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
+ * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
  */
 class PayrollReproduceServiceTest extends TestCase {
 
@@ -270,7 +270,7 @@ class PayrollReproduceServiceTest extends TestCase {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
 	 */
 	public function testACleanPayslipReproducesExactlyFromItsStoredSnapshot(): void {
 		[$fake, , $payslip] = $this->generateAnchorRunAndPayslip();
@@ -290,7 +290,7 @@ class PayrollReproduceServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
 	 */
 	public function testReproductionIsUnaffectedByALaterEmployeeEdit(): void {
 		[$fake, , $payslip] = $this->generateAnchorRunAndPayslip();
@@ -312,7 +312,7 @@ class PayrollReproduceServiceTest extends TestCase {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
 	 */
 	public function testATamperedNettoPayIsCaughtAndNamed(): void {
 		[$fake, , $payslip] = $this->generateAnchorRunAndPayslip();
@@ -336,7 +336,7 @@ class PayrollReproduceServiceTest extends TestCase {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
 	 */
 	public function testAHandEnteredPayslipWithNoSnapshotIsRefused(): void {
 		$fake = $this->fakeObjectService(
@@ -364,7 +364,7 @@ class PayrollReproduceServiceTest extends TestCase {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
 	 */
 	public function testAnUnknownPayslipIsRefused(): void {
 		$fake = $this->fakeObjectService(['PayrollRun' => [], 'Payslip' => []]);

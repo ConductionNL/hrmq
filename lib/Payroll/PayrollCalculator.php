@@ -54,8 +54,8 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-002
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-002
  * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-001
  * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-002
  * @spec openspec/specs/jurisdiction-packs/spec.md#REQ-JP-007
@@ -123,8 +123,8 @@ final class PayrollCalculator {
 	 *
 	 * @return CalculationResult
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-002
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-002
 	 * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-001
 	 * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-002
 	 * @spec openspec/specs/jurisdiction-packs/spec.md#REQ-JP-007

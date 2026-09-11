@@ -38,7 +38,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlAbpChecks.
  *
- * @spec openspec/changes/abp-aansluiting/specs/abp-aansluiting/spec.md
+ * @spec openspec/specs/abp-aansluiting/spec.md
  */
 class NlAbpChecksTest extends TestCase {
 

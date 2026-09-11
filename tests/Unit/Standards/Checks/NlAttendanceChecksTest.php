@@ -24,7 +24,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/time-attendance-mvp/specs/time-attendance/spec.md#REQ-TA-004
+ * @spec openspec/specs/time-attendance/spec.md#REQ-TA-004
  */
 
 declare(strict_types=1);
@@ -37,7 +37,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlAttendanceChecks.
  *
- * @spec openspec/changes/time-attendance-mvp/specs/time-attendance/spec.md#REQ-TA-004
+ * @spec openspec/specs/time-attendance/spec.md#REQ-TA-004
  */
 class NlAttendanceChecksTest extends TestCase {
 

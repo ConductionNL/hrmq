@@ -20,7 +20,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/performance-reviews-mvp/specs/performance-reviews/spec.md#REQ-PRV-003
+ * @spec openspec/specs/performance-reviews/spec.md#REQ-PRV-003
  */
 
 declare(strict_types=1);
@@ -33,7 +33,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlPerformanceChecks.
  *
- * @spec openspec/changes/performance-reviews-mvp/specs/performance-reviews/spec.md#REQ-PRV-003
+ * @spec openspec/specs/performance-reviews/spec.md#REQ-PRV-003
  */
 class NlPerformanceChecksTest extends TestCase {
 

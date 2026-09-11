@@ -49,8 +49,8 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
- * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+ * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
+ * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
  */
 
 declare(strict_types=1);
@@ -101,7 +101,7 @@ class CompAdjustmentService {
 	 *
 	 * @return array<string, mixed> Outcome: {adjustmentId, status, message, employeeId, newGrossMonthlySalary}.
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
 	 */
 	public function effectuateOne(string $adjustmentId, ?string $asOf = null): array {
 		$adjustmentId = trim($adjustmentId);
@@ -128,7 +128,7 @@ class CompAdjustmentService {
 	 *
 	 * @return array<int, array<string, mixed>> One outcome per CompAdjustment in the cycle.
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
 	 */
 	public function effectuateCycle(string $cycleId, ?string $asOf = null, bool $dryRun = false): array {
 		$cycleId = trim($cycleId);
@@ -159,8 +159,8 @@ class CompAdjustmentService {
 	 *
 	 * @return array<string, mixed> Outcome.
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-006
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-006
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
 	 */
 	private function effectuate(array $adjustment, ?string $asOf, bool $dryRun): array {
 		$adjustmentId = $this->idOf($adjustment);
@@ -285,7 +285,7 @@ class CompAdjustmentService {
 	 *
 	 * @return array{status: string, message: string}|null Null when within band (or vacuous); an outcome fragment otherwise.
 	 *
-	 * @spec openspec/changes/comp-cycles/specs/comp-cycles/spec.md#REQ-COMP-007
+	 * @spec openspec/specs/comp-cycles/spec.md#REQ-COMP-007
 	 */
 	private function withinBand(array $adjustment, int $proposedSalaryCents): ?array {
 		$targetBandId = trim((string)($adjustment['targetBandId'] ?? ''));

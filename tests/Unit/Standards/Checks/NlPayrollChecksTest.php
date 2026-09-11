@@ -26,7 +26,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/30-procent-regeling/specs/30-procent-regeling/spec.md#REQ-30P-004
+ * @spec openspec/specs/30-procent-regeling/spec.md#REQ-30P-004
  */
 
 declare(strict_types=1);
@@ -40,7 +40,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for the NlPayrollChecks 30%-ruling predicates (raw + through RuleEngine).
  *
- * @spec openspec/changes/30-procent-regeling/specs/30-procent-regeling/spec.md#REQ-30P-004
+ * @spec openspec/specs/30-procent-regeling/spec.md#REQ-30P-004
  */
 class NlPayrollChecksTest extends TestCase {
 

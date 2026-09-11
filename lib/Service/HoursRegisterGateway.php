@@ -32,7 +32,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/humaniq-hours-process-redesign/specs/mss-team-scope/spec.md#Requirement:-The-approval-carrying-schemas-SHALL-gain-an-optional-denormalized-managerUserId-scoping-property-(REQ-MSS-001)
+ * @spec openspec/specs/mss-team-scope/spec.md#Requirement:-The-approval-carrying-schemas-SHALL-gain-an-optional-denormalized-managerUserId-scoping-property-(REQ-MSS-001)
  */
 
 declare(strict_types=1);
@@ -45,7 +45,7 @@ use RuntimeException;
 /**
  * Shared OpenRegister plumbing for the hours-process listeners.
  *
- * @spec openspec/changes/humaniq-hours-process-redesign/specs/mss-team-scope/spec.md#Requirement:-The-approval-carrying-schemas-SHALL-gain-an-optional-denormalized-managerUserId-scoping-property-(REQ-MSS-001)
+ * @spec openspec/specs/mss-team-scope/spec.md#Requirement:-The-approval-carrying-schemas-SHALL-gain-an-optional-denormalized-managerUserId-scoping-property-(REQ-MSS-001)
  */
 class HoursRegisterGateway {
 
@@ -81,7 +81,7 @@ class HoursRegisterGateway {
 	 *
 	 * @return array<string, mixed>|null The payload, or null.
 	 *
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/time-entry-capture/spec.md#Requirement:-Entries-of-a-submitted-or-approved-timesheet-are-immutable-(REQ-TEC-005)
+	 * @spec openspec/specs/time-entry-capture/spec.md#Requirement:-Entries-of-a-submitted-or-approved-timesheet-are-immutable-(REQ-TEC-005)
 	 */
 	public function findObjectData(string $uuid, string $schema): ?array {
 		try {
@@ -121,7 +121,7 @@ class HoursRegisterGateway {
 	 *
 	 * @return array<int, array<string, mixed>> The rows.
 	 *
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/mss-team-scope/spec.md#Requirement:-The-approval-carrying-schemas-SHALL-gain-an-optional-denormalized-managerUserId-scoping-property-(REQ-MSS-001)
+	 * @spec openspec/specs/mss-team-scope/spec.md#Requirement:-The-approval-carrying-schemas-SHALL-gain-an-optional-denormalized-managerUserId-scoping-property-(REQ-MSS-001)
 	 */
 	public function loadAll(string $schema): array {
 		return $this->query($schema, []);
@@ -136,7 +136,7 @@ class HoursRegisterGateway {
 	 *
 	 * @return array<int, array<string, mixed>> The matching rows.
 	 *
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/time-entry-capture/spec.md#Requirement:-humaniq-captures-time-entries-under-a-submit→approve-lifecycle-(REQ-TEC-001)
+	 * @spec openspec/specs/time-entry-capture/spec.md#Requirement:-humaniq-captures-time-entries-under-a-submit→approve-lifecycle-(REQ-TEC-001)
 	 */
 	public function findFiltered(string $schema, array $filters): array {
 		$matches = [];
@@ -158,7 +158,7 @@ class HoursRegisterGateway {
 	 *
 	 * @return object The saved ObjectEntity.
 	 *
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/time-entry-capture/spec.md#Requirement:-humaniq-captures-time-entries-under-a-submit→approve-lifecycle-(REQ-TEC-001)
+	 * @spec openspec/specs/time-entry-capture/spec.md#Requirement:-humaniq-captures-time-entries-under-a-submit→approve-lifecycle-(REQ-TEC-001)
 	 */
 	public function save(array $payload, string $schema, ?string $uuid = null): object {
 		return $this->objects()->saveObject(
@@ -182,7 +182,7 @@ class HoursRegisterGateway {
 	 *
 	 * @return string|null The manager's Nextcloud user id, or null.
 	 *
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/mss-team-scope/spec.md#Requirement:-The-approval-carrying-schemas-SHALL-gain-an-optional-denormalized-managerUserId-scoping-property-(REQ-MSS-001)
+	 * @spec openspec/specs/mss-team-scope/spec.md#Requirement:-The-approval-carrying-schemas-SHALL-gain-an-optional-denormalized-managerUserId-scoping-property-(REQ-MSS-001)
 	 */
 	public function uniqueManagerUserIdFor(string $employeeId, string $onDate): ?string {
 		return $this->orgResolution->uniqueOrNull(
@@ -205,7 +205,7 @@ class HoursRegisterGateway {
 	 *
 	 * @return string|null The cost centre, or null.
 	 *
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/employer-hourly-cost-rate/spec.md#Requirement:-Cost-allocation-references-live-on-the-time-entry-and-are-never-employee-typed
+	 * @spec openspec/specs/employer-hourly-cost-rate/spec.md#Requirement:-Cost-allocation-references-live-on-the-time-entry-and-are-never-employee-typed
 	 */
 	public function uniqueCostCenterFor(string $employeeId, string $onDate): ?string {
 		return $this->orgResolution->uniqueOrNull(

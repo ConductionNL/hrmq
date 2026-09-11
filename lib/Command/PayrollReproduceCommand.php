@@ -23,7 +23,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
+ * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
  */
 
 declare(strict_types=1);
@@ -55,7 +55,7 @@ class PayrollReproduceCommand extends Command {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
 	 */
 	protected function configure(): void {
 		$this->setName('humaniq:payroll:reproduce')
@@ -70,7 +70,7 @@ class PayrollReproduceCommand extends Command {
 	 *
 	 * @return int 0 when every component reproduces cents-exact, 1 otherwise.
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-002
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$payslipOption = $input->getOption('payslip');

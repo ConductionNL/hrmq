@@ -29,7 +29,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-001
+ * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-001
  */
 
 declare(strict_types=1);
@@ -46,7 +46,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlRetroChecks (raw predicate + through RuleEngine::evaluate).
  *
- * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-001
+ * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-001
  */
 class NlRetroChecksTest extends TestCase {
 

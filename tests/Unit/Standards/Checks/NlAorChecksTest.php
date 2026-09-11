@@ -32,7 +32,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/aor-ambtenarenrecht/specs/aor-ambtenarenrecht/spec.md
+ * @spec openspec/specs/aor-ambtenarenrecht/spec.md
  */
 
 declare(strict_types=1);
@@ -46,7 +46,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlAorChecks (raw predicates + through the REAL RuleEngine).
  *
- * @spec openspec/changes/aor-ambtenarenrecht/specs/aor-ambtenarenrecht/spec.md
+ * @spec openspec/specs/aor-ambtenarenrecht/spec.md
  */
 class NlAorChecksTest extends TestCase {
 

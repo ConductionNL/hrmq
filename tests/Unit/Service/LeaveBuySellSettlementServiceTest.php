@@ -303,7 +303,7 @@ class LeaveBuySellSettlementServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/humaniq-personal-dashboard/specs/leave-accrual-job/spec.md#REQ-ACCR-006
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-006
 	 */
 	public function testSettlementNeitherInventsNorDropsTheAccountLink(): void {
 		[$service, $fake] = $this->service($this->fixture([], ['userId' => 'admin']));

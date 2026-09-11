@@ -28,11 +28,11 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-001
- * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-002
- * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-003
- * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-004
- * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-005
+ * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-001
+ * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-002
+ * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-003
+ * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-004
+ * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-005
  */
 
 declare(strict_types=1);
@@ -50,7 +50,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for LeaveAccrualJob.
  *
- * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-001
+ * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-001
  */
 class LeaveAccrualJobTest extends TestCase {
 
@@ -249,7 +249,7 @@ class LeaveAccrualJobTest extends TestCase {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-002
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-002
 	 */
 	public function testFirstRunProvisionsStatutoryInFull(): void {
 		[$job, $fake] = $this->job(
@@ -289,7 +289,7 @@ class LeaveAccrualJobTest extends TestCase {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-002
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-002
 	 */
 	public function testProvisionedBalancePassesMandatoryVerlofRules(): void {
 		[$job, $fake] = $this->job(
@@ -322,7 +322,7 @@ class LeaveAccrualJobTest extends TestCase {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-004
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-004
 	 */
 	public function testSecondRunInSameMonthIsANoOp(): void {
 		$existingBalance = [
@@ -364,8 +364,8 @@ class LeaveAccrualJobTest extends TestCase {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-003
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-004
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-003
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-004
 	 */
 	public function testNextMonthAccruesExactlyOneBovenwettelijkSlice(): void {
 		$existingBalance = [
@@ -413,7 +413,7 @@ class LeaveAccrualJobTest extends TestCase {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-005
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-005
 	 */
 	public function testDisabledConfigNoOpsTheWholeRun(): void {
 		[$job, $fake] = $this->job(
@@ -440,7 +440,7 @@ class LeaveAccrualJobTest extends TestCase {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-005
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-005
 	 */
 	public function testEmployeeWithoutCoveringContractIsSkippedWithReason(): void {
 		[$job, $fake] = $this->job(
@@ -464,7 +464,7 @@ class LeaveAccrualJobTest extends TestCase {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-005
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-005
 	 */
 	public function testEmployeeWithNoHoursPerWeekIsSkippedWithReason(): void {
 		[$job, $fake] = $this->job(
@@ -487,7 +487,7 @@ class LeaveAccrualJobTest extends TestCase {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-001
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-001
 	 */
 	public function testEmployeeInactiveInPeriodIsNotAccrued(): void {
 		[$job, $fake] = $this->job(
@@ -514,7 +514,7 @@ class LeaveAccrualJobTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/humaniq-personal-dashboard/specs/leave-accrual-job/spec.md#REQ-ACCR-006
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-006
 	 */
 	public function testCreatedBalanceCarriesTheEmployeeAccountLink(): void {
 		[$job, $fake] = $this->job(
@@ -540,7 +540,7 @@ class LeaveAccrualJobTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/humaniq-personal-dashboard/specs/leave-accrual-job/spec.md#REQ-ACCR-006
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-006
 	 */
 	public function testPreExistingNullUserIdSelfHealsOnTheNextAccrual(): void {
 		$existingBalance = [
@@ -586,7 +586,7 @@ class LeaveAccrualJobTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/humaniq-personal-dashboard/specs/leave-accrual-job/spec.md#REQ-ACCR-006
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-006
 	 */
 	public function testUnlinkedEmployeeKeepsANullAccountLink(): void {
 		[$job, $fake] = $this->job(
@@ -623,8 +623,8 @@ class LeaveAccrualJobTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/humaniq-personal-dashboard/specs/leave-accrual-job/spec.md#REQ-ACCR-006
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-004
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-006
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-004
 	 */
 	public function testStampingNeverTurnsANoOpIntoAWrite(): void {
 		$existingBalance = [

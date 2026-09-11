@@ -47,8 +47,8 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-007
- * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-005
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-007
+ * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-005
  */
 
 declare(strict_types=1);
@@ -85,7 +85,7 @@ final class NlEngineChecks implements CheckProvider {
 	 *
 	 * @return array<string, array<string, callable>>
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-007
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-007
 	 */
 	public static function checks(): array {
 		return [
@@ -105,7 +105,7 @@ final class NlEngineChecks implements CheckProvider {
 	 *
 	 * @return array<string, array<string, mixed>>
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-007
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-007
 	 */
 	public static function seedSpec(): array {
 		return [];
@@ -121,7 +121,7 @@ final class NlEngineChecks implements CheckProvider {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-007
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-007
 	 */
 	private static function hasValidTableVersion(array $o): bool {
 		$engineVersion = trim((string)($o['engineVersion'] ?? ''));
@@ -253,7 +253,7 @@ final class NlEngineChecks implements CheckProvider {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-007
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-007
 	 */
 	private static function isOutputConsistent(array $o, array $context): bool {
 		$runId = trim((string)($o['payrollRunId'] ?? ''));
@@ -312,7 +312,7 @@ final class NlEngineChecks implements CheckProvider {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-005
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-005
 	 */
 	private static function hasCompleteProvenance(array $o, array $context): bool {
 		$runId = trim((string)($o['payrollRunId'] ?? ''));

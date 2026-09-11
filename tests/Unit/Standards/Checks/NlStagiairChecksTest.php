@@ -32,7 +32,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/stagiair-bbl-admin/specs/stagiair-bbl-admin/spec.md
+ * @spec openspec/specs/stagiair-bbl-admin/spec.md
  */
 
 declare(strict_types=1);
@@ -46,7 +46,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlStagiairChecks (raw predicates + through the REAL RuleEngine).
  *
- * @spec openspec/changes/stagiair-bbl-admin/specs/stagiair-bbl-admin/spec.md
+ * @spec openspec/specs/stagiair-bbl-admin/spec.md
  */
 class NlStagiairChecksTest extends TestCase {
 

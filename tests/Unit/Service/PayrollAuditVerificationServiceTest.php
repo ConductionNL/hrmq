@@ -30,7 +30,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
+ * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
  */
 
 declare(strict_types=1);
@@ -46,7 +46,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for PayrollAuditVerificationService.
  *
- * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
+ * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
  */
 class PayrollAuditVerificationServiceTest extends TestCase {
 
@@ -244,7 +244,7 @@ class PayrollAuditVerificationServiceTest extends TestCase {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
 	 */
 	public function testVerifyRunResolvesTheFullRowRangeAndDelegatesToAuditHashServiceUnmodified(): void {
 		[$service, $auditHashService] = $this->service(
@@ -279,7 +279,7 @@ class PayrollAuditVerificationServiceTest extends TestCase {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
 	 */
 	public function testTamperedRowIsSurfacedUnmodifiedFromAuditHashService(): void {
 		[$service] = $this->service(
@@ -305,7 +305,7 @@ class PayrollAuditVerificationServiceTest extends TestCase {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
 	 */
 	public function testUnknownRunReturnsAnErrorWithoutCallingAuditHashService(): void {
 		[$service, $auditHashService] = $this->service(
@@ -325,7 +325,7 @@ class PayrollAuditVerificationServiceTest extends TestCase {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
 	 */
 	public function testNoAuditRowsYetIsVacuouslyValid(): void {
 		[$service, $auditHashService] = $this->service(
@@ -349,7 +349,7 @@ class PayrollAuditVerificationServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
 	 */
 	public function testNoBespokeHashComputationExistsInThisService(): void {
 		$source = (string)file_get_contents(__DIR__ . '/../../../lib/Service/PayrollAuditVerificationService.php');

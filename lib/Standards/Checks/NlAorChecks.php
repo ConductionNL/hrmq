@@ -38,7 +38,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/aor-ambtenarenrecht/specs/aor-ambtenarenrecht/spec.md
+ * @spec openspec/specs/aor-ambtenarenrecht/spec.md
  */
 
 declare(strict_types=1);
@@ -55,7 +55,7 @@ final class NlAorChecks implements CheckProvider {
 	 *
 	 * @return array<string, array<string, callable>>
 	 *
-	 * @spec openspec/changes/aor-ambtenarenrecht/specs/aor-ambtenarenrecht/spec.md
+	 * @spec openspec/specs/aor-ambtenarenrecht/spec.md
 	 */
 	public static function checks(): array {
 		return [
@@ -76,7 +76,7 @@ final class NlAorChecks implements CheckProvider {
 	 *
 	 * @return array<string, array<string, mixed>>
 	 *
-	 * @spec openspec/changes/aor-ambtenarenrecht/specs/aor-ambtenarenrecht/spec.md
+	 * @spec openspec/specs/aor-ambtenarenrecht/spec.md
 	 */
 	public static function seedSpec(): array {
 		return [];
@@ -92,7 +92,7 @@ final class NlAorChecks implements CheckProvider {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/aor-ambtenarenrecht/specs/aor-ambtenarenrecht/spec.md
+	 * @spec openspec/specs/aor-ambtenarenrecht/spec.md
 	 */
 	private static function isAmbtenaar(array $object): bool {
 		return trim((string)($object['publicSectorRegime'] ?? '')) !== '';
@@ -110,7 +110,7 @@ final class NlAorChecks implements CheckProvider {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/aor-ambtenarenrecht/specs/aor-ambtenarenrecht/spec.md#REQ-AOR-002
+	 * @spec openspec/specs/aor-ambtenarenrecht/spec.md#REQ-AOR-002
 	 */
 	private static function eedAfgelegd(array $object): bool {
 		if (self::isAmbtenaar($object) === false) {
@@ -131,7 +131,7 @@ final class NlAorChecks implements CheckProvider {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/aor-ambtenarenrecht/specs/aor-ambtenarenrecht/spec.md#REQ-AOR-003
+	 * @spec openspec/specs/aor-ambtenarenrecht/spec.md#REQ-AOR-003
 	 */
 	private static function nevenwerkzaamhedenGemeld(array $object): bool {
 		if (self::isAmbtenaar($object) === false) {

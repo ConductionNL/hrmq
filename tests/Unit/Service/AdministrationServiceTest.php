@@ -28,7 +28,7 @@
  *
  * @spec openspec/changes/multi-administratie/specs/multi-administratie/spec.md#REQ-MULTI-002
  * @spec openspec/changes/multi-administratie/specs/multi-administratie/spec.md#REQ-MULTI-003
- * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-002
+ * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-002
  */
 
 declare(strict_types=1);
@@ -47,7 +47,7 @@ use Psr\Log\LoggerInterface;
  *
  * @spec openspec/changes/multi-administratie/specs/multi-administratie/spec.md#REQ-MULTI-002
  * @spec openspec/changes/multi-administratie/specs/multi-administratie/spec.md#REQ-MULTI-003
- * @spec openspec/changes/single-person-modes/specs/single-person-modes/spec.md#REQ-SPM-002
+ * @spec openspec/specs/single-person-modes/spec.md#REQ-SPM-002
  */
 class AdministrationServiceTest extends TestCase {
 

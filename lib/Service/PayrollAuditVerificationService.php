@@ -35,7 +35,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
+ * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
  */
 
 declare(strict_types=1);
@@ -93,7 +93,7 @@ final class PayrollAuditVerificationService {
 	 *
 	 * @return array<string, mixed> `{runId, valid, entriesVerified, brokenAt, skippedNullHashes, range?}`, or `{runId, valid: false, error}` when the run does not exist.
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-003
 	 */
 	public function verifyRun(string $runId): array {
 		$runId = trim($runId);

@@ -46,7 +46,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/hr-signals/specs/hr-signals/spec.md
+ * @spec openspec/specs/hr-signals/spec.md
  * @spec openspec/specs/bhv-organisatie/spec.md#REQ-BHV-002
  */
 

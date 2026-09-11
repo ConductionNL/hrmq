@@ -24,7 +24,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-006
+ * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-006
  */
 
 declare(strict_types=1);
@@ -82,7 +82,7 @@ class OfferSyncSignatureCommand extends Command {
 	 *
 	 * @return int 0 when every polled Application ends synced/skipped-no-docudesk/not-found, 1 when any ends failed/usage-error.
 	 *
-	 * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-006
+	 * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-006
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$applicationOption = $input->getOption('application');

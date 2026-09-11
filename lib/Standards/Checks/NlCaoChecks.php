@@ -43,9 +43,9 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-003
- * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-004
- * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-006
+ * @spec openspec/specs/cao-library/spec.md#REQ-CAO-003
+ * @spec openspec/specs/cao-library/spec.md#REQ-CAO-004
+ * @spec openspec/specs/cao-library/spec.md#REQ-CAO-006
  */
 
 declare(strict_types=1);
@@ -73,8 +73,8 @@ final class NlCaoChecks implements CheckProvider, SeedsObjects, UpsertsObjects {
 	 *
 	 * @return array<string, array<string, callable>>
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-003
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-004
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-003
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-004
 	 */
 	public static function checks(): array {
 		return [
@@ -107,7 +107,7 @@ final class NlCaoChecks implements CheckProvider, SeedsObjects, UpsertsObjects {
 	 *
 	 * @return array<string, array<int, array<string, mixed>>>
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-006
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-006
 	 */
 	public static function seedObjects(): array {
 		$rows = [];
@@ -141,7 +141,7 @@ final class NlCaoChecks implements CheckProvider, SeedsObjects, UpsertsObjects {
 	 *
 	 * @return array<string, string>
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-006
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-006
 	 */
 	public static function upsertKeys(): array {
 		return ['Cao' => 'caoId'];
@@ -161,7 +161,7 @@ final class NlCaoChecks implements CheckProvider, SeedsObjects, UpsertsObjects {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-003
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-003
 	 */
 	private static function minimumloonSchaalSatisfied(array $o, array $context): bool {
 		$caoId = trim((string)($o['cao'] ?? ''));
@@ -207,7 +207,7 @@ final class NlCaoChecks implements CheckProvider, SeedsObjects, UpsertsObjects {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/cao-library/specs/cao-library/spec.md#REQ-CAO-004
+	 * @spec openspec/specs/cao-library/spec.md#REQ-CAO-004
 	 */
 	private static function verlofMinimumSatisfied(array $o, array $context): bool {
 		if ((string)($o['leaveType'] ?? '') !== self::ANNUAL_LEAVE_TYPE) {

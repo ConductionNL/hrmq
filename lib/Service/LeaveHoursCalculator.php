@@ -22,7 +22,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-002
+ * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-002
  */
 
 declare(strict_types=1);
@@ -69,7 +69,7 @@ final class LeaveHoursCalculator {
 	 *
 	 * @return int The number of working days, 0 when the range is empty or unparseable.
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-002
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-002
 	 */
 	public static function workingDaysBetween(string $start, string $end, ?int $limitToYear = null): int {
 		$range = self::parseRange($start, $end);
@@ -151,7 +151,7 @@ final class LeaveHoursCalculator {
 	 *
 	 * @return array{hours: float, derivable: bool} The hours, and whether they could be established at all.
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-002
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-002
 	 */
 	public static function requestHours(array $request, ?float $contractHoursPerWeek, int $year): array {
 		$explicit = (float)($request['hours'] ?? 0);
@@ -194,7 +194,7 @@ final class LeaveHoursCalculator {
 	 *
 	 * @return array{usedHours: float, underivable: array<int, string>} The total, and the ids that could not be derived.
 	 *
-	 * @spec openspec/changes/leave-approval-posts-to-the-balance/specs/leave-management/spec.md#REQ-LEAVE-POST-001
+	 * @spec openspec/specs/leave-management/spec.md#REQ-LEAVE-POST-001
 	 */
 	public static function usedHoursFor(
 		array $requests,

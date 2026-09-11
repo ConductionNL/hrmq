@@ -29,13 +29,13 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-003
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-004
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-005
- * @spec openspec/changes/fleet-bijtelling/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-003
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-004
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-005
+ * @spec openspec/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
  * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-001
  * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-002
- * @spec openspec/changes/30-procent-regeling/specs/30-procent-regeling/spec.md#REQ-30P-003
+ * @spec openspec/specs/30-procent-regeling/spec.md#REQ-30P-003
  */
 
 declare(strict_types=1);
@@ -54,7 +54,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for PayrollRunService.
  *
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-003
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-003
  * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-001
  */
 class PayrollRunServiceTest extends TestCase {
@@ -484,7 +484,7 @@ class PayrollRunServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-001
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-001
 	 */
 	public function testGeneratedPayslipCarriesADecodableEngineInputSnapshotMatchingResolvedInputs(): void {
 		[$service, $fake] = $this->service(
@@ -538,7 +538,7 @@ class PayrollRunServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/audit-trail-payroll/specs/audit-trail-payroll/spec.md#REQ-AUDP-001
+	 * @spec openspec/specs/audit-trail-payroll/spec.md#REQ-AUDP-001
 	 */
 	public function testHandEnteredPayslipHasNoEngineInputSnapshot(): void {
 		[$service, $fake] = $this->service(

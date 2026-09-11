@@ -25,7 +25,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-007
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-007
  */
 
 declare(strict_types=1);
@@ -38,7 +38,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlEngineChecks.
  *
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-007
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-007
  */
 class NlEngineChecksTest extends TestCase {
 

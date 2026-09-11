@@ -88,7 +88,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md
+ * @spec openspec/specs/offer-esign/spec.md
  */
 
 declare(strict_types=1);
@@ -179,11 +179,11 @@ class OfferEsignService {
 	 *
 	 * @return array<string, mixed> Outcome: {applicationId, status, message, offerLetterFileId, offerSigningRequestId, offerSigningStatus}.
 	 *
-	 * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-002
-	 * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-003
-	 * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-004
-	 * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-005
-	 * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-006
+	 * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-002
+	 * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-003
+	 * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-004
+	 * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-005
+	 * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-006
 	 */
 	public function requestSignature(string $applicationId, ?string $userId = null): array {
 		$applicationId = trim($applicationId);
@@ -469,7 +469,7 @@ class OfferEsignService {
 	 *
 	 * @return array<int, array<string, mixed>> One outcome per polled Application.
 	 *
-	 * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-006
+	 * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-006
 	 */
 	public function syncSignatureStatus(?string $applicationId = null): array {
 		$applicationId = ($applicationId !== null && trim($applicationId) !== '') ? trim($applicationId) : null;

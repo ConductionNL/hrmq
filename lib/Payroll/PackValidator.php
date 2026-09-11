@@ -739,7 +739,7 @@ final class PackValidator {
 	 * @return CalculationInput
 	 *
 	 * @spec openspec/specs/jurisdiction-packs/spec.md#REQ-JP-006
-	 * @spec openspec/changes/30-procent-regeling/specs/30-procent-regeling/spec.md#REQ-30P-003
+	 * @spec openspec/specs/30-procent-regeling/spec.md#REQ-30P-003
 	 */
 	private function inputFrom(array $input, JurisdictionPack $pack): CalculationInput {
 		return new CalculationInput(

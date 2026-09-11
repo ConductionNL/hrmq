@@ -20,7 +20,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/pension-filing-upa-mvp/specs/pension-filing-upa-mvp/spec.md
+ * @spec openspec/specs/pension-filing-upa-mvp/spec.md
  */
 
 declare(strict_types=1);
@@ -36,7 +36,7 @@ use Psr\Container\ContainerInterface;
 /**
  * Tests for PayrollRunApprovedGuard.
  *
- * @spec openspec/changes/pension-filing-upa-mvp/specs/pension-filing-upa-mvp/spec.md
+ * @spec openspec/specs/pension-filing-upa-mvp/spec.md
  */
 class PayrollRunApprovedGuardTest extends TestCase {
 

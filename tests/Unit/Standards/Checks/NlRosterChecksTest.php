@@ -30,7 +30,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-004
+ * @spec openspec/specs/rostering/spec.md#REQ-ROST-004
  */
 
 declare(strict_types=1);
@@ -44,7 +44,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlRosterChecks.
  *
- * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-004
+ * @spec openspec/specs/rostering/spec.md#REQ-ROST-004
  */
 class NlRosterChecksTest extends TestCase {
 

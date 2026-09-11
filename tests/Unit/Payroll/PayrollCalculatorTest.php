@@ -21,13 +21,13 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-002
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-009
- * @spec openspec/changes/fleet-bijtelling/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-002
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-009
+ * @spec openspec/specs/fleet-bijtelling/spec.md#REQ-FLEET-003
  * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-001
  * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-002
- * @spec openspec/changes/30-procent-regeling/specs/30-procent-regeling/spec.md#REQ-30P-003
+ * @spec openspec/specs/30-procent-regeling/spec.md#REQ-30P-003
  */
 
 declare(strict_types=1);
@@ -42,7 +42,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Golden-fixture tests for PayrollCalculator.
  *
- * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+ * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
  * @spec openspec/specs/dga-payroll-mode/spec.md#REQ-DGA-001
  */
 class PayrollCalculatorTest extends TestCase {

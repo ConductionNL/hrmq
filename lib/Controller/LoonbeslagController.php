@@ -31,7 +31,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-006
+ * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-006
  */
 
 declare(strict_types=1);
@@ -85,7 +85,7 @@ class LoonbeslagController extends Controller {
 	 *
 	 * @return JSONResponse The updated Loonbeslag, 400 on a missing id or non-`concept` status, 403 for a non-admin/HR caller, 404 when it does not resolve.
 	 *
-	 * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-006
+	 * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-006
 	 */
 	#[NoAdminRequired]
 	public function activate(?string $loonbeslagId = null): JSONResponse {
@@ -108,7 +108,7 @@ class LoonbeslagController extends Controller {
 	 *
 	 * @return JSONResponse The updated Loonbeslag, 400 on a missing id or non-`actief` status, 403 for a non-admin/HR caller, 404 when it does not resolve.
 	 *
-	 * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-006
+	 * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-006
 	 */
 	#[NoAdminRequired]
 	public function settle(?string $loonbeslagId = null): JSONResponse {
@@ -133,7 +133,7 @@ class LoonbeslagController extends Controller {
 	 *
 	 * @return JSONResponse The updated Loonbeslag, 400 on a missing id/reason or an already-terminal status, 403 for a non-admin/HR caller, 404 when it does not resolve.
 	 *
-	 * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-006
+	 * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-006
 	 */
 	#[NoAdminRequired]
 	public function withdraw(?string $loonbeslagId = null, ?string $reason = null): JSONResponse {
@@ -196,7 +196,7 @@ class LoonbeslagController extends Controller {
 	 *
 	 * @return JSONResponse
 	 *
-	 * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-006
+	 * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-006
 	 */
 	private function transition(
 		?string $loonbeslagId,
@@ -250,7 +250,7 @@ class LoonbeslagController extends Controller {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-006
+	 * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-006
 	 */
 	private function isAdminOrHr(): bool {
 		$uid = $this->userSession->getUser()?->getUID();
@@ -307,7 +307,7 @@ class LoonbeslagController extends Controller {
 	 *
 	 * @return array<string, mixed>|null
 	 *
-	 * @spec openspec/changes/loonbeslag/specs/loonbeslag/spec.md#REQ-BESLAG-006
+	 * @spec openspec/specs/loonbeslag/spec.md#REQ-BESLAG-006
 	 */
 	private function authorizeLoonbeslag(string $loonbeslagId): ?array {
 		try {

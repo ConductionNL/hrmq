@@ -25,7 +25,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-005
+ * @spec openspec/specs/rostering/spec.md#REQ-ROST-005
  */
 
 declare(strict_types=1);
@@ -43,7 +43,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for RosterCheckService.
  *
- * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-005
+ * @spec openspec/specs/rostering/spec.md#REQ-ROST-005
  */
 class RosterCheckServiceTest extends TestCase {
 

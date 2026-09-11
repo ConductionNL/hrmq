@@ -24,7 +24,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-005
+ * @spec openspec/specs/rostering/spec.md#REQ-ROST-005
  */
 
 declare(strict_types=1);
@@ -55,7 +55,7 @@ class RosterCheckCommand extends Command {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-005
+	 * @spec openspec/specs/rostering/spec.md#REQ-ROST-005
 	 */
 	protected function configure(): void {
 		$this->setName('humaniq:roster:check')
@@ -73,7 +73,7 @@ class RosterCheckCommand extends Command {
 	 *
 	 * @return int 0 when no mandatory violation exists, 1 otherwise (or on invalid input / no roster found).
 	 *
-	 * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-005
+	 * @spec openspec/specs/rostering/spec.md#REQ-ROST-005
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$rosterOption = $input->getOption('roster');
@@ -152,7 +152,7 @@ class RosterCheckCommand extends Command {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/rostering/specs/rostering/spec.md#REQ-ROST-005
+	 * @spec openspec/specs/rostering/spec.md#REQ-ROST-005
 	 */
 	private function runCheck(InputInterface $input, string $rosterId, string $period, array $jurisdiction): array {
 		if ($rosterId !== '') {

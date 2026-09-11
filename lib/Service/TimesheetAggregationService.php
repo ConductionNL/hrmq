@@ -168,7 +168,7 @@ class TimesheetAggregationService {
 	 *
 	 * @return string|null The homogeneous value, or null.
 	 *
-	 * @spec openspec/changes/humaniq-hours-process-redesign/specs/time-entry-capture/spec.md#Requirement:-The-event-carries-what-a-finance-consumer-needs-(REQ-TEC-003)
+	 * @spec openspec/specs/time-entry-capture/spec.md#Requirement:-The-event-carries-what-a-finance-consumer-needs-(REQ-TEC-003)
 	 */
 	private function homogeneousOrNull(array $values): ?string {
 		$distinct = array_values(array_unique($values));

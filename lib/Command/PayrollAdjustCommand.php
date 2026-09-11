@@ -23,7 +23,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-007
+ * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-007
  */
 
 declare(strict_types=1);
@@ -54,7 +54,7 @@ class PayrollAdjustCommand extends Command {
 	/**
 	 * @return void
 	 *
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-007
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-007
 	 */
 	protected function configure(): void {
 		$this->setName('humaniq:payroll:adjust')
@@ -75,7 +75,7 @@ class PayrollAdjustCommand extends Command {
 	 *
 	 * @return int 0 when computed/applied (including an idempotent re-run), 1 on refusal/failure.
 	 *
-	 * @spec openspec/changes/retro-adjustments/specs/retro-adjustments/spec.md#REQ-RETRO-007
+	 * @spec openspec/specs/retro-adjustments/spec.md#REQ-RETRO-007
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$originalPeriod = trim((string)$input->getOption('original-period'));

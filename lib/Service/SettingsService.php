@@ -245,7 +245,7 @@ class SettingsService {
 	 *
 	 * @return string
 	 *
-	 * @spec openspec/changes/payslip-pdf-docudesk/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-002
+	 * @spec openspec/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-002
 	 */
 	public function getDocumentsEmployerLoonheffingennummer(): string {
 		return $this->documentsEmployerField('documents_employer_loonheffingennummer', '000000000L01');
@@ -259,7 +259,7 @@ class SettingsService {
 	 * @return array<string, string>
 	 *
 	 * @spec openspec/changes/archive/2026-07-13-hrmq-docudesk-documents/specs/hrmq-docudesk-documents/spec.md#REQ-HDD-002
-	 * @spec openspec/changes/payslip-pdf-docudesk/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-002
+	 * @spec openspec/specs/payslip-pdf-docudesk/spec.md#REQ-PPD-002
 	 */
 	public function getDocumentsEmployerBlock(): array {
 		return [
@@ -296,7 +296,7 @@ class SettingsService {
 	 *
 	 * @return int
 	 *
-	 * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-003
+	 * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-003
 	 */
 	public function getOfferSigningDeadlineDays(): int {
 		$value = $this->appConfig->getValueString(Application::APP_ID, 'offer_signing_deadline_days', '14');
@@ -314,7 +314,7 @@ class SettingsService {
 	 *
 	 * @return string `laag` or `hoog`.
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
 	 */
 	public function getPayrollAofTariff(): string {
 		$value = strtolower(trim($this->appConfig->getValueString(Application::APP_ID, 'payroll_aof_tariff', 'laag')));
@@ -333,7 +333,7 @@ class SettingsService {
 	 *
 	 * @return float The Whk percentage (percentage scale, e.g. 1.52).
 	 *
-	 * @spec openspec/changes/payroll-core-engine/specs/payroll-core-engine/spec.md#REQ-PCE-001
+	 * @spec openspec/specs/payroll-core-engine/spec.md#REQ-PCE-001
 	 */
 	public function getPayrollWhkPercentage(float $tablesDefault): float {
 		$value = trim($this->appConfig->getValueString(Application::APP_ID, 'payroll_whk_percentage', ''));
@@ -427,7 +427,7 @@ class SettingsService {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-005
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-005
 	 */
 	public function isLeaveAccrualEnabled(): bool {
 		return $this->appConfig->getValueBool(Application::APP_ID, 'leave_accrual_enabled', true);
@@ -442,7 +442,7 @@ class SettingsService {
 	 *
 	 * @return float
 	 *
-	 * @spec openspec/changes/leave-accrual-job/specs/leave-accrual-job/spec.md#REQ-ACCR-003
+	 * @spec openspec/specs/leave-accrual-job/spec.md#REQ-ACCR-003
 	 */
 	public function getLeaveBovenwettelijkAnnualHours(): float {
 		$value = trim($this->appConfig->getValueString(Application::APP_ID, 'leave_bovenwettelijk_annual_hours', '0'));

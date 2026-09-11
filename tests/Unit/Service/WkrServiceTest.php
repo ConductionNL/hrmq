@@ -30,7 +30,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-003
+ * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-003
  */
 
 declare(strict_types=1);
@@ -46,9 +46,9 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for WkrService.
  *
- * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-002
- * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-003
- * @spec openspec/changes/wkr-administration/specs/wkr-administration/spec.md#REQ-WKR-005
+ * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-002
+ * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-003
+ * @spec openspec/specs/wkr-administration/spec.md#REQ-WKR-005
  */
 class WkrServiceTest extends TestCase {
 

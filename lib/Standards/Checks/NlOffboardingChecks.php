@@ -34,7 +34,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/offboarding-wizard-mvp/specs/offboarding-wizard/spec.md
+ * @spec openspec/specs/offboarding-wizard/spec.md
  */
 
 declare(strict_types=1);

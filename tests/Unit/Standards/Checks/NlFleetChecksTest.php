@@ -28,9 +28,9 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/fleet-bijtelling/specs/fleet-bijtelling/spec.md#REQ-FLEET-004
- * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/fleet-bijtelling/spec.md#REQ-FLEET-004
- * @spec openspec/changes/archive/2026-08-20-hrmq-asset-fleet-merge/specs/asset-management/spec.md#REQ-AST-001
+ * @spec openspec/specs/fleet-bijtelling/spec.md#REQ-FLEET-004
+ * @spec openspec/specs/fleet-bijtelling/spec.md#REQ-FLEET-004
+ * @spec openspec/specs/asset-management/spec.md#REQ-AST-001
  */
 
 declare(strict_types=1);
@@ -44,7 +44,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for NlFleetChecks (raw predicates + through the REAL RuleEngine).
  *
- * @spec openspec/changes/fleet-bijtelling/specs/fleet-bijtelling/spec.md#REQ-FLEET-004
+ * @spec openspec/specs/fleet-bijtelling/spec.md#REQ-FLEET-004
  */
 class NlFleetChecksTest extends TestCase {
 

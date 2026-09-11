@@ -25,7 +25,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md#REQ-OFFR-002
+ * @spec openspec/specs/offer-esign/spec.md#REQ-OFFR-002
  */
 
 declare(strict_types=1);

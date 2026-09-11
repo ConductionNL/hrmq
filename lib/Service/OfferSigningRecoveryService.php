@@ -38,7 +38,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/offer-esign/specs/offer-esign/spec.md
+ * @spec openspec/specs/offer-esign/spec.md
  */
 
 declare(strict_types=1);

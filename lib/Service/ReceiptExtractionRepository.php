@@ -25,7 +25,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md
+ * @spec openspec/specs/receipt-ocr/spec.md
  */
 
 declare(strict_types=1);
@@ -167,7 +167,7 @@ class ReceiptExtractionRepository {
 	 *
 	 * @return array<string, mixed> The saved Expense, normalised to an array.
 	 *
-	 * @spec openspec/changes/receipt-ocr/specs/receipt-ocr/spec.md#REQ-RCPT-005
+	 * @spec openspec/specs/receipt-ocr/spec.md#REQ-RCPT-005
 	 */
 	public function saveExpense(array $existing, array $writes): array {
 		$id = (string)($existing['id'] ?? $existing['@self']['id'] ?? '');

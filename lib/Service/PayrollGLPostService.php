@@ -35,7 +35,7 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/payroll-glpost-shillinq/specs/payroll-glpost-shillinq/spec.md
+ * @spec openspec/specs/payroll-glpost-shillinq/spec.md
  */
 
 declare(strict_types=1);
