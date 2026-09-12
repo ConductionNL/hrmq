@@ -99,6 +99,18 @@ presses for the one thing that has to be instant.
   `domainObjectType` and `domainObjectRef`, so the reference is written by the
   integration rather than typed by an employee, and neither field is offered for
   editing.
+- **AND** the dialog asks for the day, a start time and an end time, shows the
+  hours it derives from that span before the user books, refuses an end at or
+  before the start, and writes the entry in the clocked shape (`startedAt`,
+  `endedAt`) so the server derives its hours the way it does for a stopped
+  timer.
+
+#### Scenario: The stopwatch shows that it is working
+- **WHEN** a user presses the stopwatch and the server has not yet answered
+- **THEN** the control shows a spinner in place of its icon and is marked busy,
+  so a press that takes a moment to land does not look ignored.
+
+@e2e exclude The spinner lives only between the press and the server's answer, on a consuming app's page. It was verified by hand on dossiq's case page with the start request held back; humaniq has no page that hosts the leaf.
 
 #### Scenario: Opening the hour administration for a case
 - **WHEN** a user activates the view-hours action

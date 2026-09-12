@@ -41,11 +41,27 @@
 					class="hq-hours__timer"
 					:class="{ 'hq-hours__timer--running': runningHere }"
 					:disabled="busy || !canUseTimer"
+					:aria-busy="String(busy)"
 					:title="timerTitle"
 					:aria-label="timerTitle"
 					data-testid="hq-hours-timer"
 					@click="toggleTimer">
-					<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+					<!-- Starting or stopping writes a row before anything changes on
+					     the card, and that write took long enough that a press looked
+					     ignored. The spinner stands in for the icon until the server
+					     has answered. -->
+					<svg
+						v-if="busy"
+						class="hq-hours__spinner"
+						width="18"
+						height="18"
+						viewBox="0 0 24 24"
+						aria-hidden="true"
+						focusable="false"
+						data-testid="hq-hours-timer-busy">
+						<circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="32 18" />
+					</svg>
+					<svg v-else width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
 						<template v-if="runningHere">
 							<rect x="7" y="7" width="10" height="10" rx="1.5" fill="currentColor" />
 						</template>
@@ -913,24 +929,43 @@ export default {
 	background-color: var(--color-primary-element-light-hover, var(--color-background-hover));
 }
 
+/* The same pill as the Actions trigger beside it, icon only. It was the one
+   round, outlined button in a header row of light-filled pills. */
 .hq-hours__timer {
 	align-items: center;
-	background: transparent;
-	border: 1px solid var(--color-border);
-	border-radius: 50%;
-	color: var(--color-main-text);
+	background: var(--color-primary-element-light, var(--color-background-dark));
+	border: none;
+	border-radius: var(--border-radius-element, var(--border-radius-pill, 17px));
+	color: var(--color-primary-element-light-text, var(--color-main-text));
 	cursor: pointer;
 	display: flex;
 	flex: 0 0 auto;
-	height: 32px;
+	height: var(--default-clickable-area, 34px);
 	justify-content: center;
-	padding: 0;
-	width: 32px;
+	min-height: var(--default-clickable-area, 34px);
+	min-width: var(--default-clickable-area, 34px);
+	padding: 0 8px;
 }
 
 .hq-hours__timer:hover:enabled,
 .hq-hours__timer:focus-visible {
-	background-color: var(--color-background-hover);
+	background-color: var(--color-primary-element-light-hover, var(--color-background-hover));
+}
+
+.hq-hours__spinner {
+	animation: hq-hours-spin 0.9s linear infinite;
+}
+
+@keyframes hq-hours-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hq-hours__spinner {
+		animation-duration: 3s;
+	}
 }
 
 .hq-hours__timer:disabled {
