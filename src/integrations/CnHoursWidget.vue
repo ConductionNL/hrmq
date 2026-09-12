@@ -70,6 +70,7 @@
 						type="button"
 						class="hq-hours__action"
 						:aria-expanded="String(menuOpen)"
+						:aria-label="t('humaniq', 'Actions')"
 						aria-haspopup="menu"
 						data-testid="hq-hours-actions"
 						@click="toggleMenu">
@@ -567,6 +568,23 @@ export default {
 				}
 			this.menuOpen = true
 			this.bindMenuListeners()
+			// The card is often the last thing in a column, so a list that
+			// always drops downward ends below the viewport, where the reader
+			// cannot reach it: scrolling to it closes it. Once the list has a
+			// size, flip it above the trigger when there is no room beneath.
+			this.$nextTick(() => {
+				const list = this.$el?.querySelector?.('.hq-hours__menu-list')
+				if (rect === null || !list || this.menuOpen === false) {
+					return
+				}
+				const height = list.getBoundingClientRect().height
+				if (rect.bottom + 4 + height > window.innerHeight && rect.top - 4 - height >= 0) {
+					this.menuStyle = {
+						bottom: `${Math.round(window.innerHeight - rect.top + 4)}px`,
+						right: `${Math.round(window.innerWidth - rect.right)}px`,
+					}
+				}
+			})
 		},
 
 		/**
@@ -720,6 +738,7 @@ export default {
 	border: 1px solid var(--color-border);
 	border-radius: var(--border-radius-large, 12px);
 	box-sizing: border-box;
+	container: hq-hours / inline-size;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -825,6 +844,21 @@ export default {
 	font-weight: bold;
 }
 
+/* A four-column cell at a common desktop width is about 320px. The icon, the
+   title, the stopwatch and a named Actions pill do not fit on that line, and
+   the title is the one that gave: it read "Hours boo…". Below that width the
+   pill drops its label and keeps its icon; the button's accessible name is
+   set on the element, so nothing is lost for a screen reader. */
+@container hq-hours (max-width: 340px) {
+	.hq-hours__action-label {
+		display: none;
+	}
+
+	.hq-hours__action {
+		padding: 0 7px;
+	}
+}
+
 .hq-hours__headline {
 	align-items: baseline;
 	display: flex;
@@ -860,10 +894,10 @@ export default {
    clickable-area-high pill, no border, icon then label, filled on hover. */
 .hq-hours__action {
 	align-items: center;
-	background: transparent;
+	background: var(--color-primary-element-light, var(--color-background-dark));
 	border: none;
 	border-radius: var(--border-radius-element, var(--border-radius-pill, 17px));
-	color: var(--color-main-text);
+	color: var(--color-primary-element-light-text, var(--color-main-text));
 	cursor: pointer;
 	display: flex;
 	font: inherit;
@@ -876,7 +910,7 @@ export default {
 
 .hq-hours__action:hover,
 .hq-hours__action:focus-visible {
-	background-color: var(--color-background-hover);
+	background-color: var(--color-primary-element-light-hover, var(--color-background-hover));
 }
 
 .hq-hours__timer {
