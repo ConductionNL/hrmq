@@ -70,7 +70,14 @@ button.
 
 The card draws its own border because a mount-mode leaf is handed a bare
 element: without chrome it reads as loose text between neighbouring cards that
-have it.
+have it. Its header SHALL be drawn the way the host draws every other card's
+header on the page: a coloured icon and a bold title on the left, the controls
+on the right, a rule beneath. The host cannot draw that header for a mount-mode
+leaf, so the leaf copies the shape rather than inventing one.
+
+The action menu SHALL open over neighbouring content rather than inside the
+host's cell. The host places the card in a cell that scrolls, and a list
+positioned inside that cell is clipped at its edge.
 
 Booking hours SHALL open a dialog Humaniq renders in its own bundle, on the page
 the reader is already on. Sending a reader to another app to book time against
@@ -112,9 +119,20 @@ presses for the one thing that has to be instant.
 
 #### Scenario: The controls in the card header
 - **WHEN** the card renders
-- **THEN** its header holds a stopwatch and, to its right, a single action button
-  whose menu offers Book hours and View hours, rather than three separate
-  buttons competing with the figure.
+- **THEN** its header carries the card's icon and title on the left and, on the
+  right, a stopwatch and then a single action button whose menu offers Book
+  hours and View hours, rather than three separate buttons competing with the
+  figure, and that header is drawn with the same rule, weight and spacing as
+  the host's other cards on the page.
+
+@e2e exclude The card renders only where a consuming app mounts it. conduction/dossiq `tests/e2e/case-hours-leaf.spec.ts`, test "the tile leads with the hours on the case and the caller's own beneath", asserts the stopwatch, the single action button and the two menu items on a case page; humaniq has no page that hosts the leaf.
+
+#### Scenario: The action menu is not clipped by the host
+- **WHEN** the action button is pressed on a card whose host cell scrolls
+- **THEN** the whole menu is visible over the neighbouring content, and a press
+  outside it, Escape, a scroll or a resize closes it.
+
+@e2e exclude Only visible where a consuming app mounts the leaf. conduction/dossiq `tests/e2e/case-hours-leaf.spec.ts`, test "the tile leads with the hours on the case and the caller's own beneath", opens the menu on a case page and asserts both items are visible; humaniq has no page that hosts the leaf.
 
 #### Scenario: The surface while the timer runs
 - **WHEN** the timer is running
