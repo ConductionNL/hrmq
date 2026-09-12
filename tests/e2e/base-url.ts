@@ -36,40 +36,29 @@
  * precisely why it has to be right before CI is added, rather than after the
  * first red run. Accepting the CI name costs nothing and keeps rule 1 intact:
  * all three names are read from the environment, none is defaulted.
+ *
+ * WHAT CHANGED WHEN THE FLEET GUARD ARRIVED
+ * -----------------------------------------
+ * This file used to carry its own `FORBIDDEN_HOSTS` list and its own runner
+ * exemption. Both now live in `shared-instance.ts`, which every app in the
+ * fleet shares, and the refusal became an opt-in rather than a flat ban:
+ * naming the origin in `HUMANIQ_E2E_ALLOW_SHARED_INSTANCE` permits it.
+ *
+ * The shared guard is strictly wider than the list it replaces. `includes()`
+ * over `["localhost:8080", "127.0.0.1:8080"]` missed `http://localhost` with
+ * no port at all, missed `[::1]`, missed `0.0.0.0`, and missed the same stack
+ * published on port 80. The shared guard parses the URL, folds every loopback
+ * spelling onto one host and makes the implicit port explicit before it
+ * compares.
  */
 
-/** Nextcloud instances this suite must never touch. */
-const FORBIDDEN_HOSTS = ["localhost:8080", "127.0.0.1:8080"];
-
-/**
- * Is this process running inside a GitHub Actions runner?
- *
- * ⚠️ This exemption is load-bearing, and the comment above it was HALF right.
- * It correctly predicted that the shared Conduction quality workflow exports
- * the instance as `BASE_URL`, and accepted that name — but the value it
- * exports is literally `http://localhost:8080`, which `FORBIDDEN_HOSTS` then
- * rejects. So the guard written to stop this suite touching the shared dev
- * container would have rejected the ONE instance it is supposed to run
- * against, throwing from `resolveBaseURL()` at config-load time — before a
- * single test, with a message blaming a shared container that does not exist
- * on the runner.
- *
- * The distinction the guard actually wants is not "which port" but "is this
- * host disposable". On a GitHub-hosted runner :8080 is the run's own
- * `php -S` front controller, provisioned and destroyed with the job; there is
- * no shared instance reachable from it at all. `GITHUB_ACTIONS` is used rather
- * than the far broader `CI`, which a developer may well export in a shell that
- * CAN see the real :8080.
- *
- * @return True when running on a GitHub Actions runner.
- */
-function isGitHubActionsRunner(): boolean {
-	return process.env.GITHUB_ACTIONS === "true";
-}
+import { assertInstancePermitted } from "./shared-instance.ts";
 
 /**
  * Resolve the base URL for this run, or throw.
  *
+ * @throws When no name is set, and when the target is the shared development
+ *         instance and no opt-in flag names it.
  * @return The normalised base URL, without a trailing slash.
  */
 export function resolveBaseURL(): string {
@@ -89,18 +78,7 @@ export function resolveBaseURL(): string {
 
 	const normalised = raw.replace(/\/+$/, "");
 
-	if (
-		!isGitHubActionsRunner() &&
-		FORBIDDEN_HOSTS.some((host) => normalised.includes(host))
-	) {
-		throw new Error(
-			`Refusing to run against ${normalised} — that is the SHARED dev container. ` +
-				"These specs create and delete OpenRegister objects; run them against a " +
-				"disposable instance instead (see spin-up-e2e-instance.sh).",
-		);
-	}
-
-	return normalised;
+	return assertInstancePermitted(normalised);
 }
 
 /** Admin credentials for the instance under test. */
